@@ -1,8 +1,10 @@
 import type {
+  Announcement,
   BeachNeed,
   BriefingEvent,
   BringItem,
   CollectStep,
+  CommunityCleanupMessage,
   FaqItem,
   LatestUpdate,
   OrganiserMessage,
@@ -15,7 +17,27 @@ export const whatsappCommunity = {
   url: "https://chat.whatsapp.com/KXTZ6zO69si0vNqN0nrc1f",
 };
 
-/** Shown at the top — evidence / photos note. */
+/** Top of Beach cleanup page — community practical message. */
+export const communityCleanupMessage: CommunityCleanupMessage = {
+  title: "Community message",
+  points: [
+    "Please don’t wait to be organised or be told the perfect way to do this.",
+    "If you are heading down and want help, ask in the WhatsApp group — but this is community-led grassroots stuff, so just get stuck in!",
+    "This next week is crucial, so people are doing what they can when they can. Times for Monday and Tuesday have been suggested at 5am–8am and 4pm–6pm, but anytime is good.",
+    "Basic tools required are sieves / dustpan and brushes, and bin bags. People are making mesh sieves, but they are not essential.",
+    "After high tide is optimal — clear the tide line before it gets washed out again.",
+    "Anything collected should ideally be bagged and left by council bins, marked as volunteer collections.",
+    "Photos of what you’ve collected should ideally be posted in the PHOTOS ONLY section, in case we need evidence later on.",
+    "Good is better than perfect in a crisis — do what you can when you can. Just don’t trample nurdles into the sand.",
+    {
+      beforeLink: "Submit your findings with ",
+      linkLabel: "The Great Nurdle Hunt",
+      href: "https://www.nurdlehunt.org.uk/take-part/submit-your-finds.html",
+    },
+  ],
+};
+
+/** Shown under How to collect — evidence / photos note. */
 export const photosNote = {
   beforeLink:
     "Please take photos of the nurdles to document the damage. There will hopefully be legal action, an inquiry or investigation — the more evidence the better. There is a dedicated group called ",
@@ -98,7 +120,29 @@ export const organiserMessage: OrganiserMessage = {
   ],
 };
 
-/** Short status line under the organiser message. */
+/**
+ * Announcements feed — newest first.
+ * Link to General WhatsApp for polls and day-of coordination.
+ */
+export const announcements: Announcement[] = [
+  {
+    id: "longsands-monday-times",
+    datetime: "2026-07-26T19:07:00+01:00",
+    headline: "Longsands Beach — volunteer times tomorrow",
+    sourceName: "Community admin",
+    body: [
+      "We are asking that volunteers head to Longsands Beach tomorrow at the following times.",
+      "We have equipment to distribute and techniques to share that can then be taken to the other beaches accordingly.",
+      "Please vote for the time(s) you can make in the General WhatsApp group poll.",
+    ],
+    link: {
+      label: "Open General WhatsApp to fill out the poll",
+      href: "https://chat.whatsapp.com/KXTZ6zO69si0vNqN0nrc1f",
+    },
+  },
+];
+
+/** Longer situation update — shown below newer announcements. */
 export const latestUpdate: LatestUpdate = {
   datetime: "2026-07-26T10:00:00+01:00",
   summary:
@@ -177,12 +221,21 @@ export const beachesNeedingHelp: BeachNeed[] = [
   },
 ];
 
+export const whatToBringIntro = "Whatever you have available.";
+
 export const whatToBring: BringItem[] = [
-  { id: "sweep", item: "Sweeping brushes" },
+  { id: "spades", item: "Spades" },
+  { id: "sieves", item: "Sieves, colanders" },
+  { id: "mesh", item: "Mesh bags" },
+  { id: "buckets", item: "Large buckets" },
+  { id: "sweep", item: "Brooms" },
   { id: "dustpan", item: "Dustpans and brushes" },
   { id: "gloves", item: "Gloves" },
   { id: "bags", item: "Heavy-duty bin bags" },
-  { id: "labels", item: "Labels stating “volunteers collected”" },
+  {
+    id: "labels",
+    item: "Labels stating “volunteers collected” — labelling with tape and marker will suffice",
+  },
 ];
 
 export const howToCollectIntro =
@@ -219,19 +272,52 @@ export const trainingVideos: TrainingVideo[] = [
     url: "https://youtube.com/shorts/hiGc1oj68kA",
     note: "",
   },
+  {
+    id: "video-4",
+    title: "How to scrape nurdles on wet sand with a broom",
+    duration: "Watch on YouTube",
+    url: "https://youtube.com/shorts/Ora2gOhBJcc",
+    note: "",
+  },
 ];
 
-/** Written technique — for when you don’t have a rake or sieve for scraping. */
+/** Written cleanup techniques with optional photos. */
 export const techniqueGuides: TechniqueGuide[] = [
   {
     id: "bucket-float",
-    title: "If without rake or sieve — bucket and seawater method",
+    title: "Bucket and seawater method",
     steps: [
       "Collect a bucket of sea water.",
       "Shovel sand (or seaweed) and nurdles mix into the bucket.",
       "When the nurdles float to the top, scoop them off with a sieve.",
       "Add the nurdles to a strong bin bag.",
       "When your bucket is full of sand, empty and refill with sea water.",
+      "Shaking the seaweed releases the nurdles — then scoop them up and remove the sand.",
+    ],
+    images: [
+      {
+        src: "/techniques/bucket-seawater.png",
+        alt: "Red bucket of seawater with a metal sieve holding floating white nurdles",
+      },
+    ],
+  },
+  {
+    id: "spade-mesh",
+    title: "Spade and mesh bag method",
+    steps: [
+      "Scoop the top layer of sand and nurdles with a spade.",
+      "Put the mix into a mesh bag and wash it in seawater so sand falls through and nurdles stay in the bag.",
+      "Empty nurdles into a strong bin bag labelled as a volunteer collection.",
+    ],
+    images: [
+      {
+        src: "/techniques/spade-scoop.png",
+        alt: "Blue spade scooping sand mixed with white nurdles on the beach",
+      },
+      {
+        src: "/techniques/mesh-bag-wash.png",
+        alt: "Purple mesh bag being washed in shallow seawater while wearing a blue glove",
+      },
     ],
   },
 ];
@@ -271,4 +357,4 @@ export const faqs: FaqItem[] = [
 ];
 
 export const siteDisclaimer =
-  "Community information board — not an official council or emergency-service website. The leading message is from a community organiser. Participate at your own discretion.";
+  "Community information board — not an official council or emergency-service website. Participate at your own discretion.";

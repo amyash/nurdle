@@ -14,6 +14,16 @@ export interface LatestUpdate {
   closing: string;
 }
 
+export interface Announcement {
+  id: string;
+  datetime: string;
+  headline: string;
+  body: string[];
+  times?: string[];
+  link?: { label: string; href: string };
+  sourceName?: string;
+}
+
 export interface BriefingEvent {
   title: string;
   summary: string;
@@ -46,6 +56,20 @@ export interface BeachNeed {
   whatsappUrl: string | null;
 }
 
+export type CommunityCleanupPoint =
+  | string
+  | {
+      beforeLink: string;
+      linkLabel: string;
+      afterLink?: string;
+      href: string;
+    };
+
+export interface CommunityCleanupMessage {
+  title: string;
+  points: CommunityCleanupPoint[];
+}
+
 export interface BringItem {
   id: string;
   item: string;
@@ -68,6 +92,7 @@ export interface TechniqueGuide {
   id: string;
   title: string;
   steps: string[];
+  images?: { src: string; alt: string }[];
 }
 
 export interface FaqItem {

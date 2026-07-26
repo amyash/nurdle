@@ -75,12 +75,21 @@ export function OrganiserMessagePanel({
           </li>
         ))}
       </ol>
-
-      <aside className="mt-4 space-y-2 rounded-lg border border-amber-800/40 bg-amber-50 p-3 text-sm leading-snug text-amber-950">
-        {message.notes.map((note) => (
-          <p key={note}>{note}</p>
-        ))}
-      </aside>
     </section>
+  );
+}
+
+export function OrganiserNotesCard({ notes }: { notes: string[] }) {
+  if (notes.length === 0) return null;
+
+  return (
+    <aside
+      className="space-y-2 rounded-lg border border-amber-800/40 bg-amber-50 p-3 text-sm leading-snug text-amber-950"
+      role="note"
+    >
+      {notes.map((note) => (
+        <p key={note}>{note}</p>
+      ))}
+    </aside>
   );
 }

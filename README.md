@@ -1,6 +1,13 @@
 # North East Nurdle Spill — Volunteer Board
 
-Single-page, mobile-first emergency information for community volunteers. Readable in under 30 seconds before leaving home.
+Mobile-first emergency information for community volunteers cleaning beaches around North Tyneside.
+
+## Pages
+
+- `/` — community organiser message + upcoming event
+- `/updates` — latest update card
+- `/beach-cleanup` — what to bring, how to collect, videos, cleanup techniques, FAQs
+- `/beach-groups` — beaches needing help + WhatsApp links
 
 ## Run
 
@@ -11,15 +18,4 @@ npm run dev
 
 ## Update content
 
-Edit **`data/content.ts`** only:
-
-1. `whatsappCommunity` — pinned WhatsApp join link
-2. `organiserMessage` — leading organiser message at the top
-3. `latestUpdate` — short status alert
-4. `beachesNeedingHelp` — which beaches need people
-5. `whatToBring` — kit list
-6. `howToCollect` — short steps
-7. `trainingVideos` — three video links (`url: null` until ready)
-8. `faqs` — short answers
-
-No CMS, login or backend. Deploy to Vercel as a standard Next.js app.
+Edit **`data/content.ts`**. No CMS, login or backend. Deploy to Vercel as a standard Next.js app.

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Atkinson_Hyperlegible } from "next/font/google";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 const sans = Atkinson_Hyperlegible({
@@ -10,7 +12,10 @@ const sans = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
-  title: "North East Nurdle Spill — Volunteer Board",
+  title: {
+    default: "Nurdle spill — volunteer board",
+    template: "%s · Nurdle spill volunteer board",
+  },
   description:
     "Quick mobile information for community volunteers cleaning beaches around North Tyneside.",
 };
@@ -22,7 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-GB" className={sans.variable}>
-      <body className="min-h-dvh antialiased">{children}</body>
+      <body className="flex min-h-dvh flex-col antialiased">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
