@@ -64,6 +64,12 @@ export interface TrainingVideo {
   note: string;
 }
 
+export interface TechniqueGuide {
+  id: string;
+  title: string;
+  steps: string[];
+}
+
 export interface FaqItem {
   id: string;
   question: string;

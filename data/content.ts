@@ -6,6 +6,7 @@ import type {
   FaqItem,
   LatestUpdate,
   OrganiserMessage,
+  TechniqueGuide,
   TrainingVideo,
 } from "@/types";
 
@@ -217,6 +218,21 @@ export const trainingVideos: TrainingVideo[] = [
     duration: "Watch on YouTube",
     url: "https://youtube.com/shorts/hiGc1oj68kA",
     note: "",
+  },
+];
+
+/** Written technique — for when you don’t have a rake or sieve for scraping. */
+export const techniqueGuides: TechniqueGuide[] = [
+  {
+    id: "bucket-float",
+    title: "If without rake or sieve — bucket and seawater method",
+    steps: [
+      "Collect a bucket of sea water.",
+      "Shovel sand (or seaweed) and nurdles mix into the bucket.",
+      "When the nurdles float to the top, scoop them off with a sieve.",
+      "Add the nurdles to a strong bin bag.",
+      "When your bucket is full of sand, empty and refill with sea water.",
+    ],
   },
 ];
 

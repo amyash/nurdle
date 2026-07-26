@@ -11,6 +11,7 @@ import {
   organiserMessage,
   photosNote,
   siteDisclaimer,
+  techniqueGuides,
   trainingVideos,
   whatsappCommunity,
   whatToBring,
@@ -209,6 +210,22 @@ export default function HomePage() {
                   {video.note}
                 </p>
               )}
+            </li>
+          ))}
+        </ul>
+
+        <ul className="mt-4 space-y-2">
+          {techniqueGuides.map((guide) => (
+            <li
+              key={guide.id}
+              className="rounded-lg border border-[var(--line)] bg-white p-3"
+            >
+              <p className="font-bold">{guide.title}</p>
+              <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-base leading-snug">
+                {guide.steps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
             </li>
           ))}
         </ul>
