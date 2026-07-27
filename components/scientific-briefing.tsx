@@ -32,7 +32,7 @@ export function ScientificBriefingPanel({
   return (
     <section
       id="scientific-briefing"
-      className="scroll-mt-20 border-t border-[var(--line)] pt-6"
+      className="scroll-mt-20"
       aria-labelledby="scientific-briefing-heading"
     >
       <h3

@@ -118,6 +118,8 @@ export function OrganiserMessagePanel({
         </ol>
       </div>
 
+      <div className="mt-6 border-t border-[var(--line)] pt-6" aria-hidden="true" />
+
       <ScientificBriefingPanel briefing={scientificBriefing} />
     </section>
   );
