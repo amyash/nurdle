@@ -677,6 +677,8 @@ export const techniqueGuides: TechniqueGuide[] = [
     id: "mesh-bag-tutorial",
     title: "Mesh bag tutorial",
     steps: [],
+    description:
+      "This quick video provides guidance on sewing mesh bags to filter out the sand and seawater, leaving the plastic pellets in the bag.",
     instagramUrl: "https://www.instagram.com/reels/DbQcPcBohWc/",
     cta: {
       label: "Mesh bag WhatsApp group",
