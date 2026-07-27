@@ -890,5 +890,30 @@ export const communityImages: CommunityImage[] = [
     src: "/community/beach-wide-volunteers.webp",
     alt: "Wide view of many volunteers cleaning along the shoreline",
     credit: "Photo by Laura Moscrop",
-  }
+  },
+  {
+    id: "volunteers-mesh-group",
+    src: "/community/volunteers-mesh-group.webp",
+    alt: "Volunteers kneeling on the beach sifting sand with mesh bags and bowls",
+  },
+  {
+    id: "crowd-tide-line-clouds",
+    src: "/community/crowd-tide-line-clouds.webp",
+    alt: "Large group of volunteers cleaning along the high tide line under a cloudy sky",
+  },
+  {
+    id: "volunteers-lighthouse-view",
+    src: "/community/volunteers-lighthouse-view.webp",
+    alt: "Volunteers cleaning the beach with St Mary’s Lighthouse visible in the distance",
+  },
+  {
+    id: "promenade-briefing",
+    src: "/community/promenade-briefing.webp",
+    alt: "Volunteers gathered on the promenade for a beach cleanup briefing",
+  },
+  {
+    id: "volunteers-line-sifting",
+    src: "/community/volunteers-line-sifting.webp",
+    alt: "Line of volunteers kneeling on the sand sifting for nurdles",
+  },
 ];
