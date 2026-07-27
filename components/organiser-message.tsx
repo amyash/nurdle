@@ -81,7 +81,7 @@ export function OrganiserMessagePanel({
                             ? undefined
                             : "noopener noreferrer"
                         }
-                        className="inline-flex w-full items-center justify-center rounded-md bg-white px-3 py-2.5 text-center text-sm font-bold text-[#111827]"
+                        className="inline-flex w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-center text-sm font-bold text-white"
                       >
                         {link.label}
                       </a>

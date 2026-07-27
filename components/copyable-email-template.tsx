@@ -8,7 +8,7 @@ export function CopyableEmailTemplate({
   body,
   tone = "light",
 }: {
-  label: string;
+  label?: string;
   subject: string;
   body: string;
   tone?: "light" | "dark";
@@ -29,14 +29,18 @@ export function CopyableEmailTemplate({
 
   return (
     <div className="mt-3">
-      <p
-        className={`text-sm font-bold ${dark ? "text-white" : "text-[var(--ink)]"}`}
-      >
-        {label}
-      </p>
+      {label ? (
+        <p
+          className={`text-sm font-bold ${dark ? "text-white" : "text-[var(--ink)]"}`}
+        >
+          {label}
+        </p>
+      ) : null}
 
       <div
-        className={`mt-2 max-h-56 overflow-y-auto rounded-md border p-3 ${
+        className={`max-h-56 overflow-y-auto rounded-md border p-3 ${
+          label ? "mt-2" : ""
+        } ${
           dark
             ? "border-white/20 bg-white text-[var(--ink)]"
             : "border-[var(--line)] bg-[var(--board)] text-[var(--ink)]"
@@ -52,11 +56,7 @@ export function CopyableEmailTemplate({
       <button
         type="button"
         onClick={copyTemplate}
-        className={`mt-3 inline-flex w-full items-center justify-center rounded-md px-3 py-2.5 text-sm font-bold ${
-          dark
-            ? "bg-white text-[#111827]"
-            : "bg-[var(--mark)] text-white"
-        }`}
+        className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white"
       >
         {copied ? "Copied to clipboard" : "Copy email template"}
       </button>

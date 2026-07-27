@@ -135,7 +135,6 @@ export const organiserMessage: OrganiserMessage = {
         },
       ],
       emailTemplate: {
-        label: "Email template for MPs & Mayor",
         subject:
           "URGENT: Disaster on the Tyne — Over 1 Billion Nurdles (24 Tonnes) on Our Beaches & Demands for Action",
         body: `Dear [Name of MP] MP /
