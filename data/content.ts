@@ -179,7 +179,7 @@ Yours sincerely,
 
 export const scientificBriefing: ScientificBriefing = {
   title: "Scientific Briefing for Volunteers",
-  fullBriefingHref: null,
+  fullBriefingHref: "/docs/nurdles-spill-scientific-briefing.pdf",
   sections: [
     {
       heading: "Environmental risk",
