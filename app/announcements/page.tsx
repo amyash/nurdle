@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { AnnouncementCard } from "@/components/announcement-card";
+import { BriefingEventPanel } from "@/components/briefing-event";
 import { LatestUpdateCard } from "@/components/latest-update-card";
 import { PageShell } from "@/components/page-shell";
-import { announcements, latestUpdate } from "@/data/content";
+import { announcements, briefingEvent, latestUpdate } from "@/data/content";
 
 export const metadata: Metadata = {
   title: "Announcements",
@@ -19,6 +20,7 @@ export default function AnnouncementsPage() {
           />
         ))}
         <LatestUpdateCard update={latestUpdate} />
+        <BriefingEventPanel event={briefingEvent} />
       </div>
     </PageShell>
   );
