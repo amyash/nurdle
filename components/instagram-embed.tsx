@@ -18,14 +18,17 @@ export function InstagramEmbed({
 
   const embedSrc = `https://www.instagram.com/reel/${match[1]}/embed`;
 
+  // Instagram does not expose controls to hide likes/comments; clip the
+  // embed footer so only the video (and top chrome) remain visible.
   return (
     <div
-      className={`overflow-hidden rounded-lg border border-[var(--line)] bg-white ${className}`}
+      className={`relative overflow-hidden rounded-lg border border-[var(--line)] bg-black ${className}`}
+      style={{ height: "34rem" }}
     >
       <iframe
         src={embedSrc}
         title={title}
-        className="h-[52rem] w-full max-w-full border-0"
+        className="absolute inset-x-0 top-0 h-[42rem] w-full max-w-full border-0"
         allow="encrypted-media; picture-in-picture; web-share"
         allowFullScreen
         loading="lazy"
