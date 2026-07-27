@@ -38,7 +38,7 @@ export function CopyableEmailTemplate({
       <div
         className={`mt-2 max-h-56 overflow-y-auto rounded-md border p-3 ${
           dark
-            ? "border-white/20 bg-white/10 text-white"
+            ? "border-white/20 bg-white text-[var(--ink)]"
             : "border-[var(--line)] bg-[var(--board)] text-[var(--ink)]"
         }`}
       >
