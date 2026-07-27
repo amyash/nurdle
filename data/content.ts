@@ -123,7 +123,7 @@ export const organiserMessage: OrganiserMessage = {
         {
           beforeLink:
             "Residents in North Tyneside constituency can write to MP Alan Campbell, or ",
-          linkLabel: "Find your local councillors",
+          linkLabel: "find your local councillors",
           afterLink: "",
           href: "https://www.gov.uk/find-your-local-councillors",
         },
