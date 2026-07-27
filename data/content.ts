@@ -669,7 +669,7 @@ export const techniqueGuides: TechniqueGuide[] = [
     images: [
       {
         src: "/techniques/sand-square.webp",
-        alt: "A square drawn in beach sand to mark a small area to clean",
+        alt: "Cleanup tools inside a square drawn in beach sand to mark a small work area",
       },
     ],
   },
