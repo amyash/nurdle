@@ -1,4 +1,5 @@
-import { formatWhen } from "@/lib/dates";
+import Image from "next/image";
+import { CopyableEmailTemplate } from "@/components/copyable-email-template";
 import type { OrganiserMessage } from "@/types";
 
 export function OrganiserMessagePanel({
@@ -7,25 +8,10 @@ export function OrganiserMessagePanel({
   message: OrganiserMessage;
 }) {
   return (
-    <section
-      id="organiser"
-      className="scroll-mt-20 rounded-lg border-2 border-[var(--ink)] bg-white p-4"
-      aria-labelledby="organiser-heading"
-    >
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="text-xs font-bold uppercase tracking-wide text-[var(--mute)]">
-          {message.sourceLabel}
-        </p>
-        <p className="text-xs font-bold text-[var(--mute)]">
-          <time dateTime={message.datetime}>
-            {formatWhen(message.datetime)}
-          </time>
-        </p>
-      </div>
-
+    <section id="organiser" className="scroll-mt-20" aria-labelledby="organiser-heading">
       <h2
         id="organiser-heading"
-        className="mt-2 text-xl font-bold leading-snug text-[var(--ink)]"
+        className="text-xl font-bold leading-snug text-[var(--ink)]"
       >
         {message.headline}
       </h2>
@@ -36,45 +22,82 @@ export function OrganiserMessagePanel({
         ))}
       </div>
 
-      <p className="mt-4 text-sm font-bold uppercase tracking-wide text-[var(--ink)]">
-        Two actions
-      </p>
+      <figure className="mt-4 overflow-hidden rounded-lg">
+        <Image
+          src="/nurdles-on-beach.webp"
+          alt="Thousands of small white plastic pellets (nurdles) scattered across beach sand"
+          width={1200}
+          height={900}
+          className="h-auto w-full object-cover"
+        />
+      </figure>
 
-      <ol className="mt-2 space-y-3">
-        {message.actions.map((action) => (
-          <li
-            key={action.id}
-            className="rounded-lg border border-[var(--line)] bg-[var(--board)] p-3"
-          >
-            <h3 className="font-bold text-[var(--ink)]">{action.title}</h3>
-            <div className="mt-2 space-y-2 text-sm leading-snug text-[var(--ink)]">
-              {action.body.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-            {action.links && action.links.length > 0 && (
-              <ul className="mt-3 space-y-2">
-                {action.links.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-                      rel={
-                        link.href.startsWith("mailto:")
-                          ? undefined
-                          : "noopener noreferrer"
-                      }
-                      className="inline-flex w-full items-center justify-center rounded-md bg-[var(--ink)] px-3 py-2.5 text-center text-sm font-bold text-white"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ol>
+      <div className="mt-6 border-t border-[var(--line)] pt-6">
+        <h3 className="text-lg font-bold uppercase tracking-wide text-[var(--ink)]">
+          Actions
+        </h3>
+
+        <ol className="mt-3 space-y-6">
+          {message.actions.map((action) => (
+            <li key={action.id}>
+              <h4 className="font-bold text-[var(--ink)]">{action.title}</h4>
+              <div className="mt-2 space-y-2 text-sm leading-snug text-[var(--ink)]">
+                {action.body.map((paragraph) =>
+                  typeof paragraph === "string" ? (
+                    <p key={paragraph}>{paragraph}</p>
+                  ) : (
+                    <p key={paragraph.href + paragraph.linkLabel}>
+                      {paragraph.beforeLink}
+                      <a
+                        href={paragraph.href}
+                        {...(paragraph.href.startsWith("http")
+                          ? {
+                              target: "_blank" as const,
+                              rel: "noopener noreferrer",
+                            }
+                          : {})}
+                        className="font-bold text-[var(--tide)] underline underline-offset-2"
+                      >
+                        {paragraph.linkLabel}
+                      </a>
+                      {paragraph.afterLink}
+                    </p>
+                  ),
+                )}
+              </div>
+              {action.links && action.links.length > 0 && (
+                <ul className="mt-3 space-y-2">
+                  {action.links.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target={
+                          link.href.startsWith("mailto:") ? undefined : "_blank"
+                        }
+                        rel={
+                          link.href.startsWith("mailto:")
+                            ? undefined
+                            : "noopener noreferrer"
+                        }
+                        className="inline-flex w-full items-center justify-center rounded-md bg-[var(--ink)] px-3 py-2.5 text-center text-sm font-bold text-white"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {action.emailTemplate && (
+                <CopyableEmailTemplate
+                  label={action.emailTemplate.label}
+                  subject={action.emailTemplate.subject}
+                  body={action.emailTemplate.body}
+                />
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }

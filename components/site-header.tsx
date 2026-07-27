@@ -32,6 +32,8 @@ export function SiteHeader() {
         </blockquote>
 
         <SiteNav />
+
+        <div className="mt-5 border-t border-[var(--line)] pt-5" aria-hidden="true" />
       </div>
     </header>
   );

@@ -11,7 +11,7 @@ export function PageShell({
 }) {
   return (
     <div
-      className={`mx-auto max-w-lg px-4 pb-10 pt-5${className ? ` ${className}` : ""}`}
+      className={`mx-auto max-w-lg px-4 pb-10 pt-2${className ? ` ${className}` : ""}`}
     >
       {title && (
         <h2 className="mb-4 text-xl font-bold tracking-tight text-[var(--ink)]">

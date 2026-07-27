@@ -5,6 +5,7 @@ import type {
   BringItem,
   CollectStep,
   CommunityCleanupMessage,
+  CommunityImage,
   FaqItem,
   LatestUpdate,
   OrganiserMessage,
@@ -17,6 +18,15 @@ export const whatsappCommunity = {
   url: "https://chat.whatsapp.com/KXTZ6zO69si0vNqN0nrc1f",
 };
 
+/** Top of Beach cleanup — North Shields tide times for today. */
+export const northShieldsTideTimes = {
+  title: "Today's tide times for North Shields, England",
+  widgetSrc:
+    "https://www.tidetimes.co.uk/widget?name=River%20Tyne%20(North%20Shields)&days=1",
+  widgetCss: "https://www.tidetimes.co.uk/assets/widget.css",
+  sourceUrl: "https://www.tidetimes.co.uk/river-tyne-north-shields-tide-times",
+};
+
 /** Top of Beach cleanup page — community practical message. */
 export const communityCleanupMessage: CommunityCleanupMessage = {
   title: "Community message",
@@ -27,7 +37,7 @@ export const communityCleanupMessage: CommunityCleanupMessage = {
     "Basic tools required are sieves / dustpan and brushes, and bin bags. People are making mesh sieves, but they are not essential.",
     "After high tide is optimal — clear the tide line before it gets washed out again.",
     "Anything collected should ideally be bagged and left by council bins, marked as volunteer collections.",
-    "Photos of what you’ve collected should ideally be posted in the PHOTOS ONLY section, in case we need evidence later on.",
+    "Photos of what you’ve collected should ideally be posted in the PHOTOS ONLY group of the WhatsApp community, in case we need evidence later on.",
     "Good is better than perfect in a crisis — do what you can when you can. Just don’t trample nurdles into the sand.",
     {
       beforeLink: "Submit your findings with ",
@@ -44,6 +54,11 @@ export const photosNote = {
   linkLabel: "PHOTOS ONLY",
   afterLink: " in the community WhatsApp.",
   url: "https://chat.whatsapp.com/Bu3PVQzDvbF03k6f0NTvgK",
+  nurdleHunt: {
+    beforeLink: "Submit your findings with ",
+    linkLabel: "The Great Nurdle Hunt",
+    href: "https://www.nurdlehunt.org.uk/take-part/submit-your-finds.html",
+  },
 };
 
 /** Expandable briefing signup — shown near the top. */
@@ -71,12 +86,11 @@ export const briefingEvent: BriefingEvent = {
 export const organiserMessage: OrganiserMessage = {
   datetime: "2026-07-26T09:00:00+01:00",
   sourceLabel: "Community organiser message",
-  headline:
-    "Over 1 billion plastic pellets (nurdles) in the River Tyne — 24 tonnes — and now all over our beaches.",
+  headline: "Over 1 Billion Plastic Pellets Released into the River Tyne",
   context: [
-    "There are individual beach groups. There has been an unofficial request for help specifically on Monday and Tuesday.",
-    "No organisation is officially leading this — hands are tied by Environment Agency advice not to touch. Efforts are being made to change this.",
-    "Volunteers on the ground strongly believe North Tyneside Council have not grasped the emergency level of this. Contractors and workers should be out in force. Volunteers are needed — and pressure on the council is needed too.",
+    "On 19 July 2026, following a collision between two vessels in the Port of Tyne, an estimated 24 tonnes of plastic pellets—known as nurdles—entered the River Tyne. Around one billion of these tiny plastic pellets have since washed up along beaches across the North East, prompting a huge community-led clean-up effort.",
+    "This website brings together the latest community updates, practical guidance and resources to help volunteers respond to the spill. It has been created by volunteers to make it easier to find key information without having to search through hundreds of WhatsApp messages.",
+    "The clean-up effort is currently being coordinated by the local community alongside organisations, councils and specialist contractors working on the wider response. Information on this site is updated regularly, but guidance can change quickly, so please check the latest updates before heading to the beach.",
   ],
   actions: [
     {
@@ -84,8 +98,13 @@ export const organiserMessage: OrganiserMessage = {
       title: "1. Join a beach clean",
       body: [
         "Join the community WhatsApp group for beach-specific updates, or head down to help.",
-        "Community advice: collect in bin bags and place next to the council bins. Large mesh bags work well with shovels; where appropriate use a dustpan and brush. Method is discussed on the group.",
-        "You must join the group to know more about where help is needed.",
+        {
+          beforeLink:
+            "Community advice: collect in bin bags and place next to the council bins. Large mesh bags work well with shovels; where appropriate use a dustpan and brush. See ",
+          linkLabel: "Beach Cleanup",
+          afterLink: " page for more info on equipment and methods.",
+          href: "/beach-cleanup",
+        },
       ],
       links: [
         {
@@ -112,6 +131,41 @@ export const organiserMessage: OrganiserMessage = {
           href: "mailto:alan.campbell.mp@parliament.uk",
         },
       ],
+      emailTemplate: {
+        label: "Email template for MPs & Mayor",
+        subject:
+          "URGENT: Disaster on the Tyne — Over 1 Billion Nurdles (24 Tonnes) on Our Beaches & Demands for Action",
+        body: `Dear [Name of MP] MP /
+
+Dear Regional Mayor Kim McGuinness kim@kimmcguinness.org
+
+I am writing to you as a constituent residing in [Your Town/Area] regarding the catastrophic plastic spill originating from the River Tyne. Over 24 tonnes—more than 1 billion raw plastic pellets (‘nurdles’)—are now washing ashore across our local beaches. This is being recognised as the biggest plastic pollution disaster in the history of Northern Europe, yet the response on the ground fails to reflect the magnitude of this crisis.
+
+While funding and money should not be a barrier given the severity and international scope of this disaster, our local response is failing our coastline in critical ways:
+
+1. Lack of Targeted, Tidal-Based Cleanup: We are simply not seeing the necessary large-scale, coordinated cleanup efforts deployed at the appropriate times based on the tides. We need to see councils and relevant authorities responding in force with adequate personnel, proper gear, and specialist equipment.
+
+2. Destructive Machinery Usage Must Stop: Council tractors are still actively being used on the beaches. Heavy machinery churns and compresses the sand, driving these microplastics deeper into lower sand layers where they become impossible to retrieve. This practice must stop immediately.
+
+3. Unmet Community Need: Because no official organisation is leading on-the-ground volunteer operations—with hands currently tied by Environment Agency advice—local residents are stepping into the void. There is an urgent, unofficial call for help specifically for Monday 27th and Tuesday 28th to carry out manual recovery along individual beaches.
+
+We cannot allow red tape to leave 1 billion pellets to wash back into the marine food web.
+
+As my Member of Parliament, I urge you to take immediate action:
+
+* Demand Council & Agency Scale-Up: Push Council, Defra, and the Environment Agency to deploy equipped, organised teams timed around local low/high tides, and immediately halt heavy tractor usage on affected beaches.
+
+* Support Community & Volunteer Operations: Ensure authorities provide clear, safe guidance and logistical backing (such as proper sieves, vacuums, and disposal points) for community efforts, especially for the critical push this Monday and Tuesday.
+
+* Enforce Polluter Liability & Legislative Reform: Ensure the responsible ship operators and insurers cover 100% of remediation costs, and push in Westminster to legally reclassify nurdles as hazardous cargo with mandatory sealed packaging requirements.
+
+I look forward to hearing what urgent steps you are taking to ensure our beaches get the emergency response this crisis demands.
+
+Yours sincerely,
+[Your Full Name]
+[Your Full Postal Address & Postcode]
+[Your Phone Number - Optional]`,
+      },
     },
   ],
   notes: [
@@ -126,14 +180,139 @@ export const organiserMessage: OrganiserMessage = {
  */
 export const announcements: Announcement[] = [
   {
-    id: "longsands-monday-times",
-    datetime: "2026-07-26T19:07:00+01:00",
-    headline: "Longsands Beach — volunteer times tomorrow",
-    sourceName: "Community admin",
-    body: [
-      "We are asking that volunteers head to Longsands Beach tomorrow at the following times.",
-      "We have equipment to distribute and techniques to share that can then be taken to the other beaches accordingly.",
-      "Please vote for the time(s) you can make in the General WhatsApp group poll.",
+    id: "longsands-monday-volunteer-effort",
+    datetime: "2026-07-26T19:06:00+01:00",
+    sourceName: "Sally · Community admin",
+    headline:
+      "There is a major volunteer effort kicking off from 6am Monday morning",
+    blocks: [
+      {
+        type: "md",
+        parts: [
+          "Longsands at the High Tide Line starting from Crusoe’s to clear nurdle plastic pollution from our beaches and everyone in Tynemouth has a part to play.",
+        ],
+      },
+      {
+        type: "sm",
+        parts: [
+          "More teams are being assembled and will branch off to other beaches, so watch out for information including ",
+          { bold: "Monday afternoon after the second high tide." },
+        ],
+      },
+      {
+        type: "bullets",
+        intro: [
+          {
+            bold: "Based on expert advice the organisers have come to the conclusion that:",
+          },
+        ],
+        items: [
+          [
+            "The insurers' contractors are equipped and staffed only to handle the Fish Quay, and nearly all of the equipment needed in the North East is unlikely to be here for days. We can leave the Fish Quay to them, but ",
+            {
+              bold: "Tynemouth needs to step up — nobody else will.",
+            },
+          ],
+          [
+            "The tides this week, in particular Monday and Tuesday, present a golden opportunity to put a dent in this, which otherwise we will regret. Residents here would never forgive ourselves if we let that happen.",
+          ],
+          [
+            "With each high tide this week, more and more pellets will refloat and form the neat lines along the high tide mark, making them easy for volunteers to sweep up.",
+          ],
+          [
+            "It's been possible to locally manufacture enough filtering bags this weekend to support a big effort. Enough people who have already been volunteering have developed experience using them.",
+          ],
+          [
+            "There's scope for less experienced volunteers to sweep up material with just a couple of minutes' training (",
+            { bold: "without touching a single pellet" },
+            "). You brush/scrape it; they will filter out the pellets.",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "So, if you have some time to spare before work, please come down. Don't expect perfection, but do come and help.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["A few do's and don'ts:"],
+      },
+      {
+        type: "numbered",
+        items: [
+          [
+            { bold: "Don't step on the nurdles." },
+            " This is the one thing which can make the situation worse. With the beaches in heavy use, this has happened too much.",
+          ],
+          [
+            {
+              bold: "Do wear gloves (there will be plenty available, or bring your own).",
+            },
+            " It's not essential but helps the organisers minimise the amount of supervision less experienced volunteers need.",
+          ],
+          [{ bold: "Do wash your hands" }, " when finished."],
+          [
+            {
+              bold: "Do leave the filtering to the more experienced volunteers",
+            },
+            " running the operation — this is more complicated.",
+          ],
+          [
+            {
+              bold: "If possible, bring a dustpan (and brush). You'll learn why...",
+            },
+          ],
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "This is not a small problem. The effects are long term and will be reduced by prompt action.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "The insurers have not brought enough resources to bear early enough, and there's nothing we can do about that. Nurdles that embed into the beaches will break down into microplastics over decades.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "We will likely experience a sustained period of this material coming ashore. There is still a substantial amount in the Tyne and the sea which will come out in waves as the tides move. Even after the first stage of this ends, storms will bring it back several times over the coming years.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: [
+          "We are still in the short window where volunteers will make a difference. Please consider helping.",
+        ],
+      },
+      { type: "divider" },
+      {
+        type: "lg",
+        parts: ["Longsands Beach — volunteer times"],
+      },
+      {
+        type: "p",
+        parts: [
+          "We are asking that volunteers head to Longsands Beach at the following times.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "We have equipment to distribute and techniques to share that can then be taken to the other beaches accordingly.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "Please vote for the time(s) you can make in the General WhatsApp group poll.",
+        ],
+      },
     ],
     link: {
       label: "Open General WhatsApp to fill out the poll",
@@ -141,8 +320,6 @@ export const announcements: Announcement[] = [
     },
   },
 ];
-
-/** Longer situation update — shown below newer announcements. */
 export const latestUpdate: LatestUpdate = {
   datetime: "2026-07-26T10:00:00+01:00",
   summary:
@@ -169,6 +346,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Help needed — join this beach WhatsApp group",
     nextWindow: "Monday & Tuesday — details on group",
     whatsappUrl: "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE",
+    region: "north-tyneside",
   },
   {
     id: "longsands",
@@ -176,6 +354,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Help needed — join this beach WhatsApp group",
     nextWindow: "Monday & Tuesday — details on group",
     whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
+    region: "north-tyneside",
   },
   {
     id: "cullercoats",
@@ -183,6 +362,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Help needed — join this beach WhatsApp group",
     nextWindow: "Monday & Tuesday — details on group",
     whatsappUrl: "https://chat.whatsapp.com/LJIE5xqsqWmGAIl2pLt4t2",
+    region: "north-tyneside",
   },
   {
     id: "haven-beach",
@@ -190,6 +370,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Help needed — join this beach WhatsApp group",
     nextWindow: null,
     whatsappUrl: "https://chat.whatsapp.com/IUp4YAxs7Yo7vZAqeO6Z1I",
+    region: "north-tyneside",
   },
   {
     id: "king-edwards-bay",
@@ -197,6 +378,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Help needed — join this beach WhatsApp group",
     nextWindow: null,
     whatsappUrl: "https://chat.whatsapp.com/K2lktDs5NAj7UG1SYoDYwh",
+    region: "north-tyneside",
   },
   {
     id: "fish-quay",
@@ -204,6 +386,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Help needed — join this beach WhatsApp group",
     nextWindow: null,
     whatsappUrl: "https://chat.whatsapp.com/E3UFrnJFRE719lT7BztWoo",
+    region: "north-tyneside",
   },
   {
     id: "blyth",
@@ -211,6 +394,7 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Check WhatsApp for beach-specific updates",
     nextWindow: null,
     whatsappUrl: null,
+    region: "north-tyneside",
   },
   {
     id: "browns-jackeys",
@@ -218,19 +402,33 @@ export const beachesNeedingHelp: BeachNeed[] = [
     need: "Check WhatsApp for beach-specific updates",
     nextWindow: null,
     whatsappUrl: null,
+    region: "north-tyneside",
   },
+  {
+    id: "south-tyneside",
+    name: "South Tyneside",
+    need: "Help needed — join this beach WhatsApp group",
+    nextWindow: null,
+    whatsappUrl: "https://chat.whatsapp.com/Kfd0BABx0dTH9Q9UgUks4r",
+    region: "south-tyneside",
+  },
+];
+
+export const beachGroupRegions = [
+  { id: "north-tyneside" as const, title: "North Tyneside" },
+  { id: "south-tyneside" as const, title: "South Tyneside" },
 ];
 
 export const whatToBringIntro = "Whatever you have available.";
 
 export const whatToBring: BringItem[] = [
-  { id: "spades", item: "Spades" },
-  { id: "sieves", item: "Sieves, colanders" },
-  { id: "mesh", item: "Mesh bags" },
-  { id: "buckets", item: "Large buckets" },
   { id: "sweep", item: "Brooms" },
+  { id: "buckets", item: "Large buckets" },
+  { id: "spades", item: "Spades" },
   { id: "dustpan", item: "Dustpans and brushes" },
-  { id: "gloves", item: "Gloves" },
+  { id: "mesh", item: "Mesh bags" },
+  { id: "sieves", item: "Sieves, colanders" },
+  { id: "gloves", item: "Wear wellies and gloves" },
   { id: "bags", item: "Heavy-duty bin bags" },
   {
     id: "labels",
@@ -242,47 +440,89 @@ export const howToCollectIntro =
   "Avoid treading nurdles into the sand as best you can.";
 
 export const howToCollect: CollectStep[] = [
-  { step: 1, text: "Get out after high tide — this week daily collection matters most." },
-  { step: 2, text: "Focus on clearing the nurdle lines left on the beach after high tide." },
-  { step: 3, text: "Use sweeping brushes, dustpans and brushes — see collection techniques below." },
-  { step: 4, text: "Bag into heavy-duty bin bags and label them “volunteers collected”." },
-  { step: 5, text: "Place filled bags next to the council bins (community advice)." },
+  {
+    step: 1,
+    text: "Get out after high tide, every day if you can, and focus on clearing nurdles left at the high tide line.",
+  },
+  {
+    step: 2,
+    text: "DON'T STEP ON THE NURDLES! (We can't emphasise this enough)",
+  },
+  {
+    step: 3,
+    text: "Wear gloves (and wash your hands when you're finished).",
+  },
+  {
+    step: 4,
+    text: "Use sweeping brushes and/or dustpan and brush to collect the nurdles (see tips on techniques below).",
+  },
+  {
+    step: 5,
+    text: "If possible/appropriate, leave the filtering to more experienced volunteers and focus on collecting.",
+  },
+  {
+    step: 6,
+    text: "Bag nurdles into heavy-duty bin bags, label with 'volunteer collected', secure and leave next to council bins for collection.",
+  },
+  {
+    step: 7,
+    text: "Report bagged litter to North Tyneside Council: On the interactive map on their ‘Report it’ portal (under fly tipping or overflowing bins in the Litter and Full bins section). Or use the QR code on the bin if available.",
+    cta: {
+      label: "Report rubbish bags",
+      href: "https://www.northtyneside.gov.uk/residents/report-it",
+    },
+  },
 ];
 
 /** Replace null urls with public video links when ready. */
 export const trainingVideos: TrainingVideo[] = [
   {
-    id: "video-1",
-    title: "How to scrape nurdles on wet sand with a plank",
-    duration: "Watch on YouTube",
-    url: "https://youtu.be/XW4cJDxCEZk",
-    note: "",
-  },
-  {
     id: "video-2",
-    title: "How to sift nurdles in dry sand with mesh bag",
+    title: "Sift nurdles in dry sand with mesh bag",
     duration: "Watch on YouTube",
     url: "https://youtube.com/shorts/No1TWSeSfUI",
     note: "",
-  },
-  {
-    id: "video-3",
-    title: "How to scrape nurdles on hard wet sand using back of rake",
-    duration: "Watch on YouTube",
-    url: "https://youtube.com/shorts/hiGc1oj68kA",
-    note: "",
-  },
-  {
-    id: "video-4",
-    title: "How to scrape nurdles on wet sand with a broom",
-    duration: "Watch on YouTube",
-    url: "https://youtube.com/shorts/Ora2gOhBJcc",
-    note: "",
+    tip: {
+      text: "Draw a square in the sand to work on, complete it, move on and repeat. Keeps the task bitesize and measurable.",
+      image: {
+        src: "/techniques/sand-square.webp",
+        alt: "A square drawn in beach sand to mark a small area to clean",
+      },
+    },
   },
 ];
 
 /** Written cleanup techniques with optional photos. */
 export const techniqueGuides: TechniqueGuide[] = [
+  {
+    id: "scrape-wet",
+    title: "Scrape nurdles up from wet sand",
+    steps: [
+      "Use a flat broom, back of rake or even plank of wood",
+      "Carefully scrape up the lines of nurdles",
+      "Sweep up nurdles and place in labelled bin bag",
+    ],
+    images: [
+      {
+        src: "/techniques/broom-scrape.webp",
+        alt: "Wooden broom scraping white nurdles across wet beach sand",
+      },
+    ],
+    videos: [
+      {
+        title: "Scrape nurdles on wet sand with broom",
+        url: "https://youtu.be/Ora2gOhBJcc",
+      },
+      {
+        title: "Scrape nurdles on wet sand with back of rake",
+        url: "https://youtube.com/shorts/hiGc1oj68kA",
+      },
+      {
+        title: "Scrape nurdles on wet sand with a plank",
+        url: "https://youtu.be/XW4cJDxCEZk",
+      },
+    ],
+  },
   {
     id: "bucket-float",
     title: "Bucket and seawater method",
@@ -296,7 +536,7 @@ export const techniqueGuides: TechniqueGuide[] = [
     ],
     images: [
       {
-        src: "/techniques/bucket-seawater.png",
+        src: "/techniques/bucket-seawater.webp",
         alt: "Red bucket of seawater with a metal sieve holding floating white nurdles",
       },
     ],
@@ -311,11 +551,11 @@ export const techniqueGuides: TechniqueGuide[] = [
     ],
     images: [
       {
-        src: "/techniques/spade-scoop.png",
+        src: "/techniques/spade-scoop.webp",
         alt: "Blue spade scooping sand mixed with white nurdles on the beach",
       },
       {
-        src: "/techniques/mesh-bag-wash.png",
+        src: "/techniques/mesh-bag-wash.webp",
         alt: "Purple mesh bag being washed in shallow seawater while wearing a blue glove",
       },
     ],
@@ -333,8 +573,8 @@ export const faqs: FaqItem[] = [
     id: "bins",
     question: "Where do filled bags go?",
     answer:
-      "Community organiser advice: collect in bin bags and place them next to the council bins. Make sure the bags are clearly labeled. Join the WhatsApp group for the latest method discussion.",
-    highlight: "Make sure the bags are clearly labeled.",
+      "Community organiser advice is to collect in heavy-duty bin bags and place them next to the council bins. Make sure the bags are clearly labeled as having been volunteer collected. Join the WhatsApp group for the latest method discussion.",
+    highlight: "Make sure the bags are clearly labeled as having been volunteer collected.",
   },
   {
     id: "when",
@@ -358,3 +598,206 @@ export const faqs: FaqItem[] = [
 
 export const siteDisclaimer =
   "Community information board — not an official council or emergency-service website. Participate at your own discretion.";
+
+/** Intro copy above the gallery on /community-images. */
+export const communityImagesIntro = {
+  heading: "Photos needed",
+  paragraphs: [
+    {
+      parts: [
+        {
+          type: "text" as const,
+          value:
+            "Please take photos of the nurdles to document the damage. Remember to note the date, time and location. Recommended to use ",
+        },
+        {
+          type: "link" as const,
+          label: "what3words",
+          href: "https://what3words.com/",
+        },
+        {
+          type: "text" as const,
+          value:
+            " for exact location information. There is a dedicated group called ",
+        },
+        {
+          type: "link" as const,
+          label: "PHOTOS ONLY",
+          href: "https://chat.whatsapp.com/Bu3PVQzDvbF03k6f0NTvgK",
+        },
+        {
+          type: "text" as const,
+          value: " in the community WhatsApp.",
+        },
+      ],
+    },
+    {
+      parts: [
+        {
+          type: "text" as const,
+          value: "Submit your findings with ",
+        },
+        {
+          type: "link" as const,
+          label: "The Great Nurdle Hunt",
+          href: "https://www.nurdlehunt.org.uk/",
+        },
+        {
+          type: "text" as const,
+          value: ".",
+        },
+      ],
+    },
+  ],
+  galleryCaption: "Photos from volunteers on our beaches.",
+};
+
+/** Community photos — masonry gallery on /community-images. */
+export const communityImages: CommunityImage[] = [
+  {
+    id: "volunteers-broom",
+    src: "/community/volunteers-broom.webp",
+    alt: "Volunteers cleaning Longsands Beach with a yellow broom in the foreground and St George's Church behind",
+  },
+  {
+    id: "caution-sign",
+    src: "/community/caution-sign.webp",
+    alt: "North Tyneside Council yellow caution sign about plastic pellets washed ashore",
+  },
+  {
+    id: "handful-nurdles",
+    src: "/community/handful-nurdles.webp",
+    alt: "Open hand holding a cluster of white nurdles on a rocky beach",
+  },
+  {
+    id: "crowd-tide-line",
+    src: "/community/crowd-tide-line.webp",
+    alt: "Large group of volunteers working along the high tide line on a sunny beach",
+  },
+  {
+    id: "volunteer-blonde-mesh",
+    src: "/community/volunteer-blonde-mesh.webp",
+    alt: "Volunteer in gloves searching sand for nurdles beside a yellow bucket",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "bucket-filter",
+    src: "/community/bucket-filter.webp",
+    alt: "Two young volunteers filtering nurdles with a sieve over an orange bucket of seawater",
+  },
+  {
+    id: "tide-line-pier",
+    src: "/community/tide-line-pier.webp",
+    alt: "Nurdles along the high tide line with a pier and industrial coastline beyond",
+  },
+  {
+    id: "longsands-overview",
+    src: "/community/longsands-overview.webp",
+    alt: "Wide view of Longsands Beach with volunteers dotted along the shore",
+  },
+  {
+    id: "beach-church-overview",
+    src: "/community/beach-church-overview.webp",
+    alt: "Elevated view of volunteers on the beach with St George’s Church on the cliff",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "seaweed-nurdles",
+    src: "/community/seaweed-nurdles.webp",
+    alt: "White nurdles tangled in a clump of seaweed on the sand",
+  },
+  {
+    id: "scrubbing-rock",
+    src: "/community/scrubbing-rock.webp",
+    alt: "Volunteer in wellies scrubbing seaweed from a rock into a bin bag of nurdles",
+  },
+  {
+    id: "bowl-nurdles",
+    src: "/community/bowl-nurdles.webp",
+    alt: "Close-up of collected white nurdles mixed with sand in a bowl",
+  },
+  {
+    id: "rocky-shore-nurdles",
+    src: "/community/rocky-shore-nurdles.webp",
+    alt: "Nurdles scattered across seaweed-covered rocks on the shore",
+  },
+  {
+    id: "volunteer-bags",
+    src: "/community/volunteer-bags.webp",
+    alt: "Pile of black bags labelled Volunteers Collected next to council bins on the promenade",
+  },
+  {
+    id: "seaweed-line-wall",
+    src: "/community/seaweed-line-wall.webp",
+    alt: "Nurdles mixed with seaweed along the beach beside a concrete sea wall",
+  },
+  {
+    id: "nurdles-seaweed-close",
+    src: "/community/nurdles-seaweed-close.webp",
+    alt: "Close-up of white nurdles scattered on sand beside dried seaweed",
+  },
+  {
+    id: "volunteer-kneeling-yellow",
+    src: "/community/volunteer-kneeling-yellow.webp",
+    alt: "Volunteer kneeling on the beach collecting nurdles with a yellow container, St George’s Church behind",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "nurdle-footprints",
+    src: "/community/nurdle-footprints.webp",
+    alt: "A single white nurdle in the sand among footprints",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "nurdle-line-close",
+    src: "/community/nurdle-line-close.webp",
+    alt: "White nurdles forming lines along damp beach sand",
+  },
+  {
+    id: "volunteer-sieve-cap",
+    src: "/community/volunteer-sieve-cap.webp",
+    alt: "Volunteer kneeling on the beach filtering sand through a metal sieve",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "volunteers-broom-dog",
+    src: "/community/volunteers-broom-dog.webp",
+    alt: "Volunteers cleaning the beach, one carrying a broom and bag",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "volunteers-group-seaweed",
+    src: "/community/volunteers-group-seaweed.webp",
+    alt: "Group of volunteers working along seaweed lines on a sunny beach",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "volunteers-green-bucket",
+    src: "/community/volunteers-green-bucket.webp",
+    alt: "Volunteers with a green bucket and yellow broom on the beach near Cullercoats",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "mesh-bag-bucket-shovel",
+    src: "/community/mesh-bag-bucket-shovel.webp",
+    alt: "Volunteer lifting a mesh bag from a water-filled bucket beside a shovel",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "beach-lifeguard-hut",
+    src: "/community/beach-lifeguard-hut.webp",
+    alt: "Wide view of volunteers spread across the beach near a lifeguard hut",
+    credit: "Photo by Laura Moscrop",
+  },
+  {
+    id: "mesh-bag-hands",
+    src: "/community/mesh-bag-hands.webp",
+    alt: "Gloved hands holding a mesh bag filled with seaweed and white nurdles",
+  },
+  {
+    id: "beach-wide-volunteers",
+    src: "/community/beach-wide-volunteers.webp",
+    alt: "Wide view of many volunteers cleaning along the shoreline",
+    credit: "Photo by Laura Moscrop",
+  }
+];

@@ -11,21 +11,15 @@ export function CommunityCleanupMessagePanel({
       className="group mb-6 rounded-lg border-2 border-[var(--ink)] bg-white open:shadow-sm"
     >
       <summary className="cursor-pointer list-none px-4 py-3 marker:content-none [&::-webkit-details-marker]:hidden">
-        <span className="flex items-start justify-between gap-3">
-          <span>
-            <span
-              id="cleanup-message-heading"
-              className="block text-sm font-bold uppercase tracking-wide text-[var(--mute)]"
-            >
-              {message.title}
-            </span>
-            <span className="mt-1 block text-sm leading-snug text-[var(--mute)]">
-              Community guidance for heading down — tools, timing, and what to
-              do with collections.
-            </span>
+        <span className="flex items-center justify-between gap-3">
+          <span
+            id="cleanup-message-heading"
+            className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]"
+          >
+            {message.title}
           </span>
           <span
-            className="mt-1 shrink-0 text-xl font-bold text-[var(--tide)] transition group-open:rotate-45"
+            className="shrink-0 text-xl font-bold leading-none text-[var(--tide)] transition group-open:rotate-45"
             aria-hidden="true"
           >
             +
@@ -33,7 +27,7 @@ export function CommunityCleanupMessagePanel({
         </span>
       </summary>
 
-      <ul className="list-disc space-y-2 border-t border-[var(--line)] px-4 py-4 pl-9 text-base leading-snug text-[var(--ink)]">
+      <ul className="list-disc space-y-2 px-4 pb-4 pl-9 text-base leading-snug text-[var(--ink)]">
         {message.points.map((point) =>
           typeof point === "string" ? (
             <li key={point}>{point}</li>

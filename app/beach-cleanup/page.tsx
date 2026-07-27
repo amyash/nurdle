@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CommunityCleanupMessagePanel } from "@/components/community-cleanup-message";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
+import { TideTimesPanel } from "@/components/tide-times-panel";
 import { YoutubeEmbed } from "@/components/youtube-embed";
 import Image from "next/image";
 import {
@@ -30,9 +31,7 @@ const guideById = Object.fromEntries(
 
 /** Display order under How to collect bullets. */
 const collectContentOrder = [
-  { kind: "video" as const, id: "video-4" },
-  { kind: "video" as const, id: "video-3" },
-  { kind: "video" as const, id: "video-1" },
+  { kind: "guide" as const, id: "scrape-wet" },
   { kind: "guide" as const, id: "bucket-float" },
   { kind: "guide" as const, id: "spade-mesh" },
   { kind: "video" as const, id: "video-2" },
@@ -42,6 +41,7 @@ export default function BeachCleanupPage() {
   return (
     <PageShell title="Beach cleanup" className="!pb-0">
       <CommunityCleanupMessagePanel message={communityCleanupMessage} />
+      <TideTimesPanel />
 
       <Section id="bring" title="What to bring">
         <p className="mb-3 text-base font-bold leading-snug text-[var(--ink)]">
@@ -71,10 +71,23 @@ export default function BeachCleanupPage() {
               >
                 {step.step}
               </span>
-              <span>
+              <div className="min-w-0">
                 <span className="sr-only">Step {step.step}. </span>
-                {step.text}
-              </span>
+                {step.title ? (
+                  <p className="font-bold text-[var(--ink)]">{step.title}</p>
+                ) : null}
+                <p className={step.title ? "mt-1" : undefined}>{step.text}</p>
+                {step.cta ? (
+                  <a
+                    href={step.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex rounded-md bg-[var(--mark)] px-3 py-2 text-sm font-bold text-white"
+                  >
+                    {step.cta.label}
+                  </a>
+                ) : null}
+              </div>
             </li>
           ))}
         </ol>
@@ -90,7 +103,45 @@ export default function BeachCleanupPage() {
                   className="rounded-lg border border-[var(--line)] bg-white p-3"
                 >
                   <p className="font-bold">{video.title}</p>
-                  <YoutubeEmbed url={video.url} title={video.title} />
+                  {video.sideImage ? (
+                    <div className="mt-2 grid grid-cols-[1fr_5.75rem] items-stretch gap-2 sm:grid-cols-[1fr_7rem]">
+                      <figure className="min-w-0 overflow-hidden rounded-lg">
+                        <Image
+                          src={video.sideImage.src}
+                          alt={video.sideImage.alt}
+                          width={800}
+                          height={1000}
+                          className="h-full max-h-[22rem] w-full object-cover"
+                        />
+                      </figure>
+                      <YoutubeEmbed
+                        url={video.url}
+                        title={video.title}
+                        aspect="short"
+                        className="mt-0 h-full max-h-[22rem] w-full"
+                      />
+                    </div>
+                  ) : (
+                    <YoutubeEmbed
+                      url={video.url}
+                      title={video.title}
+                      className="mt-2"
+                    />
+                  )}
+                  {video.tip && (
+                    <figure className="mt-3 overflow-hidden rounded-lg">
+                      <Image
+                        src={video.tip.image.src}
+                        alt={video.tip.image.alt}
+                        width={800}
+                        height={1000}
+                        className="h-auto w-full object-cover"
+                      />
+                      <figcaption className="mt-2 text-sm leading-snug text-[var(--ink)]">
+                        {video.tip.text}
+                      </figcaption>
+                    </figure>
+                  )}
                 </li>
               );
             }
@@ -130,6 +181,27 @@ export default function BeachCleanupPage() {
                     ))}
                   </div>
                 )}
+                {guide.videos && guide.videos.length > 0 && (
+                  <div
+                    className={`mt-3 grid gap-2 ${
+                      guide.videos.length === 3
+                        ? "grid-cols-3"
+                        : guide.videos.length === 2
+                          ? "grid-cols-2"
+                          : "grid-cols-1"
+                    }`}
+                  >
+                    {guide.videos.map((video) => (
+                      <YoutubeEmbed
+                        key={video.url}
+                        url={video.url}
+                        title={video.title}
+                        aspect="short"
+                        className="mt-0 w-full"
+                      />
+                    ))}
+                  </div>
+                )}
               </li>
             );
           })}
@@ -154,6 +226,17 @@ export default function BeachCleanupPage() {
             {photosNote.linkLabel}
           </a>
           {photosNote.afterLink}
+        </p>
+        <p className="mt-2">
+          {photosNote.nurdleHunt.beforeLink}
+          <a
+            href={photosNote.nurdleHunt.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-[var(--tide)] underline underline-offset-2"
+          >
+            {photosNote.nurdleHunt.linkLabel}
+          </a>
         </p>
       </aside>
 

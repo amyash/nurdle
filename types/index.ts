@@ -14,11 +14,23 @@ export interface LatestUpdate {
   closing: string;
 }
 
+export type AnnouncementTextPart = string | { bold: string };
+
+export type AnnouncementBlock =
+  | { type: "lg"; parts: AnnouncementTextPart[] }
+  | { type: "md"; parts: AnnouncementTextPart[] }
+  | { type: "sm"; parts: AnnouncementTextPart[] }
+  | { type: "p"; parts: AnnouncementTextPart[] }
+  | { type: "divider" }
+  | { type: "bullets"; intro?: AnnouncementTextPart[]; items: AnnouncementTextPart[][] }
+  | { type: "numbered"; items: AnnouncementTextPart[][] };
+
 export interface Announcement {
   id: string;
   datetime: string;
   headline: string;
-  body: string[];
+  body?: string[];
+  blocks?: AnnouncementBlock[];
   times?: string[];
   link?: { label: string; href: string };
   sourceName?: string;
@@ -33,6 +45,15 @@ export interface BriefingEvent {
   signupNote: string;
 }
 
+export type OrganiserActionBody =
+  | string
+  | {
+      beforeLink: string;
+      linkLabel: string;
+      afterLink?: string;
+      href: string;
+    };
+
 export interface OrganiserMessage {
   datetime: string;
   sourceLabel: string;
@@ -41,8 +62,13 @@ export interface OrganiserMessage {
   actions: {
     id: string;
     title: string;
-    body: string[];
+    body: OrganiserActionBody[];
     links?: { label: string; href: string }[];
+    emailTemplate?: {
+      label: string;
+      subject: string;
+      body: string;
+    };
   }[];
   notes: string[];
 }
@@ -54,6 +80,7 @@ export interface BeachNeed {
   nextWindow: string | null;
   /** Beach WhatsApp invite link — null until confirmed. */
   whatsappUrl: string | null;
+  region: "north-tyneside" | "south-tyneside";
 }
 
 export type CommunityCleanupPoint =
@@ -78,6 +105,11 @@ export interface BringItem {
 export interface CollectStep {
   step: number;
   text: string;
+  title?: string;
+  cta?: {
+    label: string;
+    href: string;
+  };
 }
 
 export interface TrainingVideo {
@@ -86,6 +118,11 @@ export interface TrainingVideo {
   duration: string;
   url: string | null;
   note: string;
+  tip?: {
+    text: string;
+    image: { src: string; alt: string };
+  };
+  sideImage?: { src: string; alt: string };
 }
 
 export interface TechniqueGuide {
@@ -93,6 +130,7 @@ export interface TechniqueGuide {
   title: string;
   steps: string[];
   images?: { src: string; alt: string }[];
+  videos?: { title: string; url: string }[];
 }
 
 export interface FaqItem {
@@ -101,4 +139,12 @@ export interface FaqItem {
   answer: string;
   /** Optional phrase within answer to emphasise. */
   highlight?: string;
+}
+
+export interface CommunityImage {
+  id: string;
+  src: string;
+  alt: string;
+  /** Optional photo credit shown as a tiny caption line. */
+  credit?: string;
 }

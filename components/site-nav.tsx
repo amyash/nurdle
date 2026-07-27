@@ -8,13 +8,14 @@ const nav = [
   { href: "/announcements", label: "Announcements" },
   { href: "/beach-cleanup", label: "Beach cleanup" },
   { href: "/beach-groups", label: "Beach groups" },
+  { href: "/community-images", label: "Community images" },
 ];
 
 export function SiteNav() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Site" className="mt-4 border-y border-[var(--line)] py-2">
+    <nav aria-label="Site" className="mt-4 py-2">
       <ul className="flex flex-wrap gap-2 text-sm font-semibold">
         {nav.map((item) => {
           const active =

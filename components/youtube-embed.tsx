@@ -3,9 +3,14 @@ import { youtubeEmbedUrl } from "@/lib/youtube";
 export function YoutubeEmbed({
   url,
   title,
+  aspect = "video",
+  className = "",
 }: {
   url: string | null;
   title: string;
+  /** `video` = 16:9, `short` = slim 9:16 portrait */
+  aspect?: "video" | "short";
+  className?: string;
 }) {
   const embed = youtubeEmbedUrl(url);
   if (!embed) {
@@ -14,8 +19,12 @@ export function YoutubeEmbed({
     );
   }
 
+  const aspectClass = aspect === "short" ? "aspect-[9/16]" : "aspect-video";
+
   return (
-    <div className="relative mt-2 aspect-video overflow-hidden rounded-lg bg-black">
+    <div
+      className={`relative overflow-hidden rounded-lg bg-black ${aspectClass} ${className}`}
+    >
       <iframe
         src={embed}
         title={title}
