@@ -809,11 +809,6 @@ export const communityImages: CommunityImage[] = [
     alt: "Two young volunteers filtering nurdles with a sieve over an orange bucket of seawater",
   },
   {
-    id: "tide-line-pier",
-    src: "/community/tide-line-pier.webp",
-    alt: "Nurdles along the high tide line with a pier and industrial coastline beyond",
-  },
-  {
     id: "longsands-overview",
     src: "/community/longsands-overview.webp",
     alt: "Wide view of Longsands Beach with volunteers dotted along the shore",
@@ -823,11 +818,6 @@ export const communityImages: CommunityImage[] = [
     src: "/community/beach-church-overview.webp",
     alt: "Elevated view of volunteers on the beach with St George’s Church on the cliff",
     credit: "Photo by Laura Moscrop",
-  },
-  {
-    id: "seaweed-nurdles",
-    src: "/community/seaweed-nurdles.webp",
-    alt: "White nurdles tangled in a clump of seaweed on the sand",
   },
   {
     id: "scrubbing-rock",
@@ -850,25 +840,9 @@ export const communityImages: CommunityImage[] = [
     alt: "Pile of black bags labelled Volunteers Collected next to council bins on the promenade",
   },
   {
-    id: "seaweed-line-wall",
-    src: "/community/seaweed-line-wall.webp",
-    alt: "Nurdles mixed with seaweed along the beach beside a concrete sea wall",
-  },
-  {
-    id: "nurdles-seaweed-close",
-    src: "/community/nurdles-seaweed-close.webp",
-    alt: "Close-up of white nurdles scattered on sand beside dried seaweed",
-  },
-  {
     id: "volunteer-kneeling-yellow",
     src: "/community/volunteer-kneeling-yellow.webp",
     alt: "Volunteer kneeling on the beach collecting nurdles with a yellow container, St George’s Church behind",
-    credit: "Photo by Laura Moscrop",
-  },
-  {
-    id: "nurdle-footprints",
-    src: "/community/nurdle-footprints.webp",
-    alt: "A single white nurdle in the sand among footprints",
     credit: "Photo by Laura Moscrop",
   },
   {
@@ -904,12 +878,6 @@ export const communityImages: CommunityImage[] = [
     id: "mesh-bag-bucket-shovel",
     src: "/community/mesh-bag-bucket-shovel.webp",
     alt: "Volunteer lifting a mesh bag from a water-filled bucket beside a shovel",
-    credit: "Photo by Laura Moscrop",
-  },
-  {
-    id: "beach-lifeguard-hut",
-    src: "/community/beach-lifeguard-hut.webp",
-    alt: "Wide view of volunteers spread across the beach near a lifeguard hut",
     credit: "Photo by Laura Moscrop",
   },
   {
