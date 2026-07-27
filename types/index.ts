@@ -75,6 +75,17 @@ export interface OrganiserMessage {
   notes: string[];
 }
 
+export interface ScientificBriefing {
+  title: string;
+  sections: {
+    heading: string;
+    paragraphs?: string[];
+    bullets?: string[];
+  }[];
+  /** Full briefing document URL — omit link until confirmed. */
+  fullBriefingHref?: string | null;
+}
+
 export interface BeachNeed {
   id: string;
   name: string;

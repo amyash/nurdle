@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { CopyableEmailTemplate } from "@/components/copyable-email-template";
+import { ScientificBriefingPanel } from "@/components/scientific-briefing";
+import { scientificBriefing } from "@/data/content";
 import type { OrganiserMessage } from "@/types";
 
 export function OrganiserMessagePanel({
@@ -98,6 +100,8 @@ export function OrganiserMessagePanel({
           ))}
         </ol>
       </div>
+
+      <ScientificBriefingPanel briefing={scientificBriefing} />
     </section>
   );
 }

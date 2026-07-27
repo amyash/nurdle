@@ -9,6 +9,7 @@ import type {
   FaqItem,
   LatestUpdate,
   OrganiserMessage,
+  ScientificBriefing,
   TechniqueGuide,
   TrainingVideo,
 } from "@/types";
@@ -171,6 +172,59 @@ Yours sincerely,
   notes: [
     "The council tractor is still being used on the beach and this is burying the nurdles deeper. Community organisers say this must stop.",
     "Nobody is able to officially lead this while EA advice is not to touch. This board shares community organiser information only.",
+  ],
+};
+
+export const scientificBriefing: ScientificBriefing = {
+  title: "Scientific Briefing for Volunteers",
+  fullBriefingHref: null,
+  sections: [
+    {
+      heading: "Environmental risk",
+      paragraphs: [
+        "The environmental concern is high.",
+        "Nurdles: absorb oil, absorb diesel residues, absorb persistent organic pollutants, adsorb heavy organic contaminants.",
+        "Marine organisms mistake them for food.",
+        "Affected wildlife may include: seabirds, fish, crabs, shellfish and marine mammals indirectly through the food chain. [1]",
+        "Potential impacts include: Digestive blockage, starvation, reduced reproduction, transfer of pollutants through the food web and fragmentation into microplastics.",
+        "These long-term ecological effects are why nurdle spills are treated as major environmental incidents.",
+      ],
+    },
+    {
+      heading: "Why is this considered a serious environmental incident?",
+      paragraphs: [
+        "Although each pellet is tiny, the scale is enormous:",
+      ],
+      bullets: [
+        "Approximately 1,000,000,000 pellets. Roughly 25 tonnes.",
+        "Capable of spreading over many kilometres of coastline.",
+        "Extremely difficult to recover completely.",
+        "Marine scientists regard nurdle spills as one of the most persistent forms of plastic pollution because the pellets continue circulating between beaches and the sea for years.",
+      ],
+    },
+    {
+      heading: "Key message",
+      paragraphs: [
+        "This incident is not simply a litter problem. It is a significant marine pollution event resulting from a shipping accident. Every properly collected bag of pellets helps reduce the amount available to enter the food chain or break down into microplastics.",
+      ],
+    },
+    {
+      heading: "Why were volunteers initially advised not to collect them?",
+      paragraphs: ["Early in the response, authorities needed to:"],
+      bullets: [
+        "Assess the extent of contamination.",
+        "Preserve evidence for the investigation.",
+        "Avoid spreading pellets inadvertently.",
+        "Prevent damage to sensitive habitats.",
+        "Establish safe disposal procedures.",
+      ],
+    },
+    {
+      heading: "",
+      paragraphs: [
+        "As organised clean-up plans developed, volunteer participation became more structured in many areas.",
+      ],
+    },
   ],
 };
 
