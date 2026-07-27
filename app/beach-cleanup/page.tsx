@@ -167,6 +167,16 @@ export default function BeachCleanupPage() {
                     ))}
                   </ol>
                 )}
+                {guide.cta ? (
+                  <a
+                    href={guide.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
+                  >
+                    {guide.cta.label}
+                  </a>
+                ) : null}
                 {guide.instagramUrl ? (
                   <InstagramEmbed
                     url={guide.instagramUrl}
@@ -217,16 +227,6 @@ export default function BeachCleanupPage() {
                     ))}
                   </div>
                 )}
-                {guide.cta ? (
-                  <a
-                    href={guide.cta.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
-                  >
-                    {guide.cta.label}
-                  </a>
-                ) : null}
               </li>
             );
           })}
