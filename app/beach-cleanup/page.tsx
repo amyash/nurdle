@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CommunityCleanupMessagePanel } from "@/components/community-cleanup-message";
+import { InstagramEmbed } from "@/components/instagram-embed";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
@@ -35,6 +36,8 @@ const collectContentOrder = [
   { kind: "guide" as const, id: "bucket-float" },
   { kind: "guide" as const, id: "spade-mesh" },
   { kind: "video" as const, id: "video-2" },
+  { kind: "guide" as const, id: "keep-work-manageable" },
+  { kind: "guide" as const, id: "mesh-bag-tutorial" },
 ];
 
 export default function BeachCleanupPage() {
@@ -154,11 +157,23 @@ export default function BeachCleanupPage() {
                 className="rounded-lg border border-[var(--line)] bg-white p-3"
               >
                 <p className="font-bold">{guide.title}</p>
-                <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-base leading-snug">
-                  {guide.steps.map((step) => (
-                    <li key={step}>{step}</li>
-                  ))}
-                </ol>
+                {guide.description ? (
+                  <p className="mt-2 text-base leading-snug">{guide.description}</p>
+                ) : null}
+                {guide.steps.length > 0 && (
+                  <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-base leading-snug">
+                    {guide.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                )}
+                {guide.instagramUrl ? (
+                  <InstagramEmbed
+                    url={guide.instagramUrl}
+                    title={guide.title}
+                    className="mt-3"
+                  />
+                ) : null}
                 {guide.images && guide.images.length > 0 && (
                   <div
                     className={`mt-3 grid gap-3 ${
@@ -202,6 +217,16 @@ export default function BeachCleanupPage() {
                     ))}
                   </div>
                 )}
+                {guide.cta ? (
+                  <a
+                    href={guide.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
+                  >
+                    {guide.cta.label}
+                  </a>
+                ) : null}
               </li>
             );
           })}

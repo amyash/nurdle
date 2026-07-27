@@ -131,8 +131,11 @@ export interface TechniqueGuide {
   id: string;
   title: string;
   steps: string[];
+  description?: string;
   images?: { src: string; alt: string }[];
   videos?: { title: string; url: string }[];
+  instagramUrl?: string;
+  cta?: { label: string; href: string };
 }
 
 export interface FaqItem {

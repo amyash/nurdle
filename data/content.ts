@@ -589,13 +589,6 @@ export const trainingVideos: TrainingVideo[] = [
     duration: "Watch on YouTube",
     url: "https://youtube.com/shorts/No1TWSeSfUI",
     note: "",
-    tip: {
-      text: "Draw a square in the sand to work on, complete it, move on and repeat. Keeps the task bitesize and measurable.",
-      image: {
-        src: "/techniques/sand-square.webp",
-        alt: "A square drawn in beach sand to mark a small area to clean",
-      },
-    },
   },
 ];
 
@@ -666,6 +659,29 @@ export const techniqueGuides: TechniqueGuide[] = [
         alt: "Purple mesh bag being washed in shallow seawater while wearing a blue glove",
       },
     ],
+  },
+  {
+    id: "keep-work-manageable",
+    title: "Keep work manageable",
+    steps: [],
+    description:
+      "Draw a square in the sand to work on, complete it, move on and repeat. Keeps the task bitesize and measurable.",
+    images: [
+      {
+        src: "/techniques/sand-square.webp",
+        alt: "A square drawn in beach sand to mark a small area to clean",
+      },
+    ],
+  },
+  {
+    id: "mesh-bag-tutorial",
+    title: "Mesh bag tutorial",
+    steps: [],
+    instagramUrl: "https://www.instagram.com/reels/DbQcPcBohWc/",
+    cta: {
+      label: "Mesh bag WhatsApp group",
+      href: "https://chat.whatsapp.com/Cegcib5ZtWoAopGYGSTjuk",
+    },
   },
 ];
 
