@@ -6,28 +6,17 @@ export function ScientificBriefingPanel({
   briefing: ScientificBriefing;
 }) {
   return (
-    <details
+    <section
       id="scientific-briefing"
-      className="group scroll-mt-20 border-t border-[var(--line)] pt-6"
+      className="scroll-mt-20 border-t border-[var(--line)] pt-6"
+      aria-labelledby="scientific-briefing-heading"
     >
-      <summary className="cursor-pointer list-none marker:content-none [&::-webkit-details-marker]:hidden">
-        <span className="flex items-start justify-between gap-3">
-          <span>
-            <span className="block text-lg font-bold uppercase tracking-wide text-[var(--ink)]">
-              {briefing.title}
-            </span>
-            <span className="mt-1 block text-xs font-bold uppercase tracking-wide text-[var(--mute)]">
-              Tap to expand
-            </span>
-          </span>
-          <span
-            className="mt-1 shrink-0 text-xl font-bold text-[var(--mark)] transition group-open:rotate-45"
-            aria-hidden="true"
-          >
-            +
-          </span>
-        </span>
-      </summary>
+      <h3
+        id="scientific-briefing-heading"
+        className="text-lg font-bold uppercase tracking-wide text-[var(--ink)]"
+      >
+        {briefing.title}
+      </h3>
 
       <div className="mt-4 space-y-5 text-sm leading-snug text-[var(--ink)]">
         {briefing.sections.map((section, index) => (
@@ -63,6 +52,6 @@ export function ScientificBriefingPanel({
           </p>
         ) : null}
       </div>
-    </details>
+    </section>
   );
 }
