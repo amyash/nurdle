@@ -937,11 +937,6 @@ export const communityImages: CommunityImage[] = [
     alt: "Large group of volunteers gathered on the sand beside a red and yellow flag",
   },
   {
-    id: "mesh-bag-team-close",
-    src: "/community/mesh-bag-team-close.webp",
-    alt: "Volunteers kneeling among seaweed filling a mesh bag and sorting in a bowl",
-  },
-  {
     id: "long-line-tide-mark",
     src: "/community/long-line-tide-mark.webp",
     alt: "Long line of volunteers working along the tide mark on a wide sandy beach",
