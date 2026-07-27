@@ -464,6 +464,14 @@ export const beachesNeedingHelp: BeachNeed[] = [
     region: "north-tyneside",
   },
   {
+    id: "newbiggin",
+    name: "Newbiggin",
+    need: "Help needed — join this beach WhatsApp group",
+    nextWindow: null,
+    whatsappUrl: "https://chat.whatsapp.com/F3BpZ4dw3gmGlqTM7rPftx",
+    region: "north-tyneside",
+  },
+  {
     id: "haven-beach",
     name: "Haven Beach",
     need: "Help needed — join this beach WhatsApp group",
