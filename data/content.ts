@@ -180,6 +180,38 @@ Yours sincerely,
  */
 export const announcements: Announcement[] = [
   {
+    id: "high-tide-volunteer-windows-jul-27",
+    datetime: "2026-07-27T15:08:00+01:00",
+    sourceName: "Sally Yonder · Community admin",
+    headline:
+      "We will need volunteers on all the beaches just after high tide twice a day every day leading up to the highest tide on Saturday.",
+    blocks: [
+      {
+        type: "md",
+        parts: [
+          "Suggested following times we are using as a guideline. This can be applied to all beaches, rocky inlets etc. you can come before or after, just come 🙏",
+        ],
+      },
+      {
+        type: "bullets",
+        items: [
+          ["⚡️ Monday 27th ~ 4pm -8pm"],
+          ["⚡️ Tuesday 28th ~ 6am - 10am & 4pm - 8pm"],
+          ["⚡️ Wednesday 29th ~ 6am - 10am & 4.45 - 9pm"],
+          ["⚡️ Thursday 30th ~ 6am - 10am & 5.30pm - 9.30pm"],
+          ["⚡️ Friday 31st ~ 6am - 10am & 6.15pm - 9.30pm"],
+          ["⚡️ Saturday 1st ~ 6am - 10am & 6.30pm - 9.30pm"],
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "This is community led: see the ‘group description’ for your beach and in ‘general’ for FAQs, guidelines, equipment to use and what to expect.",
+        ],
+      },
+    ],
+  },
+  {
     id: "longsands-monday-volunteer-effort",
     datetime: "2026-07-26T19:06:00+01:00",
     sourceName: "Sally · Community admin",
