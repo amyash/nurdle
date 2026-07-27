@@ -34,6 +34,8 @@ export interface Announcement {
   times?: string[];
   link?: { label: string; href: string };
   sourceName?: string;
+  /** When true, card starts collapsed and expands on tap. */
+  expandable?: boolean;
 }
 
 export interface BriefingEvent {

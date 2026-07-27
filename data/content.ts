@@ -180,6 +180,57 @@ Yours sincerely,
  */
 export const announcements: Announcement[] = [
   {
+    id: "alan-campbell-office-response",
+    datetime: "2026-07-27T16:55:00+01:00",
+    sourceName: "LMB",
+    expandable: true,
+    headline: "Response from Alan Campbell’s office.",
+    blocks: [
+      {
+        type: "p",
+        parts: [
+          "I know many residents are deeply concerned about the environmental incident affecting our coastline following the collision of two ships at the Port of Tyne, which resulted in the release of millions of plastic pellets into the River Tyne.",
+        ],
+      },
+      {
+        type: "p",
+        parts: ["I wanted to update you on what has happened so far."],
+      },
+      {
+        type: "bullets",
+        items: [
+          [
+            "I have spoken directly with the Secretary of State for Environment, Food and Rural Affairs (DEFRA) to raise the seriousness of this incident and the impact it is having on our communities and coastline.",
+          ],
+          [
+            "I have been in regular contact with the Port of Tyne, the Environment Agency, and the two affected local authorities to ensure I receive the latest information and to press for a swift and effective response.",
+          ],
+          [
+            "I have sought assurances that every possible effort is being made to clean up the pollution and to keep the public informed of any risks.",
+          ],
+          [
+            "I have been advised that, at present, there is no evidence that the plastic pellets are toxic, but I recognise the significant concern surrounding their environmental impact and the effect on our beaches and wildlife.",
+          ],
+          [
+            "I have formally asked DEFRA to provide any support necessary to local agencies undertaking the clean-up operation and to be prepared to step in with additional assistance if required.",
+          ],
+          [
+            "I have also stressed the importance of ensuring that, should the ongoing investigation determine liability, the polluter pays for the clean-up and remediation work, rather than local taxpayers bearing the cost.",
+          ],
+          [
+            "Finally, I have called for the Government to review the transportation of plastic pellets, often known as nurdles, and to consider whether current arrangements adequately reflect the environmental risks posed when spills occur.",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "I will continue to monitor the situation closely, press for a thorough clean-up of affected areas, and keep constituents informed as further information becomes available. Protecting our coastline and ensuring accountability for environmental damage remain my priorities.",
+        ],
+      },
+    ],
+  },
+  {
     id: "high-tide-volunteer-windows-jul-27",
     datetime: "2026-07-27T15:08:00+01:00",
     sourceName: "Sally Yonder · Community admin",

@@ -17,27 +17,24 @@ function RichText({ parts }: { parts: AnnouncementTextPart[] }) {
   );
 }
 
-export function AnnouncementCard({
-  announcement,
-}: {
-  announcement: Announcement;
-}) {
+function AnnouncementMeta({ announcement }: { announcement: Announcement }) {
   return (
-    <article className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] p-4">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="text-xs font-bold uppercase tracking-wide text-[var(--alert-ink)]">
-          {announcement.sourceName ?? "Announcement"}
-        </p>
-        <p className="text-sm font-bold text-[var(--alert-ink)]">
-          <time dateTime={announcement.datetime}>
-            {formatWhen(announcement.datetime)}
-          </time>
-        </p>
-      </div>
-      <h3 className="mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]">
-        {announcement.headline}
-      </h3>
+    <div className="flex flex-wrap items-baseline justify-between gap-2">
+      <p className="text-xs font-bold uppercase tracking-wide text-[var(--alert-ink)]">
+        {announcement.sourceName ?? "Announcement"}
+      </p>
+      <p className="text-sm font-bold text-[var(--alert-ink)]">
+        <time dateTime={announcement.datetime}>
+          {formatWhen(announcement.datetime)}
+        </time>
+      </p>
+    </div>
+  );
+}
 
+function AnnouncementBody({ announcement }: { announcement: Announcement }) {
+  return (
+    <>
       {announcement.body && announcement.body.length > 0 && (
         <div className="mt-2 space-y-2 text-base leading-snug text-[var(--alert-ink)]">
           {announcement.body.map((paragraph) => (
@@ -51,10 +48,7 @@ export function AnnouncementCard({
           {announcement.blocks.map((block, index) => {
             if (block.type === "lg") {
               return (
-                <p
-                  key={index}
-                  className="text-base font-bold leading-snug"
-                >
+                <p key={index} className="text-base font-bold leading-snug">
                   <RichText parts={block.parts} />
                 </p>
               );
@@ -145,6 +139,51 @@ export function AnnouncementCard({
           </a>
         </p>
       )}
+    </>
+  );
+}
+
+export function AnnouncementCard({
+  announcement,
+}: {
+  announcement: Announcement;
+}) {
+  if (announcement.expandable) {
+    return (
+      <details className="group rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] open:shadow-sm">
+        <summary className="cursor-pointer list-none px-4 py-4 marker:content-none [&::-webkit-details-marker]:hidden">
+          <span className="flex items-start justify-between gap-3">
+            <span className="min-w-0 flex-1">
+              <AnnouncementMeta announcement={announcement} />
+              <h3 className="mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]">
+                {announcement.headline}
+              </h3>
+              <span className="mt-1 block text-xs font-bold uppercase tracking-wide text-[var(--alert-ink)]/70">
+                Tap to expand
+              </span>
+            </span>
+            <span
+              className="mt-1 shrink-0 text-xl font-bold text-[var(--alert-ink)] transition group-open:rotate-45"
+              aria-hidden="true"
+            >
+              +
+            </span>
+          </span>
+        </summary>
+        <div className="border-t border-[var(--alert-ink)]/20 px-4 pb-4">
+          <AnnouncementBody announcement={announcement} />
+        </div>
+      </details>
+    );
+  }
+
+  return (
+    <article className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] p-4">
+      <AnnouncementMeta announcement={announcement} />
+      <h3 className="mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]">
+        {announcement.headline}
+      </h3>
+      <AnnouncementBody announcement={announcement} />
     </article>
   );
 }
