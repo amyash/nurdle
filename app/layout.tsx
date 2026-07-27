@@ -13,11 +13,11 @@ const sans = Atkinson_Hyperlegible({
 
 export const metadata: Metadata = {
   title: {
-    default: "Nurdle spill — volunteer board",
-    template: "%s · Nurdle spill volunteer board",
+    default: "Port of Tyne nurdle spill — Volunteer board",
+    template: "%s · Port of Tyne nurdle spill",
   },
   description:
-    "Quick mobile information for community volunteers cleaning beaches around North Tyneside.",
+    "Information for community volunteers cleaning beaches around North Tyneside.",
 };
 
 export default function RootLayout({
