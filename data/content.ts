@@ -916,4 +916,49 @@ export const communityImages: CommunityImage[] = [
     src: "/community/volunteers-line-sifting.webp",
     alt: "Line of volunteers kneeling on the sand sifting for nurdles",
   },
+  {
+    id: "crowd-terrace-sky",
+    src: "/community/crowd-terrace-sky.webp",
+    alt: "Crowd of volunteers on the beach with terrace houses on the cliff behind",
+  },
+  {
+    id: "busy-beach-dramatic-sky",
+    src: "/community/busy-beach-dramatic-sky.webp",
+    alt: "Busy beach cleanup with volunteers, bags and buckets under a dramatic sky",
+  },
+  {
+    id: "seaweed-cleanup-cliffs",
+    src: "/community/seaweed-cleanup-cliffs.webp",
+    alt: "Volunteers rinsing seaweed and collecting nurdles near rocky cliffs",
+  },
+  {
+    id: "beach-huddle-flag",
+    src: "/community/beach-huddle-flag.webp",
+    alt: "Large group of volunteers gathered on the sand beside a red and yellow flag",
+  },
+  {
+    id: "mesh-bag-team-close",
+    src: "/community/mesh-bag-team-close.webp",
+    alt: "Volunteers kneeling among seaweed filling a mesh bag and sorting in a bowl",
+  },
+  {
+    id: "long-line-tide-mark",
+    src: "/community/long-line-tide-mark.webp",
+    alt: "Long line of volunteers working along the tide mark on a wide sandy beach",
+  },
+  {
+    id: "rnli-station-cleanup",
+    src: "/community/rnli-station-cleanup.webp",
+    alt: "Volunteers cleaning the beach in front of the RNLI lifeboat station",
+  },
+  {
+    id: "rnli-clocktower-volunteers",
+    src: "/community/rnli-clocktower-volunteers.webp",
+    alt: "Volunteers with bags and buckets cleaning near the RNLI clock tower building",
+  },
+  {
+    id: "volunteers-lighthouse-overcast",
+    src: "/community/volunteers-lighthouse-overcast.webp",
+    alt: "Volunteers sifting sand on an overcast beach with a lighthouse on the horizon",
+  },
 ];
