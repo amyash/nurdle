@@ -34,16 +34,16 @@ export function OrganiserMessagePanel({
         />
       </figure>
 
-      <div className="mt-6 border-t border-[var(--line)] pt-6">
-        <h3 className="text-lg font-bold uppercase tracking-wide text-[var(--ink)]">
+      <div className="mt-6 rounded-lg bg-[#111827] px-4 py-5 text-white">
+        <h3 className="text-lg font-bold uppercase tracking-wide text-white">
           Actions
         </h3>
 
         <ol className="mt-3 space-y-6">
           {message.actions.map((action) => (
             <li key={action.id}>
-              <h4 className="font-bold text-[var(--ink)]">{action.title}</h4>
-              <div className="mt-2 space-y-2 text-sm leading-snug text-[var(--ink)]">
+              <h4 className="font-bold text-white">{action.title}</h4>
+              <div className="mt-2 space-y-2 text-sm leading-snug text-white/90">
                 {action.body.map((paragraph) =>
                   typeof paragraph === "string" ? (
                     <p key={paragraph}>{paragraph}</p>
@@ -58,7 +58,7 @@ export function OrganiserMessagePanel({
                               rel: "noopener noreferrer",
                             }
                           : {})}
-                        className="font-bold text-[var(--tide)] underline underline-offset-2"
+                        className="font-bold text-[#5eead4] underline underline-offset-2"
                       >
                         {paragraph.linkLabel}
                       </a>
@@ -81,7 +81,7 @@ export function OrganiserMessagePanel({
                             ? undefined
                             : "noopener noreferrer"
                         }
-                        className="inline-flex w-full items-center justify-center rounded-md bg-[var(--ink)] px-3 py-2.5 text-center text-sm font-bold text-white"
+                        className="inline-flex w-full items-center justify-center rounded-md bg-white px-3 py-2.5 text-center text-sm font-bold text-[#111827]"
                       >
                         {link.label}
                       </a>
@@ -94,6 +94,7 @@ export function OrganiserMessagePanel({
                   label={action.emailTemplate.label}
                   subject={action.emailTemplate.subject}
                   body={action.emailTemplate.body}
+                  tone="dark"
                 />
               )}
             </li>
