@@ -2,31 +2,21 @@ import type { BriefingEvent } from "@/types";
 
 export function BriefingEventPanel({ event }: { event: BriefingEvent }) {
   return (
-    <details
+    <article
       id="briefing"
-      className="scroll-mt-20 group rounded-lg border-2 border-[var(--ink)] bg-white open:shadow-sm"
+      className="scroll-mt-20 rounded-lg border-2 border-[var(--ink)] bg-white"
     >
-      <summary className="cursor-pointer list-none px-4 py-3 marker:content-none [&::-webkit-details-marker]:hidden">
-        <span className="flex items-start justify-between gap-3">
-          <span>
-            <span className="block text-xs font-bold uppercase tracking-wide text-[var(--mute)]">
-              Upcoming event · tap to expand
-            </span>
-            <span className="mt-1 block text-lg font-bold leading-snug text-[var(--ink)]">
-              {event.title}
-            </span>
-            <span className="mt-1 block text-sm leading-snug text-[var(--mute)]">
-              {event.summary}
-            </span>
-          </span>
-          <span
-            className="mt-1 shrink-0 text-xl font-bold text-[var(--tide)] transition group-open:rotate-45"
-            aria-hidden="true"
-          >
-            +
-          </span>
-        </span>
-      </summary>
+      <div className="px-4 py-3">
+        <p className="text-xs font-bold uppercase tracking-wide text-[var(--mute)]">
+          Upcoming event
+        </p>
+        <h3 className="mt-1 text-lg font-bold leading-snug text-[var(--ink)]">
+          {event.title}
+        </h3>
+        <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
+          {event.summary}
+        </p>
+      </div>
 
       <div className="space-y-4 border-t border-[var(--line)] px-4 py-4 text-sm leading-snug text-[var(--ink)]">
         <a
@@ -58,6 +48,6 @@ export function BriefingEventPanel({ event }: { event: BriefingEvent }) {
 
         <p>{event.signupNote}</p>
       </div>
-    </details>
+    </article>
   );
 }
