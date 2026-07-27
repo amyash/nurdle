@@ -89,6 +89,22 @@ export function OrganiserMessagePanel({
                   ))}
                 </ul>
               )}
+              {action.textLinks && action.textLinks.length > 0 && (
+                <ul className="mt-3 space-y-2">
+                  {action.textLinks.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-[#5eead4] underline underline-offset-2"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {action.emailTemplate && (
                 <CopyableEmailTemplate
                   label={action.emailTemplate.label}

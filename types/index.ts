@@ -66,6 +66,8 @@ export interface OrganiserMessage {
     title: string;
     body: OrganiserActionBody[];
     links?: { label: string; href: string }[];
+    /** Plain text hyperlinks shown under CTA buttons. */
+    textLinks?: { label: string; href: string }[];
     emailTemplate?: {
       label: string;
       subject: string;

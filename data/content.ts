@@ -119,17 +119,19 @@ export const organiserMessage: OrganiserMessage = {
       title: "2. Write to your MP, councillor and the Mayor",
       body: [
         "Contact all three. Ask for a large-scale effort at the right tide times to collect nurdles. People are needed specifically Monday and Tuesday for a large-scale cleanup — and the council should respond with numbers and the right gear.",
-        "Find your local councillors, then write. Always include your name and address at the top.",
-        "Residents in this constituency can write to MP Alan Campbell.",
+        "Always include your name and address at the top.",
+        "Residents in North Tyneside constituency can write to MP Alan Campbell.",
       ],
       links: [
         {
-          label: "Find your local councillors",
-          href: "https://www.gov.uk/find-your-local-councillors",
-        },
-        {
           label: "Email MP Alan Campbell",
           href: "mailto:alan.campbell.mp@parliament.uk",
+        },
+      ],
+      textLinks: [
+        {
+          label: "Find your local councillors",
+          href: "https://www.gov.uk/find-your-local-councillors",
         },
       ],
       emailTemplate: {
