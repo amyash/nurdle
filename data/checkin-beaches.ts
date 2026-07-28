@@ -73,6 +73,14 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5098,
     displayOrder: 7,
   },
+  {
+    id: "blyth",
+    name: "Blyth",
+    slug: "blyth",
+    latitude: 55.1422,
+    longitude: -1.5085,
+    displayOrder: 8,
+  },
 ];
 
 export const checkinBeachById = Object.fromEntries(

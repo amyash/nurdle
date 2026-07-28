@@ -211,7 +211,7 @@ describe("session uniqueness helpers", () => {
 describe("map failure resilience", () => {
   it("keeps beach cards usable when map stats fall back to zeros", () => {
     const stats: BeachCheckinStats[] = checkinStatsFallback();
-    expect(stats).toHaveLength(7);
+    expect(stats).toHaveLength(8);
     expect(summaryLabel(stats)).toBe("No volunteers currently checked in");
     expect(volunteerCountLabel(stats[0]!.volunteerCount)).toContain(
       "volunteers currently here",
@@ -228,6 +228,7 @@ function checkinStatsFallback(): BeachCheckinStats[] {
     "king-edwards-bay",
     "tynemouth-haven",
     "newbiggin",
+    "blyth",
   ].map((beachId) => ({
     beachId,
     volunteerCount: 0,
