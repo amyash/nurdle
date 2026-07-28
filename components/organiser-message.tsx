@@ -39,9 +39,16 @@ export function OrganiserMessagePanel({
           Actions
         </h3>
 
-        <ol className="mt-3 space-y-6">
-          {message.actions.map((action) => (
-            <li key={action.id}>
+        <ol className="mt-3">
+          {message.actions.map((action, index) => (
+            <li
+              key={action.id}
+              className={
+                index > 0
+                  ? "mt-6 border-t border-white/20 pt-6"
+                  : undefined
+              }
+            >
               <h4 className="font-bold text-white">{action.title}</h4>
               <div className="mt-2 space-y-2 text-sm leading-snug text-white/90">
                 {action.body.map((paragraph) =>
