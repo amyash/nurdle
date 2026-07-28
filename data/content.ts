@@ -170,6 +170,12 @@ Yours sincerely,
       },
     },
   ],
+  actionFooterLinks: [
+    {
+      label: "Sign petition zero plastic pellet loss",
+      href: "https://petition.parliament.uk/petitions/759563",
+    },
+  ],
   notes: [
     "The council tractor is still being used on the beach and this is burying the nurdles deeper. Community organisers say this must stop.",
     "Nobody is able to officially lead this while EA advice is not to touch. This board shares community organiser information only.",

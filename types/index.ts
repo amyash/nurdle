@@ -74,6 +74,8 @@ export interface OrganiserMessage {
       body: string;
     };
   }[];
+  /** Links shown under a divider at the bottom of the Actions panel. */
+  actionFooterLinks?: { label: string; href: string }[];
   notes: string[];
 }
 

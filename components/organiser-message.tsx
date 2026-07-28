@@ -116,6 +116,29 @@ export function OrganiserMessagePanel({
             </li>
           ))}
         </ol>
+
+        {message.actionFooterLinks && message.actionFooterLinks.length > 0 ? (
+          <>
+            <div
+              className="mt-6 border-t border-white/20"
+              aria-hidden="true"
+            />
+            <ul className="mt-4 space-y-2">
+              {message.actionFooterLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-[#5eead4] underline underline-offset-2"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
       </div>
 
       <div className="mt-6 border-t border-[var(--line)] pt-6" aria-hidden="true" />

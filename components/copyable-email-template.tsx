@@ -60,11 +60,6 @@ export function CopyableEmailTemplate({
       >
         {copied ? "Copied to clipboard" : "Copy email template"}
       </button>
-
-      <div
-        className={`mt-6 border-t ${dark ? "border-white/20" : "border-[var(--line)]"}`}
-        aria-hidden="true"
-      />
     </div>
   );
 }
