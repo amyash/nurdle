@@ -42,18 +42,7 @@ const collectContentOrder = [
 
 export default function BeachCleanupPage() {
   return (
-    <PageShell className="!pb-0">
-      <a
-        href="https://www.northtyneside.gov.uk/form/plastic-pellets-on-beaches-nurdl"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="-mx-4 mb-4 block bg-[var(--ink)] px-4 py-3.5 text-center text-sm font-bold uppercase tracking-wide text-white"
-      >
-        Report nurdles with North Tyneside Council
-      </a>
-      <h2 className="mb-4 text-xl font-bold tracking-tight text-[var(--ink)]">
-        Beach cleanup
-      </h2>
+    <PageShell title="Beach cleanup" className="!pb-0">
       <CommunityCleanupMessagePanel message={communityCleanupMessage} />
       <TideTimesPanel />
 
