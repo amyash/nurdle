@@ -41,6 +41,10 @@ export function SiteHeader() {
               Press release
             </Link>
           </div>
+
+          <p className="mt-3 text-[10px] leading-tight text-white/70">
+            {siteDisclaimer}
+          </p>
         </div>
       </div>
 
@@ -49,12 +53,8 @@ export function SiteHeader() {
 
         <SiteNav />
 
-        <p className="mt-3 text-[10px] leading-tight text-[var(--mute)]">
-          {siteDisclaimer}
-        </p>
-
         <div
-          className="mt-4 border-t border-[var(--line)] pt-5"
+          className="mt-5 border-t border-[var(--line)] pt-5"
           aria-hidden="true"
         />
       </div>
