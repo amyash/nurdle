@@ -47,8 +47,7 @@ export function CollectionPointsPanel() {
     <div className="space-y-4">
       <p className="text-sm leading-snug text-[var(--mute)]">
         Take securely bagged nurdles and collected waste to one of the official
-        collection points shown below. Please follow the latest North Tyneside
-        Council guidance before leaving any bags.
+        collection points shown below. Remember to label bags.
       </p>
 
       <p>
