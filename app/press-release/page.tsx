@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import { PageShell } from "@/components/page-shell";
+import { PressReleaseArticle } from "@/components/press-release-article";
 
 export const metadata: Metadata = {
   title: "Press release",
   description:
-    "Press and media information about the Port of Tyne nurdle spill.",
+    "A race against the tide: residents defy officials and launch cleanup of a billion nurdles along North East beaches.",
 };
 
 export default function PressReleasePage() {
   return (
-    <PageShell title="Press release">
-      <p className="text-sm leading-snug text-[var(--mute)]">
-        Press release content will be added here shortly.
-      </p>
-    </PageShell>
+    <div className="mx-auto max-w-3xl px-4 pb-10 pt-2">
+      <PressReleaseArticle />
+    </div>
   );
 }
