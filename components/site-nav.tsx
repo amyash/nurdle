@@ -8,6 +8,7 @@ const nav = [
   { href: "/announcements", label: "Announcements" },
   { href: "/beach-cleanup", label: "Beach cleanup" },
   { href: "/beach-groups", label: "Beach groups" },
+  { href: "/collection-points", label: "Collection points" },
   { href: "/volunteer-check-in", label: "Volunteer check-in" },
   { href: "/community-images", label: "Community images" },
 ];

@@ -8,6 +8,7 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 - `/announcements` — community announcements and updates
 - `/beach-cleanup` — what to bring, how to collect, videos, cleanup techniques, FAQs
 - `/beach-groups` — beaches needing help + WhatsApp links
+- `/collection-points` — official North Tyneside Council bag collection points (map + list)
 - `/volunteer-check-in` — where volunteers are cleaning (approximate live check-in counts)
 - `/community-images` — volunteer photos
 
