@@ -78,9 +78,7 @@ export function CollectionPointsMap({
             point.longitude,
           ];
           bounds.push(latLng);
-          const directions = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-            `${point.latitude},${point.longitude}`,
-          )}`;
+          const directions = point.mapsUrl;
 
           const marker = L.marker(latLng, { icon }).bindPopup(
             `<div style="min-width:11rem;font-family:system-ui,sans-serif">
