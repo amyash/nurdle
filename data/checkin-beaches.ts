@@ -65,6 +65,14 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4204,
     displayOrder: 6,
   },
+  {
+    id: "newbiggin",
+    name: "Newbiggin",
+    slug: "newbiggin",
+    latitude: 55.1845,
+    longitude: -1.5098,
+    displayOrder: 7,
+  },
 ];
 
 export const checkinBeachById = Object.fromEntries(
