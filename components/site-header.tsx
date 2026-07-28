@@ -27,9 +27,9 @@ export function SiteHeader() {
           Nurdle spill — volunteer board
         </Link>
 
-        <blockquote className="mt-3 border-l-4 border-[var(--tide)] bg-white px-3 py-2 text-sm leading-snug text-[var(--mute)]">
+        <p className="mt-2 text-[10px] leading-tight text-[var(--mute)]">
           {siteDisclaimer}
-        </blockquote>
+        </p>
 
         <SiteNav />
 
