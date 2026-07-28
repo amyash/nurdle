@@ -648,7 +648,13 @@ export const howToCollect: CollectStep[] = [
   },
   {
     step: 6,
-    text: "Bag nurdles into heavy-duty bin bags, label with 'volunteer collected', secure and leave next to council bins for collection.",
+    text: {
+      beforeLink:
+        "Bag nurdles into heavy-duty bin bags, label with 'volunteer collected', secure and leave next to council bins for collection. See ",
+      linkLabel: "Collection points page",
+      afterLink: " for closest bag drop",
+      href: "/collection-points",
+    },
   },
   {
     step: 7,

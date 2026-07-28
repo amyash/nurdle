@@ -79,7 +79,28 @@ export default function BeachCleanupPage() {
                 {step.title ? (
                   <p className="font-bold text-[var(--ink)]">{step.title}</p>
                 ) : null}
-                <p className={step.title ? "mt-1" : undefined}>{step.text}</p>
+                <p className={step.title ? "mt-1" : undefined}>
+                  {typeof step.text === "string" ? (
+                    step.text
+                  ) : (
+                    <>
+                      {step.text.beforeLink}
+                      <a
+                        href={step.text.href}
+                        {...(step.text.href.startsWith("http")
+                          ? {
+                              target: "_blank" as const,
+                              rel: "noopener noreferrer",
+                            }
+                          : {})}
+                        className="font-bold text-[var(--mark)] underline underline-offset-2"
+                      >
+                        {step.text.linkLabel}
+                      </a>
+                      {step.text.afterLink}
+                    </>
+                  )}
+                </p>
                 {step.cta ? (
                   <a
                     href={step.cta.href}

@@ -121,7 +121,14 @@ export interface BringItem {
 
 export interface CollectStep {
   step: number;
-  text: string;
+  text:
+    | string
+    | {
+        beforeLink: string;
+        linkLabel: string;
+        afterLink?: string;
+        href: string;
+      };
   title?: string;
   cta?: {
     label: string;
