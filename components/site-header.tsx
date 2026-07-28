@@ -22,7 +22,7 @@ export function SiteHeader() {
         </p>
         <Link
           href="/"
-          className="mt-1 block text-2xl font-bold leading-tight text-[var(--ink)]"
+          className="mt-1 block whitespace-nowrap text-xl font-bold leading-tight tracking-tight text-[var(--ink)] sm:text-2xl sm:tracking-normal"
         >
           Nurdle spill — volunteer board
         </Link>
