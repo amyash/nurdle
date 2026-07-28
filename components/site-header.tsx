@@ -5,7 +5,7 @@ import { siteDisclaimer, whatsappCommunity } from "@/data/content";
 export function SiteHeader() {
   return (
     <header>
-      <div className="mx-auto max-w-lg px-4 pt-4">
+      <div className="mx-auto max-w-lg px-4 pt-4 text-center">
         <p className="text-xs font-bold uppercase tracking-wider text-[var(--mark)]">
           North Tyneside · Community volunteers
         </p>
