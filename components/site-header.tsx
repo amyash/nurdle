@@ -39,6 +39,16 @@ export function SiteHeader() {
         >
           Report nurdles with North Tyneside Council
         </a>
+        <p className="mt-2 text-center">
+          <a
+            href="https://www.northtyneside.gov.uk/plastic-pellets-beaches-nurdle"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] font-bold text-[var(--mark)] underline underline-offset-2"
+          >
+            Official council page
+          </a>
+        </p>
 
         <div className="mt-4 border-t border-[var(--line)]" aria-hidden="true" />
 
