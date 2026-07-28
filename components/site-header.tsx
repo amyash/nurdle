@@ -5,17 +5,6 @@ import { siteDisclaimer, whatsappCommunity } from "@/data/content";
 export function SiteHeader() {
   return (
     <header>
-      <div className="sticky top-0 z-20 border-b border-[#128C7E] bg-[#25D366] px-4 py-3">
-        <a
-          href={whatsappCommunity.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center text-center text-base font-bold text-white underline decoration-white/70 underline-offset-2"
-        >
-          {whatsappCommunity.label}
-        </a>
-      </div>
-
       <div className="mx-auto max-w-lg px-4 pt-4">
         <p className="text-xs font-bold uppercase tracking-wider text-[var(--mark)]">
           North Tyneside · Community volunteers
@@ -55,16 +44,6 @@ export function SiteHeader() {
             Press release
           </Link>
         </div>
-        <p className="mt-2 text-center">
-          <a
-            href="https://www.northtyneside.gov.uk/plastic-pellets-beaches-nurdle"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] font-bold text-[var(--mark)] underline underline-offset-2"
-          >
-            Official council page
-          </a>
-        </p>
 
         <div className="mt-4 border-t border-[var(--line)]" aria-hidden="true" />
 
