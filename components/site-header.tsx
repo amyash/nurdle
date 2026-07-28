@@ -17,6 +17,10 @@ export function SiteHeader() {
             Nurdle spill — volunteer board
           </Link>
 
+          <p className="mt-2 text-[10px] leading-tight text-white/70">
+            {siteDisclaimer}
+          </p>
+
           <div className="mt-3 grid grid-cols-3 gap-2">
             <a
               href={whatsappCommunity.url}
@@ -41,10 +45,6 @@ export function SiteHeader() {
               Press release
             </Link>
           </div>
-
-          <p className="mt-3 text-[10px] leading-tight text-white/70">
-            {siteDisclaimer}
-          </p>
         </div>
       </div>
 
