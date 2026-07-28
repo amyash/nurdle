@@ -26,7 +26,7 @@ export function SiteHeader() {
               href={whatsappCommunity.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#25D366] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-white sm:text-sm"
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#5eead4] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
             >
               Join WhatsApp
             </a>
@@ -34,13 +34,13 @@ export function SiteHeader() {
               href="https://www.northtyneside.gov.uk/form/plastic-pellets-on-beaches-nurdl"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-white sm:text-sm"
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#5eead4] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
             >
               Report nurdles
             </a>
             <Link
               href="/press-release"
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-white/40 bg-white px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#5eead4] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
             >
               Press release
             </Link>
