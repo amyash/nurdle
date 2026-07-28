@@ -13,12 +13,13 @@ const nav = [
   { href: "/community-images", label: "Community images" },
 ];
 
-export function SiteNav() {
+export function SiteNav({ tone = "light" }: { tone?: "light" | "dark" }) {
   const pathname = usePathname();
+  const dark = tone === "dark";
 
   return (
     <nav aria-label="Site" className="mt-4 py-2">
-      <ul className="flex flex-wrap gap-2 text-sm font-semibold">
+      <ul className="flex flex-wrap justify-center gap-2 text-sm font-semibold">
         {nav.map((item) => {
           const active =
             item.href === "/"
@@ -30,8 +31,12 @@ export function SiteNav() {
                 href={item.href}
                 className={`inline-block rounded-md border px-3 py-1.5 ${
                   active
-                    ? "border-[var(--ink)] bg-[var(--ink)] text-white"
-                    : "border-[var(--line)] bg-white text-[var(--ink)]"
+                    ? dark
+                      ? "border-white bg-white text-[#111827]"
+                      : "border-[var(--ink)] bg-[var(--ink)] text-white"
+                    : dark
+                      ? "border-white/30 bg-transparent text-white"
+                      : "border-[var(--line)] bg-white text-[var(--ink)]"
                 }`}
                 aria-current={active ? "page" : undefined}
               >
