@@ -60,7 +60,8 @@ values
   ('newbiggin', 'Newbiggin', 'newbiggin', 55.1845, -1.5098, 7, true),
   ('blyth', 'Blyth', 'blyth', 55.1422, -1.5085, 8, true),
   ('seaton-sluice', 'Seaton Sluice', 'seaton-sluice', 55.0825, -1.4745, 9, true),
-  ('cambois', 'Cambois', 'cambois', 55.1528, -1.5185, 10, true)
+  ('cambois', 'Cambois', 'cambois', 55.1528, -1.5185, 10, true),
+  ('fish-quay', 'Fish Quay', 'fish-quay', 55.0097, -1.4372, 11, true)
 on conflict (id) do update set
   name = excluded.name,
   slug = excluded.slug,

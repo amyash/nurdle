@@ -97,6 +97,14 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5185,
     displayOrder: 10,
   },
+  {
+    id: "fish-quay",
+    name: "Fish Quay",
+    slug: "fish-quay",
+    latitude: 55.0097,
+    longitude: -1.4372,
+    displayOrder: 11,
+  },
 ];
 
 export const checkinBeachById = Object.fromEntries(
