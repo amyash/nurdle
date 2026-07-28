@@ -40,7 +40,7 @@ export function CheckInModal({
   return (
     <dialog
       ref={dialogRef}
-      className="w-[calc(100%-2rem)] max-w-sm rounded-lg border border-[var(--line)] bg-white p-0 text-[var(--ink)] shadow-lg open:backdrop:bg-black/40"
+      className="fixed left-1/2 top-1/2 z-50 m-0 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-lg border border-[var(--line)] bg-white p-0 text-[var(--ink)] shadow-lg open:backdrop:bg-black/40"
       aria-labelledby={titleId}
       onCancel={(event) => {
         event.preventDefault();
