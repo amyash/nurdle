@@ -7,7 +7,6 @@ export function CommunityCleanupMessagePanel({
 }) {
   return (
     <details
-      open
       className="group mb-6 rounded-lg border-2 border-[var(--ink)] bg-white open:shadow-sm"
     >
       <summary className="cursor-pointer list-none px-4 py-3 marker:content-none [&::-webkit-details-marker]:hidden">
