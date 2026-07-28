@@ -610,12 +610,12 @@ export const whatToBring: BringItem[] = [
   { id: "dustpan", item: "Dustpans and brushes" },
   { id: "mesh", item: "Mesh bags" },
   { id: "sieves", item: "Sieves, colanders" },
+  { id: "bags", item: "Heavy-duty bin bags" },
   { id: "gloves", item: "Wear wellies and gloves" },
   {
     id: "dress",
     item: "Dress appropriately depending on weather conditions",
   },
-  { id: "bags", item: "Heavy-duty bin bags" },
   {
     id: "labels",
     item: "Labels stating “volunteers collected” — labelling with tape and marker will suffice",
