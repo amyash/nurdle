@@ -89,6 +89,14 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4745,
     displayOrder: 9,
   },
+  {
+    id: "cambois",
+    name: "Cambois",
+    slug: "cambois",
+    latitude: 55.1528,
+    longitude: -1.5185,
+    displayOrder: 10,
+  },
 ];
 
 export const checkinBeachById = Object.fromEntries(
