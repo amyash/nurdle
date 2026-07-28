@@ -169,11 +169,16 @@ Yours sincerely,
 [Your Phone Number - Optional]`,
       },
     },
-  ],
-  actionFooterLinks: [
     {
-      label: "Sign petition zero plastic pellet loss",
-      href: "https://petition.parliament.uk/petitions/759563",
+      id: "sign-petition",
+      title: "3. Sign zero plastic pellet loss petition",
+      body: [],
+      links: [
+        {
+          label: "Sign here",
+          href: "https://petition.parliament.uk/petitions/759563",
+        },
+      ],
     },
   ],
   notes: [
