@@ -29,6 +29,8 @@ export interface Announcement {
   id: string;
   datetime: string;
   headline: string;
+  /** When set, the headline is rendered as a link. */
+  headlineHref?: string;
   body?: string[];
   blocks?: AnnouncementBlock[];
   times?: string[];

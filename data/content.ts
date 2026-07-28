@@ -248,6 +248,13 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "community-press-release-jul-28",
+    datetime: "2026-07-28T20:16:00+01:00",
+    sourceName: "Community announcement",
+    headline: "Community press release",
+    headlineHref: "/press-release",
+  },
+  {
     id: "ntc-official-guidance-jul-28",
     datetime: "2026-07-28T07:46:00+01:00",
     sourceName: "Community announcement",

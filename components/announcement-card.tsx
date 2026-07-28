@@ -1,5 +1,41 @@
+import Link from "next/link";
 import { formatWhen } from "@/lib/dates";
 import type { Announcement, AnnouncementTextPart } from "@/types";
+
+function AnnouncementHeadline({ announcement }: { announcement: Announcement }) {
+  const className =
+    "mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]";
+
+  if (announcement.headlineHref) {
+    const isExternal = /^https?:\/\//.test(announcement.headlineHref);
+    if (isExternal) {
+      return (
+        <h3 className={className}>
+          <a
+            href={announcement.headlineHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2"
+          >
+            {announcement.headline}
+          </a>
+        </h3>
+      );
+    }
+    return (
+      <h3 className={className}>
+        <Link
+          href={announcement.headlineHref}
+          className="underline underline-offset-2"
+        >
+          {announcement.headline}
+        </Link>
+      </h3>
+    );
+  }
+
+  return <h3 className={className}>{announcement.headline}</h3>;
+}
 
 function RichText({ parts }: { parts: AnnouncementTextPart[] }) {
   return (
@@ -155,9 +191,7 @@ export function AnnouncementCard({
           <span className="flex items-start justify-between gap-3">
             <span className="min-w-0 flex-1">
               <AnnouncementMeta announcement={announcement} />
-              <h3 className="mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]">
-                {announcement.headline}
-              </h3>
+              <AnnouncementHeadline announcement={announcement} />
               <span className="mt-1 block text-xs font-bold uppercase tracking-wide text-[var(--alert-ink)]/70">
                 Tap to expand
               </span>
@@ -180,9 +214,7 @@ export function AnnouncementCard({
   return (
     <article className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] p-4">
       <AnnouncementMeta announcement={announcement} />
-      <h3 className="mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]">
-        {announcement.headline}
-      </h3>
+      <AnnouncementHeadline announcement={announcement} />
       <AnnouncementBody announcement={announcement} />
     </article>
   );
