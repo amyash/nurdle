@@ -172,7 +172,9 @@ Yours sincerely,
     {
       id: "sign-petition",
       title: "3. Sign zero plastic pellet loss petition",
-      body: [],
+      body: [
+        "Help keep this issue on the national agenda by signing the official UK Parliament petition.",
+      ],
       links: [
         {
           label: "Sign here",
