@@ -81,6 +81,14 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5085,
     displayOrder: 8,
   },
+  {
+    id: "seaton-sluice",
+    name: "Seaton Sluice",
+    slug: "seaton-sluice",
+    latitude: 55.0825,
+    longitude: -1.4745,
+    displayOrder: 9,
+  },
 ];
 
 export const checkinBeachById = Object.fromEntries(
