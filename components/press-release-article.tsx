@@ -299,6 +299,9 @@ export function PressReleaseArticle() {
           </li>
           <li>Helen SmithMcGuire, local resident, Cullercoats</li>
           <li>Jen Stobs, volunteer seamstress, Seaton Sluice</li>
+          <li>
+            Amy Ash, creator of the community volunteer website, Whitley Bay
+          </li>
           <li>Councilors and other officials available upon request</li>
         </ul>
 
