@@ -683,24 +683,10 @@ export const techniqueGuides: TechniqueGuide[] = [
         alt: "Wooden broom scraping white nurdles across wet beach sand",
       },
     ],
-    videos: [
-      {
-        title: "Scrape nurdles on wet sand with broom",
-        url: "https://youtu.be/Ora2gOhBJcc",
-      },
-      {
-        title: "Scrape nurdles on wet sand with back of rake",
-        url: "https://youtube.com/shorts/hiGc1oj68kA",
-      },
-      {
-        title: "Scrape nurdles on wet sand with a plank",
-        url: "https://youtu.be/XW4cJDxCEZk",
-      },
-    ],
   },
   {
     id: "bucket-float",
-    title: "Bucket and seawater method",
+    title: "Bucket and sieve method",
     steps: [
       "Collect a bucket of sea water.",
       "Shovel sand (or seaweed) and nurdles mix into the bucket.",
