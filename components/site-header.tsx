@@ -6,7 +6,7 @@ export function SiteHeader() {
   return (
     <header>
       <div className="bg-[#111827] text-white">
-        <div className="mx-auto max-w-lg px-4 pb-4 pt-4 text-center">
+        <div className="mx-auto max-w-lg px-4 pb-4 pt-4">
           <p className="text-xs font-bold uppercase tracking-wider text-[#5eead4]">
             North Tyneside · Community volunteers
           </p>
