@@ -655,26 +655,19 @@ export const howToCollect: CollectStep[] = [
   },
   {
     step: 6,
-    text: "Bag nurdles into heavy-duty bin bags, label with 'volunteer collected', secure and leave at closest council-recommended collection point.",
+    text: {
+      beforeLink:
+        "Bag nurdles into heavy-duty bin bags, label with 'volunteer collected', secure and leave at closest council-recommended collection point. (",
+      linkLabel: "Report bags",
+      afterLink: " that are not at a collection point.)",
+      href: "https://www.northtyneside.gov.uk/residents/report-it",
+    },
     cta: {
       label: "Collection points",
       href: "/collection-points",
     },
   },
 ];
-
-/** Shown under How to collect after the numbered steps. */
-export const howToCollectReportNote: {
-  beforeLink: string;
-  linkLabel: string;
-  afterLink: string;
-  href: string;
-} = {
-  beforeLink: "",
-  linkLabel: "Report bags",
-  afterLink: " that are not at a collection point.",
-  href: "https://www.northtyneside.gov.uk/residents/report-it",
-};
 
 /** Replace null urls with public video links when ready. */
 export const trainingVideos: TrainingVideo[] = [

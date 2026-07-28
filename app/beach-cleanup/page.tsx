@@ -11,7 +11,6 @@ import {
   faqs,
   howToCollect,
   howToCollectIntro,
-  howToCollectReportNote,
   photosNote,
   techniqueGuides,
   trainingVideos,
@@ -120,19 +119,6 @@ export default function BeachCleanupPage() {
             </li>
           ))}
         </ol>
-
-        <p className="mt-3 text-base leading-snug text-[var(--ink)]">
-          {howToCollectReportNote.beforeLink}
-          <a
-            href={howToCollectReportNote.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-[var(--mark)] underline underline-offset-2"
-          >
-            {howToCollectReportNote.linkLabel}
-          </a>
-          {howToCollectReportNote.afterLink}
-        </p>
 
         <ul className="mt-4 space-y-4">
           {collectContentOrder.map((item) => {
