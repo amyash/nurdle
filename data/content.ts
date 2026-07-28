@@ -235,6 +235,20 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "ntc-official-guidance-jul-28",
+    datetime: "2026-07-28T07:46:00+01:00",
+    sourceName: "Community announcement",
+    expandable: true,
+    headline: "Official Guidance from North Tyneside Council",
+    body: [
+      "This page contains the latest official updates and guidance from North Tyneside Council.",
+    ],
+    link: {
+      label: "Open North Tyneside Council guidance",
+      href: "https://www.northtyneside.gov.uk/plastic-pellets-beaches-nurdles",
+    },
+  },
+  {
     id: "alan-campbell-office-response",
     datetime: "2026-07-27T16:55:00+01:00",
     sourceName: "LMB",
