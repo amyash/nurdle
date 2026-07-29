@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { checkinBeachById } from "@/data/checkin-beaches";
+import { postGoogleAppsScriptWebhook } from "@/lib/google-sheets-webhook";
 import {
   MESH_BAG_QUANTITY_MAX,
   sanitiseMeshBagName,
@@ -48,16 +49,15 @@ async function appendToGoogleSheet(payload: Record<string, string>) {
   if (!webhook) return;
 
   try {
-    const response = await fetch(webhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "mesh-bag", ...payload }),
+    const result = await postGoogleAppsScriptWebhook(webhook, {
+      type: "mesh-bag",
+      ...payload,
     });
-    if (!response.ok) {
+    if (!result.ok) {
       console.error(
         "[mesh-bag-requests] Google Sheets webhook failed",
-        response.status,
-        await response.text().catch(() => ""),
+        result.status,
+        result.body,
       );
     }
   } catch (error) {

@@ -10,6 +10,7 @@ import {
   sanitiseCleanupName,
   sanitiseCleanupNotes,
 } from "@/lib/cleanup-logs/format";
+import { postGoogleAppsScriptWebhook } from "@/lib/google-sheets-webhook";
 import { type RpcCleanupLogRow } from "@/lib/cleanup-logs/map";
 
 function getServerSupabase() {
@@ -44,23 +45,20 @@ async function appendToGoogleSheet(payload: Record<string, string | number | nul
   if (!webhook) return;
 
   try {
-    const response = await fetch(webhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "cleanup-log", ...payload }),
-      redirect: "follow",
+    const result = await postGoogleAppsScriptWebhook(webhook, {
+      type: "cleanup-log",
+      ...payload,
     });
-    const text = await response.text().catch(() => "");
-    if (!response.ok) {
+    if (!result.ok) {
       console.error(
         "[cleanup-logs] Google Sheets webhook failed",
-        response.status,
-        text,
+        result.status,
+        result.body,
       );
       return;
     }
     try {
-      const parsed = JSON.parse(text) as {
+      const parsed = JSON.parse(result.body) as {
         ok?: boolean;
         target?: string;
         version?: string;
@@ -78,8 +76,8 @@ async function appendToGoogleSheet(payload: Record<string, string | number | nul
     } catch {
       console.info(
         "[cleanup-logs] Google Sheets webhook responded",
-        response.status,
-        text.slice(0, 200),
+        result.status,
+        result.body.slice(0, 200),
       );
     }
   } catch (error) {
