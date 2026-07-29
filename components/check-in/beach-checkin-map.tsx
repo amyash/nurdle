@@ -159,7 +159,8 @@ export function BeachCheckinMap({
     if (bounds.length > 0) {
       map.fitBounds(bounds as import("leaflet").LatLngBoundsExpression, {
         padding: [36, 36],
-        maxZoom: 13,
+        // Allow a closer zoom so nearby Whitley Bay markers stay distinguishable
+        maxZoom: 14,
       });
     }
 

@@ -4,6 +4,7 @@
  * not used for GPS tracking.
  *
  * IDs must match rows seeded in supabase/migrations.
+ * Add or rename beaches here — the hub UI and map render from this list.
  */
 export interface CheckinBeach {
   id: string;
@@ -21,15 +22,47 @@ export const CHECKIN_EXPIRY_HOURS = 2;
 /** Delivered mesh bag requests stay visible this long on the public hub. */
 export const MESH_BAG_DELIVERED_VISIBLE_HOURS = 10;
 
+/** Shared WhatsApp for the Whitley Bay coastline segments. */
+const WHITLEY_BAY_WHATSAPP =
+  "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE";
+
 export const checkinBeaches: CheckinBeach[] = [
   {
-    id: "whitley-bay",
-    name: "Whitley Bay",
-    slug: "whitley-bay",
+    id: "st-marys-lighthouse",
+    name: "St Mary’s Lighthouse",
+    slug: "st-marys-lighthouse",
+    latitude: 55.0718,
+    longitude: -1.4495,
+    displayOrder: 1,
+    whatsappUrl: WHITLEY_BAY_WHATSAPP,
+  },
+  {
+    id: "whitley-bay-north",
+    name: "Whitley Bay North (Briardene)",
+    slug: "whitley-bay-north",
+    latitude: 55.0565,
+    longitude: -1.4505,
+    displayOrder: 2,
+    whatsappUrl: WHITLEY_BAY_WHATSAPP,
+  },
+  {
+    id: "whitley-bay-central",
+    name: "Whitley Bay Central (Panama)",
+    slug: "whitley-bay-central",
+    // Former single Whitley Bay pin — Panama Dip / central promenade
     latitude: 55.0481,
     longitude: -1.4494,
-    displayOrder: 1,
-    whatsappUrl: "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE",
+    displayOrder: 3,
+    whatsappUrl: WHITLEY_BAY_WHATSAPP,
+  },
+  {
+    id: "whitley-bay-south",
+    name: "Whitley Bay South",
+    slug: "whitley-bay-south",
+    latitude: 55.042,
+    longitude: -1.4465,
+    displayOrder: 4,
+    whatsappUrl: WHITLEY_BAY_WHATSAPP,
   },
   {
     id: "cullercoats-bay",
@@ -37,7 +70,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "cullercoats-bay",
     latitude: 55.0349,
     longitude: -1.4328,
-    displayOrder: 2,
+    displayOrder: 5,
     whatsappUrl: "https://chat.whatsapp.com/LJIE5xqsqWmGAIl2pLt4t2",
   },
   {
@@ -46,7 +79,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "longsands-north",
     latitude: 55.0288,
     longitude: -1.4296,
-    displayOrder: 3,
+    displayOrder: 6,
     whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
   },
   {
@@ -55,7 +88,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "longsands-south",
     latitude: 55.0234,
     longitude: -1.4269,
-    displayOrder: 4,
+    displayOrder: 7,
     whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
   },
   {
@@ -64,7 +97,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "king-edwards-bay",
     latitude: 55.0182,
     longitude: -1.4158,
-    displayOrder: 5,
+    displayOrder: 8,
     whatsappUrl: "https://chat.whatsapp.com/K2lktDs5NAj7UG1SYoDYwh",
   },
   {
@@ -73,7 +106,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "tynemouth-haven",
     latitude: 55.0156,
     longitude: -1.4204,
-    displayOrder: 6,
+    displayOrder: 9,
     whatsappUrl: "https://chat.whatsapp.com/IUp4YAxs7Yo7vZAqeO6Z1I",
   },
   {
@@ -82,7 +115,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "newbiggin",
     latitude: 55.1845,
     longitude: -1.5098,
-    displayOrder: 7,
+    displayOrder: 10,
     whatsappUrl: "https://chat.whatsapp.com/F3BpZ4dw3gmGlqTM7rPftx",
   },
   {
@@ -91,7 +124,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "blyth",
     latitude: 55.1422,
     longitude: -1.5085,
-    displayOrder: 8,
+    displayOrder: 11,
     whatsappUrl: null,
   },
   {
@@ -100,7 +133,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "seaton-sluice",
     latitude: 55.0825,
     longitude: -1.4745,
-    displayOrder: 9,
+    displayOrder: 12,
     whatsappUrl: null,
   },
   {
@@ -109,7 +142,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "cambois",
     latitude: 55.1528,
     longitude: -1.5185,
-    displayOrder: 10,
+    displayOrder: 13,
     whatsappUrl: "https://chat.whatsapp.com/C9bWFyadyH15kgIR1QTBLQ",
   },
   {
@@ -118,7 +151,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "fish-quay",
     latitude: 55.0097,
     longitude: -1.4372,
-    displayOrder: 11,
+    displayOrder: 14,
     whatsappUrl: "https://chat.whatsapp.com/E3UFrnJFRE719lT7BztWoo",
   },
 ];

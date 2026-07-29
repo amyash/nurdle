@@ -45,6 +45,7 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 1. `supabase/migrations/001_volunteer_checkins.sql` (beaches + check-ins + RPCs)
 2. Later beach inserts if needed: `002`–`006`
 3. `supabase/migrations/007_mesh_bag_requests.sql` (mesh bag requests + RPCs)
+4. `supabase/migrations/008_split_whitley_bay_beaches.sql` (split Whitley Bay into four locations)
 
 `007` creates:
 

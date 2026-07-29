@@ -13,7 +13,7 @@ function request(
 ): MeshBagRequest {
   return {
     id: "1",
-    beachId: "whitley-bay",
+    beachId: "whitley-bay-central",
     neededAt: null,
     requesterName: null,
     note: null,

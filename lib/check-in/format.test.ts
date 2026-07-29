@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { checkinBeaches } from "@/data/checkin-beaches";
 import {
   countActiveCheckins,
   isCheckinActive,
@@ -154,7 +155,7 @@ describe("session uniqueness helpers", () => {
   it("treats a later beach check-in as replacing the previous active one", () => {
     const now = Date.parse("2026-07-28T12:00:00.000Z");
     const previous = {
-      beachId: "whitley-bay",
+      beachId: "whitley-bay-central",
       checkedOutAt: "2026-07-28T12:00:00.000Z",
       expiresAt: "2026-07-28T14:00:00.000Z",
     };
@@ -211,7 +212,7 @@ describe("session uniqueness helpers", () => {
 describe("map failure resilience", () => {
   it("keeps beach cards usable when map stats fall back to zeros", () => {
     const stats: BeachCheckinStats[] = checkinStatsFallback();
-    expect(stats).toHaveLength(11);
+    expect(stats).toHaveLength(checkinBeaches.length);
     expect(summaryLabel(stats)).toBe("No volunteers currently checked in");
     expect(volunteerCountLabel(stats[0]!.volunteerCount)).toContain(
       "volunteers currently here",
@@ -220,20 +221,8 @@ describe("map failure resilience", () => {
 });
 
 function checkinStatsFallback(): BeachCheckinStats[] {
-  return [
-    "whitley-bay",
-    "cullercoats-bay",
-    "longsands-north",
-    "longsands-south",
-    "king-edwards-bay",
-    "tynemouth-haven",
-    "newbiggin",
-    "blyth",
-    "seaton-sluice",
-    "cambois",
-    "fish-quay",
-  ].map((beachId) => ({
-    beachId,
+  return checkinBeaches.map((beach) => ({
+    beachId: beach.id,
     volunteerCount: 0,
     latestCheckedInAt: null,
     sampleFirstName: null,
