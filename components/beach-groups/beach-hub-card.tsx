@@ -134,28 +134,28 @@ export function BeachHubCard({
         <div className="mt-3 flex flex-col gap-2">
           <button
             type="button"
+            disabled={busy || cleanupDisabled}
+            onClick={onLogCleanup}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
+          >
+            Log your clean-up
+          </button>
+          <button
+            type="button"
             disabled={busy}
             onClick={onCheckOut}
             className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-3 py-2.5 text-sm font-bold text-[var(--ink)] disabled:opacity-60"
           >
             I’ve finished — check me out
           </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onExtend}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-          >
-            Extend my check-in
-          </button>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             <button
               type="button"
-              disabled={busy || cleanupDisabled}
-              onClick={onLogCleanup}
+              disabled={busy}
+              onClick={onExtend}
               className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
             >
-              Log your clean-up
+              Extend my check-in
             </button>
             <button
               type="button"
@@ -171,20 +171,20 @@ export function BeachHubCard({
         <div className="mt-3 flex flex-col gap-2">
           <button
             type="button"
-            disabled={busy || checkInDisabled}
-            onClick={onCheckIn}
+            disabled={busy || cleanupDisabled}
+            onClick={onLogCleanup}
             className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
           >
-            Check in
+            Log your clean-up
           </button>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             <button
               type="button"
-              disabled={busy || cleanupDisabled}
-              onClick={onLogCleanup}
+              disabled={busy || checkInDisabled}
+              onClick={onCheckIn}
               className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
             >
-              Log your clean-up
+              Check in
             </button>
             <button
               type="button"
