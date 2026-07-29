@@ -84,20 +84,23 @@ Restart `npm run dev`.
 
 ### 4. Google Sheet setup (mesh bags + clean-up logs)
 
-The website (Supabase) is the source of truth. The Sheet is a shared inbox (no sync back).
+The website (Supabase) is the source of truth. Sheets are a shared inbox (no sync back).
 
-1. Keep a tab named **Requests** for mesh bags (existing headers)
-2. Add a tab named **Cleanup Logs** with header row:
+Use **two spreadsheets** so cleanup data can stay private while mesh bags stay public:
+
+1. **Public spreadsheet** (can be link-shared): tab **Requests** for mesh bags (existing headers). Bind the Apps Script to this file.
+2. **Private spreadsheet** (Restricted / organisers only): tab **Cleanup Logs** with header row:
 
    `ID | Submitted At | Cleanup Date | Beach ID | Beach Name | Duration Minutes | Volunteer Count | Estimated Weight Kg | Volunteer Name | Notes | Collected Volume`
 
-3. **Extensions → Apps Script** — replace the script with [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
+   Set `CLEANUP_LOGS_SPREADSHEET_ID` in the script to that file’s ID (from the URL `/d/<ID>/edit`).
+3. On the **public** sheet: **Extensions → Apps Script** — replace with [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
 4. **Deploy → Manage deployments → Edit → New version** (or New deployment if first time)
    - Execute as: Me
    - Who has access: Anyone
 5. Keep the same web app URL in `GOOGLE_SHEETS_WEBHOOK_URL`
 
-Payloads include `type: "mesh-bag"` or `type: "cleanup-log"` so one webhook serves both tabs.
+Payloads include `type: "mesh-bag"` or `type: "cleanup-log"`. Mesh bags write to the public sheet; cleanup logs write to the private spreadsheet.
 
 ### 5. Local testing checklist
 

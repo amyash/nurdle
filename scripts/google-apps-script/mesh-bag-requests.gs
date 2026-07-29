@@ -1,27 +1,34 @@
 /**
  * Google Apps Script for mesh bag requests + cleanup logs.
  *
+ * Bind this script to the PUBLIC mesh-bag spreadsheet (Requests tab).
+ * Cleanup logs are written to a separate PRIVATE spreadsheet.
+ *
  * Setup:
- * 1. Sheet tab "Requests" with mesh-bag headers (existing)
- * 2. Sheet tab "Cleanup Logs" with headers:
+ * 1. Public sheet: tab "Requests" with mesh-bag headers
+ * 2. Private spreadsheet (Restricted sharing) with tab "Cleanup Logs"
+ *    headers:
  *    ID | Submitted At | Cleanup Date | Beach ID | Beach Name |
  *    Duration Minutes | Volunteer Count | Estimated Weight Kg |
  *    Volunteer Name | Notes | Collected Volume
- *    (If the sheet already has rows, add "Collected Volume" as a new
- *     final header column — do not insert it between existing columns.)
- * 3. Extensions → Apps Script — replace with this file, Save
- * 4. Deploy → Manage deployments → New version (or New deployment)
+ * 3. Set CLEANUP_LOGS_SPREADSHEET_ID below to that private file’s ID
+ * 4. Extensions → Apps Script on the PUBLIC sheet — replace with this file, Save
+ * 5. Deploy → Manage deployments → New version (or New deployment)
  *    - Execute as: Me
  *    - Who has access: Anyone
- * 5. Keep GOOGLE_SHEETS_WEBHOOK_URL pointing at the web app URL
+ * 6. Keep GOOGLE_SHEETS_WEBHOOK_URL pointing at the web app URL
  *
  * Payload routing:
- * - { type: "cleanup-log", ... } → Cleanup Logs tab
- * - anything else (mesh bags) → Requests tab
+ * - { type: "cleanup-log", ... } → private Cleanup Logs spreadsheet
+ * - anything else (mesh bags) → public Requests tab (this file’s spreadsheet)
  *
  * Weight conversion (done by the hub before POST):
  * 1 litre ≈ 550 g of nurdles. Ranges use midpoints.
  */
+
+/** Private Cleanup Logs spreadsheet — keep Restricted / organisers only. */
+var CLEANUP_LOGS_SPREADSHEET_ID =
+  "1C_o20LeFVjAPRmaL-GPBcTFr6Cua9XN99H2ZdeFhC68";
 
 function doPost(e) {
   try {
@@ -30,12 +37,13 @@ function doPost(e) {
       data = JSON.parse(e.postData.contents);
     }
 
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-
     if (data.type === "cleanup-log") {
+      var cleanupSpreadsheet = SpreadsheetApp.openById(
+        CLEANUP_LOGS_SPREADSHEET_ID,
+      );
       var cleanupSheet =
-        spreadsheet.getSheetByName("Cleanup Logs") ||
-        spreadsheet.insertSheet("Cleanup Logs");
+        cleanupSpreadsheet.getSheetByName("Cleanup Logs") ||
+        cleanupSpreadsheet.insertSheet("Cleanup Logs");
 
       if (cleanupSheet.getLastRow() === 0) {
         cleanupSheet.appendRow([
@@ -67,7 +75,8 @@ function doPost(e) {
         data.collectedVolume || "",
       ]);
     } else {
-      // mesh-bag (default) — existing Requests tab
+      // mesh-bag (default) — public Requests tab on this bound spreadsheet
+      var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
       var sheet =
         spreadsheet.getSheetByName("Requests") ||
         spreadsheet.getActiveSheet();
