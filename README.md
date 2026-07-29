@@ -88,19 +88,18 @@ The website (Supabase) is the source of truth. Sheets are a shared inbox (no syn
 
 Use **two spreadsheets** so cleanup data can stay private while mesh bags stay public:
 
-1. **Public spreadsheet** (can be link-shared): tab **Requests** for mesh bags (existing headers). Bind the Apps Script to this file.
-2. **Private spreadsheet** (Restricted / organisers only): tab **Cleanup Logs** with header row:
+1. **Private spreadsheet** (Restricted): tab **Cleanup Logs** with header row:
 
    `ID | Submitted At | Cleanup Date | Beach ID | Beach Name | Duration Minutes | Volunteer Count | Estimated Weight Kg | Volunteer Name | Notes | Collected Volume`
 
-   Set `CLEANUP_LOGS_SPREADSHEET_ID` in the script to that file’s ID (from the URL `/d/<ID>/edit`).
-3. On the **public** sheet: **Extensions → Apps Script** — replace with [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
-4. **Deploy → Manage deployments → Edit → New version** (or New deployment if first time)
+2. On the **private** spreadsheet: **Extensions → Apps Script** — paste [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
+3. Optional: set `REQUESTS_SPREADSHEET_ID` in the script to the public mesh-bag spreadsheet ID
+4. **Deploy → New deployment → Web app**
    - Execute as: Me
    - Who has access: Anyone
-5. Keep the same web app URL in `GOOGLE_SHEETS_WEBHOOK_URL`
+5. Put the web app `/exec` URL in `GOOGLE_SHEETS_WEBHOOK_URL` (local + Vercel) and redeploy
 
-Payloads include `type: "mesh-bag"` or `type: "cleanup-log"`. Mesh bags write to the public sheet; cleanup logs write to the private spreadsheet.
+`doGet` returns `{ version: "private-v2-..." }` so you can confirm the live webhook is the new script.
 
 ### 5. Local testing checklist
 

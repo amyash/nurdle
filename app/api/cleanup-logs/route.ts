@@ -48,12 +48,38 @@ async function appendToGoogleSheet(payload: Record<string, string | number | nul
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "cleanup-log", ...payload }),
+      redirect: "follow",
     });
+    const text = await response.text().catch(() => "");
     if (!response.ok) {
       console.error(
         "[cleanup-logs] Google Sheets webhook failed",
         response.status,
-        await response.text().catch(() => ""),
+        text,
+      );
+      return;
+    }
+    try {
+      const parsed = JSON.parse(text) as {
+        ok?: boolean;
+        target?: string;
+        version?: string;
+        error?: string;
+      };
+      if (parsed.ok === false) {
+        console.error("[cleanup-logs] Google Sheets webhook error body", parsed);
+      } else {
+        console.info(
+          "[cleanup-logs] Google Sheets webhook ok",
+          parsed.version ?? "unknown-version",
+          parsed.target ?? "unknown-target",
+        );
+      }
+    } catch {
+      console.info(
+        "[cleanup-logs] Google Sheets webhook responded",
+        response.status,
+        text.slice(0, 200),
       );
     }
   } catch (error) {
