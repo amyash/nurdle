@@ -7,12 +7,12 @@ import {
 } from "@/data/content";
 
 export const metadata: Metadata = {
-  title: "Community images",
+  title: "Photos",
 };
 
-export default function CommunityImagesPage() {
+export default function PhotosPage() {
   return (
-    <PageShell title="Community images">
+    <PageShell title="Photos">
       <p className="text-base font-bold text-[var(--ink)]">
         {communityImagesIntro.heading}
       </p>

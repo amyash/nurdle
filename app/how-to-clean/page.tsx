@@ -19,7 +19,7 @@ import {
 } from "@/data/content";
 
 export const metadata: Metadata = {
-  title: "Beach cleanup",
+  title: "How to clean",
 };
 
 const videoById = Object.fromEntries(
@@ -40,9 +40,9 @@ const collectContentOrder = [
   { kind: "guide" as const, id: "mesh-bag-tutorial" },
 ];
 
-export default function BeachCleanupPage() {
+export default function HowToCleanPage() {
   return (
-    <PageShell title="Beach cleanup" className="!pb-0">
+    <PageShell title="How to clean" className="!pb-0">
       <CommunityCleanupMessagePanel message={communityCleanupMessage} />
       <TideTimesPanel />
 

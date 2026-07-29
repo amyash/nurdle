@@ -6,12 +6,12 @@ import { PageShell } from "@/components/page-shell";
 import { announcements, briefingEvent, latestUpdate } from "@/data/content";
 
 export const metadata: Metadata = {
-  title: "Announcements",
+  title: "News",
 };
 
-export default function AnnouncementsPage() {
+export default function NewsPage() {
   return (
-    <PageShell title="Announcements">
+    <PageShell title="News">
       <div className="space-y-4">
         {announcements.map((announcement) => (
           <AnnouncementCard

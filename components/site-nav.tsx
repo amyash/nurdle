@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/announcements", label: "Announcements" },
-  { href: "/beach-cleanup", label: "Beach cleanup" },
-  { href: "/beach-groups", label: "Beach groups" },
-  { href: "/collection-points", label: "Collection points" },
-  { href: "/community-images", label: "Community images" },
+  { href: "/news", label: "News" },
+  { href: "/how-to-clean", label: "How to clean" },
+  { href: "/beaches", label: "Beaches" },
+  { href: "/drop-off-points", label: "Drop-off points" },
+  { href: "/photos", label: "Photos" },
 ];
 
 export function SiteNav() {

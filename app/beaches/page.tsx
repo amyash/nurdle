@@ -3,14 +3,14 @@ import { BeachGroupsHubPanel } from "@/components/beach-groups/beach-groups-hub-
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
-  title: "Beach groups",
+  title: "Beaches",
   description:
-    "Check in at North Tyneside beaches, join WhatsApp groups, and request mesh bags.",
+    "Check in at North Tyneside beaches, join WhatsApp groups, request mesh bags, and log clean-ups.",
 };
 
-export default function BeachGroupsPage() {
+export default function BeachesPage() {
   return (
-    <PageShell title="Beach groups">
+    <PageShell title="Beaches">
       <BeachGroupsHubPanel />
     </PageShell>
   );

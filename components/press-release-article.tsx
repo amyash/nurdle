@@ -224,7 +224,7 @@ export function PressReleaseArticle() {
         </p>
 
         <p>
-          <Link href="/beach-cleanup" className={linkClass}>
+          <Link href="/how-to-clean" className={linkClass}>
             The volunteer network
           </Link>{" "}
           is encouraging anyone wishing to assist to read the website and join

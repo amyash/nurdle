@@ -103,7 +103,7 @@ export const organiserMessage: OrganiserMessage = {
             "Community advice: collect in bin bags and place next to the council bins. Large mesh bags work well with shovels; where appropriate use a dustpan and brush. See ",
           linkLabel: "Beach Cleanup",
           afterLink: " page for more info on equipment and methods.",
-          href: "/beach-cleanup",
+          href: "/how-to-clean",
         },
       ],
       links: [
@@ -565,8 +565,8 @@ export const howToCollect: CollectStep[] = [
       href: "https://www.northtyneside.gov.uk/residents/report-it",
     },
     cta: {
-      label: "Collection points",
-      href: "/collection-points",
+      label: "Drop-off points",
+      href: "/drop-off-points",
     },
   },
 ];
@@ -705,7 +705,7 @@ export const faqs: FaqItem[] = [
 export const siteDisclaimer =
   "Community information board — not an official council or emergency-service website. Participate at your own discretion.";
 
-/** Intro copy above the gallery on /community-images. */
+/** Intro copy above the gallery on /photos. */
 export const communityImagesIntro = {
   heading: "Photos needed",
   paragraphs: [
@@ -758,7 +758,7 @@ export const communityImagesIntro = {
   galleryCaption: "Photos from volunteers on our beaches.",
 };
 
-/** Community photos — masonry gallery on /community-images. */
+/** Community photos — masonry gallery on /photos. */
 export const communityImages: CommunityImage[] = [
   {
     id: "volunteers-broom",

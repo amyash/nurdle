@@ -4,14 +4,15 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 
 ## Pages
 
-- `/` — community organiser message + actions + scientific briefing
-- `/announcements` — community announcements and updates
-- `/beach-cleanup` — what to bring, how to collect, videos, cleanup techniques, FAQs
-- `/beach-groups` — beach hub: map, volunteer check-in, WhatsApp links, mesh bag requests
-- `/collection-points` — official North Tyneside Council bag collection points (map + list)
+- `/` — community effort totals + organiser message + actions + scientific briefing
+- `/news` — community news and updates
+- `/how-to-clean` — what to bring, how to collect, videos, cleanup techniques, FAQs
+- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, mesh bags, log clean-ups
+- `/drop-off-points` — official North Tyneside Council bag drop-off points (map + list)
+- `/photos` — volunteer photos
 - `/press-release` — press / media information
-- `/volunteer-check-in` — redirects to `/beach-groups`
-- `/community-images` — volunteer photos
+
+Old paths (`/announcements`, `/beach-cleanup`, `/beach-groups`, `/collection-points`, `/community-images`, `/updates`, `/volunteer-check-in`) permanently redirect to the new URLs.
 
 ## Run
 
@@ -103,7 +104,7 @@ Use **two spreadsheets** so cleanup data can stay private while mesh bags stay p
 
 ### 5. Local testing checklist
 
-1. Open `/beach-groups` (confirm `/volunteer-check-in` redirects here)
+1. Open `/beaches` (confirm `/volunteer-check-in` and `/beach-groups` redirect here)
 2. Confirm the map loads (or the list still works if the map fails)
 3. Tap **Check in** → optional first name → **Confirm check-in**
 4. Confirm the card shows **You’re here**, with check-out / extend actions
