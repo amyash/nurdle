@@ -46,6 +46,7 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 2. Later beach inserts if needed: `002`–`006`
 3. `supabase/migrations/007_mesh_bag_requests.sql` (mesh bag requests + RPCs)
 4. `supabase/migrations/008_split_whitley_bay_beaches.sql` (split Whitley Bay into four locations)
+5. `supabase/migrations/009_cleanup_logs.sql` (retrospective clean-up logs + stats RPCs)
 
 `007` creates:
 
@@ -54,6 +55,12 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 - RLS so visitors cannot read/write the table directly
 
 Delivered requests stay visible on the public hub for **10 hours**, then drop from the list (rows are not deleted).
+
+`009` creates:
+
+- `cleanup_logs`
+- RPCs: `create_cleanup_log`, `get_cleanup_stats`
+- Spill start date enforced in SQL as **19 July 2026** (also in `data/spill.ts`)
 
 ### 3. Local environment variables
 
@@ -75,25 +82,22 @@ GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 
 Restart `npm run dev`.
 
-### 4. Google Sheet setup (mesh bag requests)
+### 4. Google Sheet setup (mesh bags + clean-up logs)
 
-The website is the source of truth. The Sheet is a shared inbox for the sewing team (no sync back).
+The website (Supabase) is the source of truth. The Sheet is a shared inbox (no sync back).
 
-1. Create a Google Sheet with a tab named **Requests** (or use the first sheet)
-2. Add header row:
+1. Keep a tab named **Requests** for mesh bags (existing headers)
+2. Add a tab named **Cleanup Logs** with header row:
 
-   `Request ID | Submitted | Beach | Quantity | Needed | Requester | Notes | Status | Claimed by | ETA | Delivered`
+   `ID | Submitted At | Cleanup Date | Beach ID | Beach Name | Duration Minutes | Volunteer Count | Estimated Weight Kg | Volunteer Name | Notes`
 
-3. **Extensions → Apps Script**
-4. Paste the contents of [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
-5. **Deploy → New deployment → Web app**
+3. **Extensions → Apps Script** — replace the script with [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
+4. **Deploy → Manage deployments → Edit → New version** (or New deployment if first time)
    - Execute as: Me
    - Who has access: Anyone
-6. Copy the web app URL into `GOOGLE_SHEETS_WEBHOOK_URL`
+5. Keep the same web app URL in `GOOGLE_SHEETS_WEBHOOK_URL`
 
-On each successful Supabase create, the API route `POST /api/mesh-bag-requests` appends a row. If the Sheet webhook fails, the volunteer still sees success (the error is logged server-side).
-
-The last three columns (**Claimed by**, **ETA**, **Delivered**) are for the sewing team to fill manually.
+Payloads include `type: "mesh-bag"` or `type: "cleanup-log"` so one webhook serves both tabs.
 
 ### 5. Local testing checklist
 
@@ -102,9 +106,10 @@ The last three columns (**Claimed by**, **ETA**, **Delivered**) are for the sewi
 3. Tap **Check in** → optional first name → **Confirm check-in**
 4. Confirm the card shows **You’re here**, with check-out / extend actions
 5. Tap **Request mesh bags** → submit ASAP or scheduled → success message
-6. Open the bag summary / ⋯ menu → mark delivered / cancel with confirm
-7. If `GOOGLE_SHEETS_WEBHOOK_URL` is set, confirm a new Sheet row appears
-8. Open a private window and confirm volunteer counts increase across sessions
+6. Tap **Log your clean-up** → submit hours/minutes → totals update on the card and below the map
+7. Open the bag summary / ⋯ menu → mark delivered / cancel with confirm
+8. If `GOOGLE_SHEETS_WEBHOOK_URL` is set, confirm Sheet rows appear on **Requests** / **Cleanup Logs**
+9. Open a private window and confirm volunteer counts increase across sessions
 
 ### 6. Vercel deployment
 

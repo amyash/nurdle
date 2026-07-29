@@ -51,7 +51,7 @@ async function appendToGoogleSheet(payload: Record<string, string>) {
     const response = await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ type: "mesh-bag", ...payload }),
     });
     if (!response.ok) {
       console.error(

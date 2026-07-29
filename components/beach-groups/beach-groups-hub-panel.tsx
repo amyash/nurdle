@@ -4,6 +4,9 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BeachHubCard } from "@/components/beach-groups/beach-hub-card";
 import { CheckInModal } from "@/components/check-in/check-in-modal";
+import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
+import { CleanupLogSuccessModal } from "@/components/cleanup-logs/cleanup-log-success-modal";
+import { CleanupOverallCallout } from "@/components/cleanup-logs/cleanup-overall-callout";
 import { MeshBagRequestModal } from "@/components/mesh-bags/mesh-bag-request-modal";
 import { MeshBagRequestsModal } from "@/components/mesh-bags/mesh-bag-requests-modal";
 import { MeshBagSuccessModal } from "@/components/mesh-bags/mesh-bag-success-modal";
@@ -21,6 +24,11 @@ import {
 import { summaryLabel } from "@/lib/check-in/format";
 import { getOrCreateCheckinSessionId } from "@/lib/check-in/session";
 import {
+  createCleanupLog,
+  emptyCleanupStats,
+  fetchCleanupStats,
+} from "@/lib/cleanup-logs/api";
+import {
   cancelMeshBagRequest,
   createMeshBagRequest,
   fetchVisibleMeshBagRequests,
@@ -31,6 +39,7 @@ import type {
   ActiveSessionCheckin,
   BeachCheckinStats,
 } from "@/types/check-in";
+import type { CleanupStatsResponse } from "@/types/cleanup-log";
 import type { MeshBagNeededType, MeshBagRequest } from "@/types/mesh-bags";
 
 const BeachCheckinMap = dynamic(
@@ -67,6 +76,10 @@ export function BeachGroupsHubPanel() {
   const sessionIdRef = useRef<string | null>(null);
   const [stats, setStats] = useState<BeachCheckinStats[]>(emptyStats);
   const [bagRequests, setBagRequests] = useState<MeshBagRequest[]>([]);
+  const [cleanupStats, setCleanupStats] = useState<CleanupStatsResponse | null>(
+    null,
+  );
+  const [cleanupStatsLoading, setCleanupStatsLoading] = useState(true);
   const [myCheckin, setMyCheckin] = useState<ActiveSessionCheckin | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -80,6 +93,9 @@ export function BeachGroupsHubPanel() {
   const [bagRequestError, setBagRequestError] = useState<string | null>(null);
   const [bagListBeachId, setBagListBeachId] = useState<string | null>(null);
   const [showBagSuccess, setShowBagSuccess] = useState(false);
+  const [cleanupBeachId, setCleanupBeachId] = useState<string | null>(null);
+  const [cleanupError, setCleanupError] = useState<string | null>(null);
+  const [showCleanupSuccess, setShowCleanupSuccess] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
@@ -116,11 +132,13 @@ export function BeachGroupsHubPanel() {
     : undefined;
 
   const refresh = useCallback(async (sid: string) => {
-    const [statsResult, mineResult, bagsResult] = await Promise.all([
-      fetchBeachCheckinStats(),
-      fetchMyActiveCheckin(sid),
-      fetchVisibleMeshBagRequests(),
-    ]);
+    const [statsResult, mineResult, bagsResult, cleanupResult] =
+      await Promise.all([
+        fetchBeachCheckinStats(),
+        fetchMyActiveCheckin(sid),
+        fetchVisibleMeshBagRequests(),
+        fetchCleanupStats(),
+      ]);
 
     if (statsResult.ok) {
       const byId = Object.fromEntries(
@@ -154,6 +172,14 @@ export function BeachGroupsHubPanel() {
     } else if (bagsResult.error !== "not_configured") {
       setLoadError((prev) => prev ?? bagsResult.message);
     }
+
+    if (cleanupResult.ok) {
+      setCleanupStats(cleanupResult.stats);
+    } else if (cleanupResult.error === "not_configured") {
+      setCleanupStats(emptyCleanupStats());
+    }
+    // Clean-up stats failures must not block check-in / mesh bags
+    setCleanupStatsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -267,6 +293,45 @@ export function BeachGroupsHubPanel() {
     setBagRequestBeachId(beachId);
   }
 
+  function openCleanupLog(beachId: string) {
+    if (!configured) {
+      setActionError(
+        "Clean-up logging isn’t connected yet. Please try again later.",
+      );
+      return;
+    }
+    setActionError(null);
+    setCleanupError(null);
+    setCleanupBeachId(beachId);
+  }
+
+  async function handleSubmitCleanupLog(input: {
+    beachId: string;
+    cleanupDate: string;
+    durationMinutes: number;
+    volunteerCount: number;
+    estimatedWeightKg: number | null;
+    volunteerName: string;
+    notes: string;
+    confirmedEstimate: boolean;
+  }) {
+    if (!cleanupBeachId || busy) return;
+    setBusy(true);
+    setCleanupError(null);
+    const result = await createCleanupLog(input);
+    setBusy(false);
+
+    if (!result.ok) {
+      setCleanupError(result.message);
+      return;
+    }
+
+    setCleanupBeachId(null);
+    setShowCleanupSuccess(true);
+    setStatusMessage("Clean-up logged.");
+    await refresh(ensureSessionId());
+  }
+
   async function handleSubmitBagRequest(input: {
     quantityRequested: number;
     neededType: MeshBagNeededType;
@@ -376,6 +441,12 @@ export function BeachGroupsHubPanel() {
         onCheckInRequest={openCheckIn}
       />
 
+      <CleanupOverallCallout
+        stats={cleanupStats}
+        loading={cleanupStatsLoading}
+        activeBeachCount={checkinBeaches.length}
+      />
+
       <ul className="space-y-3">
         {checkinBeaches.map((beach) => (
           <li key={beach.id}>
@@ -383,15 +454,19 @@ export function BeachGroupsHubPanel() {
               beach={beach}
               stats={statsById[beach.id]}
               bagRequests={bagsByBeachId[beach.id] ?? []}
+              cleanupStats={cleanupStats?.byBeach[beach.id]}
+              cleanupStatsLoading={cleanupStatsLoading}
               isCheckedInHere={myCheckin?.beachId === beach.id}
               checkInDisabled={!configured}
               bagsDisabled={!configured}
+              cleanupDisabled={!configured}
               busy={busy}
               nowMs={nowMs}
               onCheckIn={() => openCheckIn(beach.id)}
               onCheckOut={() => void handleCheckOut()}
               onExtend={() => void handleExtend()}
               onRequestBags={() => openBagRequest(beach.id)}
+              onLogCleanup={() => openCleanupLog(beach.id)}
               onOpenBagRequests={() => setBagListBeachId(beach.id)}
             />
           </li>
@@ -456,6 +531,22 @@ export function BeachGroupsHubPanel() {
       <MeshBagSuccessModal
         open={showBagSuccess}
         onClose={() => setShowBagSuccess(false)}
+      />
+
+      <CleanupLogModal
+        beachId={cleanupBeachId ?? checkinBeaches[0]?.id ?? ""}
+        open={cleanupBeachId != null}
+        busy={busy}
+        error={cleanupError}
+        onClose={() => {
+          if (!busy) setCleanupBeachId(null);
+        }}
+        onSubmit={(input) => void handleSubmitCleanupLog(input)}
+      />
+
+      <CleanupLogSuccessModal
+        open={showCleanupSuccess}
+        onClose={() => setShowCleanupSuccess(false)}
       />
 
       <MeshBagRequestsModal

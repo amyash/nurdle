@@ -1,41 +1,84 @@
 /**
- * Google Apps Script for mesh bag request intake.
+ * Google Apps Script for mesh bag requests + cleanup logs.
  *
  * Setup:
- * 1. Create a Google Sheet with a header row:
- *    Request ID | Submitted | Beach | Quantity | Needed | Requester | Notes | Status | Claimed by | ETA | Delivered
- * 2. Extensions → Apps Script
- * 3. Paste this file’s contents and Save
- * 4. Deploy → New deployment → Web app
+ * 1. Sheet tab "Requests" with mesh-bag headers (existing)
+ * 2. Sheet tab "Cleanup Logs" with headers:
+ *    ID | Submitted At | Cleanup Date | Beach ID | Beach Name |
+ *    Duration Minutes | Volunteer Count | Estimated Weight Kg |
+ *    Volunteer Name | Notes
+ * 3. Extensions → Apps Script — replace with this file, Save
+ * 4. Deploy → Manage deployments → New version (or New deployment)
  *    - Execute as: Me
  *    - Who has access: Anyone
- * 5. Copy the web app URL into GOOGLE_SHEETS_WEBHOOK_URL (server-only env var)
+ * 5. Keep GOOGLE_SHEETS_WEBHOOK_URL pointing at the web app URL
+ *
+ * Payload routing:
+ * - { type: "cleanup-log", ... } → Cleanup Logs tab
+ * - anything else (mesh bags) → Requests tab
  */
 
 function doPost(e) {
   try {
-    var sheet =
-      SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Requests") ||
-      SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-
     var data = {};
     if (e && e.postData && e.postData.contents) {
       data = JSON.parse(e.postData.contents);
     }
 
-    sheet.appendRow([
-      data.requestId || "",
-      data.submitted || "",
-      data.beach || "",
-      data.quantity || "",
-      data.needed || "",
-      data.requester || "",
-      data.notes || "",
-      data.status || "requested",
-      data.claimedBy || "",
-      data.eta || "",
-      data.delivered || "",
-    ]);
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (data.type === "cleanup-log") {
+      var cleanupSheet =
+        spreadsheet.getSheetByName("Cleanup Logs") ||
+        spreadsheet.insertSheet("Cleanup Logs");
+
+      if (cleanupSheet.getLastRow() === 0) {
+        cleanupSheet.appendRow([
+          "ID",
+          "Submitted At",
+          "Cleanup Date",
+          "Beach ID",
+          "Beach Name",
+          "Duration Minutes",
+          "Volunteer Count",
+          "Estimated Weight Kg",
+          "Volunteer Name",
+          "Notes",
+        ]);
+      }
+
+      cleanupSheet.appendRow([
+        data.id || "",
+        data.submittedAt || "",
+        data.cleanupDate || "",
+        data.beachId || "",
+        data.beachName || "",
+        data.durationMinutes || "",
+        data.volunteerCount || "",
+        data.estimatedWeightKg == null ? "" : data.estimatedWeightKg,
+        data.volunteerName || "",
+        data.notes || "",
+      ]);
+    } else {
+      // mesh-bag (default) — existing Requests tab
+      var sheet =
+        spreadsheet.getSheetByName("Requests") ||
+        spreadsheet.getActiveSheet();
+
+      sheet.appendRow([
+        data.requestId || "",
+        data.submitted || "",
+        data.beach || "",
+        data.quantity || "",
+        data.needed || "",
+        data.requester || "",
+        data.notes || "",
+        data.status || "requested",
+        data.claimedBy || "",
+        data.eta || "",
+        data.delivered || "",
+      ]);
+    }
 
     return ContentService.createTextOutput(
       JSON.stringify({ ok: true }),
@@ -52,6 +95,6 @@ function doPost(e) {
 
 function doGet() {
   return ContentService.createTextOutput(
-    "Mesh bag requests webhook is running. Use POST.",
+    "Nurdle hub webhook is running. Use POST.",
   );
 }
