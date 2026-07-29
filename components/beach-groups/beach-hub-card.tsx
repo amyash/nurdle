@@ -52,9 +52,25 @@ export function BeachHubCard({
       aria-current={isCheckedInHere ? "true" : undefined}
     >
       <div className="flex items-start justify-between gap-3">
-        <h3 className="font-bold leading-snug text-[var(--ink)]">
-          {beach.name}
-        </h3>
+        <div className="min-w-0 flex-1">
+          <h3 className="font-bold leading-snug text-[var(--ink)]">
+            {beach.name}
+          </h3>
+          {beach.whatsappUrl ? (
+            <a
+              href={beach.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block text-sm font-bold text-[var(--mark)] underline underline-offset-2"
+            >
+              Join WhatsApp
+            </a>
+          ) : (
+            <p className="mt-1 text-sm italic text-[var(--mute)]">
+              WhatsApp link soon
+            </p>
+          )}
+        </div>
         <div className="flex shrink-0 items-center gap-1">
           {isCheckedInHere ? (
             <p className="rounded-md bg-[var(--mark)] px-2 py-1 text-xs font-bold text-white">
@@ -112,50 +128,45 @@ export function BeachHubCard({
           >
             I’ve finished — check me out
           </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onExtend}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-          >
-            Extend my check-in
-          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onExtend}
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
+            >
+              Extend my check-in
+            </button>
+            <button
+              type="button"
+              disabled={busy || bagsDisabled}
+              onClick={onRequestBags}
+              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+            >
+              Request mesh bags
+            </button>
+          </div>
         </div>
       ) : (
-        <button
-          type="button"
-          disabled={busy || checkInDisabled}
-          onClick={onCheckIn}
-          className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-        >
-          Check in
-        </button>
-      )}
-
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        {beach.whatsappUrl ? (
-          <a
-            href={beach.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#25D366] px-2 py-2.5 text-center text-sm font-bold text-white"
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            disabled={busy || checkInDisabled}
+            onClick={onCheckIn}
+            className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
           >
-            Join WhatsApp
-          </a>
-        ) : (
-          <p className="inline-flex min-h-11 items-center justify-center rounded-md border border-dashed border-[var(--line)] px-2 py-2 text-center text-xs leading-snug text-[var(--mute)]">
-            WhatsApp link soon
-          </p>
-        )}
-        <button
-          type="button"
-          disabled={busy || bagsDisabled}
-          onClick={onRequestBags}
-          className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
-        >
-          Request mesh bags
-        </button>
-      </div>
+            Check in
+          </button>
+          <button
+            type="button"
+            disabled={busy || bagsDisabled}
+            onClick={onRequestBags}
+            className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+          >
+            Request mesh bags
+          </button>
+        </div>
+      )}
     </article>
   );
 }
