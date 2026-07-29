@@ -17,7 +17,7 @@ export function CleanupOverallCallout({
   if (loading) {
     return (
       <div
-        className="min-h-[7rem] rounded-lg border border-[var(--line)] bg-white px-3 py-3"
+        className="min-h-[7rem] rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4"
         aria-hidden="true"
       />
     );
@@ -25,11 +25,11 @@ export function CleanupOverallCallout({
 
   if (!stats || stats.overall.submissionCount === 0) {
     return (
-      <aside className="rounded-lg border border-[var(--line)] bg-white px-3 py-3">
-        <p className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
+      <aside className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4">
+        <p className="text-sm font-bold uppercase tracking-wide text-[var(--alert-ink)]">
           Community effort since the spill
         </p>
-        <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
+        <p className="mt-2 text-sm leading-snug text-[var(--alert-ink)]">
           No clean-ups logged yet. Use <strong>Log your clean-up</strong> on a
           beach card to add time after you’ve finished.
         </p>
@@ -42,16 +42,16 @@ export function CleanupOverallCallout({
     stats.beachCountWithActivity || activeBeachCount;
 
   return (
-    <aside className="rounded-lg border-2 border-[var(--ink)] bg-white px-3 py-3">
-      <p className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
+    <aside className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4">
+      <p className="text-sm font-bold uppercase tracking-wide text-[var(--alert-ink)]">
         Community effort since the spill
       </p>
-      <ul className="mt-2 space-y-1 text-base font-bold leading-snug text-[var(--ink)]">
+      <ul className="mt-2 space-y-1 text-base font-bold leading-snug text-[var(--alert-ink)]">
         <li>{formatVolunteerHours(overall.totalVolunteerHours)}</li>
         <li>{formatVolunteerSessions(overall.totalVolunteerSessions)}</li>
         <li>{formatEstimatedWeight(overall.totalEstimatedWeightKg)}</li>
       </ul>
-      <p className="mt-2 text-sm text-[var(--mute)]">
+      <p className="mt-2 text-sm text-[var(--alert-ink)]/80">
         Across {beaches.toLocaleString("en-GB")} beach
         {beaches === 1 ? "" : "es"}
       </p>

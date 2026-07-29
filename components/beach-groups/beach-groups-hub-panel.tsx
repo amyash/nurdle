@@ -404,6 +404,12 @@ export function BeachGroupsHubPanel() {
         mesh bags for the sewing team. Check-ins expire after two hours.
       </p>
 
+      <CleanupOverallCallout
+        stats={cleanupStats}
+        loading={cleanupStatsLoading}
+        activeBeachCount={checkinBeaches.length}
+      />
+
       <p
         className="text-sm font-bold leading-snug text-[var(--ink)]"
         aria-live="polite"
@@ -439,12 +445,6 @@ export function BeachGroupsHubPanel() {
         statsById={statsById}
         checkedInBeachId={myCheckin?.beachId ?? null}
         onCheckInRequest={openCheckIn}
-      />
-
-      <CleanupOverallCallout
-        stats={cleanupStats}
-        loading={cleanupStatsLoading}
-        activeBeachCount={checkinBeaches.length}
       />
 
       <ul className="space-y-3">
