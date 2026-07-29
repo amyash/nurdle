@@ -33,8 +33,8 @@ const guideById = Object.fromEntries(
 /** Display order under How to collect bullets. */
 const collectContentOrder = [
   { kind: "guide" as const, id: "scrape-wet" },
-  { kind: "guide" as const, id: "bucket-float" },
   { kind: "guide" as const, id: "spade-mesh" },
+  { kind: "guide" as const, id: "bucket-float" },
   { kind: "video" as const, id: "video-2" },
   { kind: "guide" as const, id: "keep-work-manageable" },
   { kind: "guide" as const, id: "mesh-bag-tutorial" },
@@ -192,7 +192,13 @@ export default function BeachCleanupPage() {
                     ))}
                   </ol>
                 )}
-                {guide.cta ? (
+                {guide.notes && guide.notes.length > 0 ? (
+                  <div className="mt-3 space-y-2 text-base leading-snug">
+                    {guide.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                  </div>
+                ) : null}                {guide.cta ? (
                   <a
                     href={guide.cta.href}
                     target="_blank"

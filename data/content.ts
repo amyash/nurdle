@@ -619,11 +619,15 @@ export const techniqueGuides: TechniqueGuide[] = [
   },
   {
     id: "spade-mesh",
-    title: "Spade and mesh bag method",
+    title: "Mesh filter bag method",
     steps: [
       "Scoop the top layer of sand and nurdles with a spade.",
       "Put the mix into a mesh bag and wash it in seawater so sand falls through and nurdles stay in the bag.",
       "Empty nurdles into a strong bin bag labelled as a volunteer collection.",
+    ],
+    notes: [
+      "Do not overload the bags - wet sand is heavy, and will stretch even the strongest mesh. Better to do two trips with smaller loads down to the waterline, than one trip which stretches a bag out.",
+      "Use small bags for carrying directly into the surf, bigger bags for fitting over a trug or bucket.",
     ],
     images: [
       {

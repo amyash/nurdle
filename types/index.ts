@@ -146,6 +146,8 @@ export interface TechniqueGuide {
   title: string;
   steps: string[];
   description?: string;
+  /** Extra tips shown beneath numbered steps. */
+  notes?: string[];
   images?: { src: string; alt: string }[];
   videos?: { title: string; url: string }[];
   instagramUrl?: string;
