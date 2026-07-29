@@ -7,10 +7,10 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 - `/` — community organiser message + actions + scientific briefing
 - `/announcements` — community announcements and updates
 - `/beach-cleanup` — what to bring, how to collect, videos, cleanup techniques, FAQs
-- `/beach-groups` — beaches needing help + WhatsApp links
+- `/beach-groups` — beach hub: map, volunteer check-in, WhatsApp links, mesh bag requests
 - `/collection-points` — official North Tyneside Council bag collection points (map + list)
-- `/press-release` — press / media information (stub until content is added)
-- `/volunteer-check-in` — where volunteers are cleaning (approximate live check-in counts)
+- `/press-release` — press / media information
+- `/volunteer-check-in` — redirects to `/beach-groups`
 - `/community-images` — volunteer photos
 
 ## Run
@@ -24,11 +24,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Update content
 
-Edit **`data/content.ts`** for most site copy. Beach check-in locations live in **`data/checkin-beaches.ts`**.
+Edit **`data/content.ts`** for most site copy. Beach hub locations + WhatsApp links live in **`data/checkin-beaches.ts`**.
 
-## Volunteer Beach Check-in (Supabase)
+## Beach groups hub (Supabase)
 
-This feature needs a Supabase project. Counts stay at zero / show a “not configured” note until env vars are set.
+Check-in counts and mesh bag requests need a Supabase project. Features show a “not configured” note until env vars are set.
 
 ### 1. Create a Supabase project
 
@@ -38,18 +38,21 @@ This feature needs a Supabase project. Counts stay at zero / show a “not confi
    - Project URL
    - `anon` `public` key
 
-### 2. Run the SQL migration
+### 2. Run the SQL migrations
 
-In the Supabase dashboard open **SQL → New query**, paste the contents of:
+In the Supabase dashboard open **SQL → New query**, paste and run:
 
-`supabase/migrations/001_volunteer_checkins.sql`
+1. `supabase/migrations/001_volunteer_checkins.sql` (beaches + check-ins + RPCs)
+2. Later beach inserts if needed: `002`–`006`
+3. `supabase/migrations/007_mesh_bag_requests.sql` (mesh bag requests + RPCs)
 
-Run it. This creates:
+`007` creates:
 
-- `beaches` + seed rows for the North Tyneside check-in locations
-- `volunteer_checkins`
-- RPC functions for aggregated counts, check-in, check-out, and extend
-- Row Level Security so visitors cannot read raw check-in rows
+- `mesh_bag_requests`
+- RPCs: create, list visible, mark delivered, cancel
+- RLS so visitors cannot read/write the table directly
+
+Delivered requests stay visible on the public hub for **10 hours**, then drop from the list (rows are not deleted).
 
 ### 3. Local environment variables
 
@@ -62,23 +65,53 @@ Fill in:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+
+# Optional — sewing team Google Sheet intake
+GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 ```
+
+`GOOGLE_SHEETS_WEBHOOK_URL` is **server-only**. Never prefix it with `NEXT_PUBLIC_`.
 
 Restart `npm run dev`.
 
-### 4. Local testing checklist
+### 4. Google Sheet setup (mesh bag requests)
 
-1. Open `/volunteer-check-in`
+The website is the source of truth. The Sheet is a shared inbox for the sewing team (no sync back).
+
+1. Create a Google Sheet with a tab named **Requests** (or use the first sheet)
+2. Add header row:
+
+   `Request ID | Submitted | Beach | Quantity | Needed | Requester | Notes | Status | Claimed by | ETA | Delivered`
+
+3. **Extensions → Apps Script**
+4. Paste the contents of [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
+5. **Deploy → New deployment → Web app**
+   - Execute as: Me
+   - Who has access: Anyone
+6. Copy the web app URL into `GOOGLE_SHEETS_WEBHOOK_URL`
+
+On each successful Supabase create, the API route `POST /api/mesh-bag-requests` appends a row. If the Sheet webhook fails, the volunteer still sees success (the error is logged server-side).
+
+The last three columns (**Claimed by**, **ETA**, **Delivered**) are for the sewing team to fill manually.
+
+### 5. Local testing checklist
+
+1. Open `/beach-groups` (confirm `/volunteer-check-in` redirects here)
 2. Confirm the map loads (or the list still works if the map fails)
-3. Tap **Check in here** → optional first name → **Confirm check-in**
+3. Tap **Check in** → optional first name → **Confirm check-in**
 4. Confirm the card shows **You’re here**, with check-out / extend actions
-5. Open a private window (different session) and confirm the count increased
-6. Check out / wait for expiry behaviour (expiry is 2 hours; use SQL to shorten `expires_at` while testing if needed)
-7. Check into a second beach and confirm the first session check-in ends
+5. Tap **Request mesh bags** → submit ASAP or scheduled → success message
+6. Open the bag summary / ⋯ menu → mark delivered / cancel with confirm
+7. If `GOOGLE_SHEETS_WEBHOOK_URL` is set, confirm a new Sheet row appears
+8. Open a private window and confirm volunteer counts increase across sessions
 
-### 5. Vercel deployment
+### 6. Vercel deployment
 
-In the Vercel project → **Settings → Environment Variables**, add the same two `NEXT_PUBLIC_…` values for Production (and Preview if you want).
+In the Vercel project → **Settings → Environment Variables**, add:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `GOOGLE_SHEETS_WEBHOOK_URL` (optional)
 
 Redeploy after saving env vars. No paid map API key is required (OpenStreetMap + Leaflet).
 
@@ -88,6 +121,7 @@ Do **not** commit real keys. `.env.local` should stay local / gitignored.
 
 ```bash
 npm run lint
+npm run typecheck
 npm run build
 npm test
 ```
@@ -97,3 +131,4 @@ npm test
 - Check-ins are approximate, anonymous (browser session ID in `localStorage`), and expire after two hours.
 - Exact GPS location is never requested.
 - Names are optional and are not shown as a public roster.
+- Multiple mesh bag requests per beach are allowed; the card shows an aggregated summary.

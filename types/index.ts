@@ -92,16 +92,6 @@ export interface ScientificBriefing {
   fullBriefingHref?: string | null;
 }
 
-export interface BeachNeed {
-  id: string;
-  name: string;
-  need: string;
-  nextWindow: string | null;
-  /** Beach WhatsApp invite link — null until confirmed. */
-  whatsappUrl: string | null;
-  region: "north-tyneside" | "south-tyneside";
-}
-
 export type CommunityCleanupPoint =
   | string
   | {

@@ -1,6 +1,5 @@
 import type {
   Announcement,
-  BeachNeed,
   BriefingEvent,
   BringItem,
   CollectStep,
@@ -510,110 +509,6 @@ export const latestUpdate: LatestUpdate = {
   closing:
     "Be kind to each other. Be patient with each other. We are all trying to figure this out — support each other.",
 };
-
-export const beachesNeedingHelp: BeachNeed[] = [
-  {
-    id: "whitley-bay",
-    name: "Whitley Bay",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: "Monday & Tuesday — details on group",
-    whatsappUrl: "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE",
-    region: "north-tyneside",
-  },
-  {
-    id: "longsands",
-    name: "Longsands",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: "Monday & Tuesday — details on group",
-    whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
-    region: "north-tyneside",
-  },
-  {
-    id: "cullercoats",
-    name: "Cullercoats",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: "Monday & Tuesday — details on group",
-    whatsappUrl: "https://chat.whatsapp.com/LJIE5xqsqWmGAIl2pLt4t2",
-    region: "north-tyneside",
-  },
-  {
-    id: "seaton-sluice",
-    name: "Seaton Sluice",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: "Monday & Tuesday — details on group",
-    whatsappUrl: null,
-    region: "north-tyneside",
-  },
-  {
-    id: "cambois",
-    name: "Cambois",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: null,
-    whatsappUrl: "https://chat.whatsapp.com/C9bWFyadyH15kgIR1QTBLQ",
-    region: "north-tyneside",
-  },
-  {
-    id: "newbiggin",
-    name: "Newbiggin",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: null,
-    whatsappUrl: "https://chat.whatsapp.com/F3BpZ4dw3gmGlqTM7rPftx",
-    region: "north-tyneside",
-  },
-  {
-    id: "haven-beach",
-    name: "Haven Beach",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: null,
-    whatsappUrl: "https://chat.whatsapp.com/IUp4YAxs7Yo7vZAqeO6Z1I",
-    region: "north-tyneside",
-  },
-  {
-    id: "king-edwards-bay",
-    name: "King Edward’s Bay",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: null,
-    whatsappUrl: "https://chat.whatsapp.com/K2lktDs5NAj7UG1SYoDYwh",
-    region: "north-tyneside",
-  },
-  {
-    id: "fish-quay",
-    name: "Fish Quay",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: null,
-    whatsappUrl: "https://chat.whatsapp.com/E3UFrnJFRE719lT7BztWoo",
-    region: "north-tyneside",
-  },
-  {
-    id: "blyth",
-    name: "Blyth",
-    need: "Check WhatsApp for beach-specific updates",
-    nextWindow: null,
-    whatsappUrl: null,
-    region: "north-tyneside",
-  },
-  {
-    id: "browns-jackeys",
-    name: "Brown’s Bay / Jackey’s Bay",
-    need: "Check WhatsApp for beach-specific updates",
-    nextWindow: null,
-    whatsappUrl: null,
-    region: "north-tyneside",
-  },
-  {
-    id: "south-tyneside",
-    name: "South Tyneside",
-    need: "Help needed — join this beach WhatsApp group",
-    nextWindow: null,
-    whatsappUrl: "https://chat.whatsapp.com/Kfd0BABx0dTH9Q9UgUks4r",
-    region: "south-tyneside",
-  },
-];
-
-export const beachGroupRegions = [
-  { id: "north-tyneside" as const, title: "North Tyneside" },
-  { id: "south-tyneside" as const, title: "South Tyneside" },
-];
 
 export const whatToBringIntro = "Whatever you have available.";
 
