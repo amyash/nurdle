@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { checkinBeaches } from "@/data/checkin-beaches";
+import { checkinBeachById } from "@/data/checkin-beaches";
 import { SPILL_START_DATE, todayDateStringLondon } from "@/data/spill";
 import {
   CLEANUP_MAX_VOLUNTEERS,
@@ -38,8 +38,8 @@ export function CleanupLogModal({
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const titleId = useId();
-  const beachFieldId = useId();
   const dateId = useId();
   const hoursId = useId();
   const minutesId = useId();
@@ -53,6 +53,8 @@ export function CleanupLogModal({
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
 
+  const beachName = checkinBeachById[beachId]?.name ?? "this beach";
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -60,10 +62,6 @@ export function CleanupLogModal({
       dialog.showModal();
       formRef.current?.reset();
       setLocalError(null);
-      const beachSelect = formRef.current?.elements.namedItem(
-        "beachId",
-      ) as HTMLSelectElement | null;
-      if (beachSelect && beachId) beachSelect.value = beachId;
       const dateInput = formRef.current?.elements.namedItem(
         "cleanupDate",
       ) as HTMLInputElement | null;
@@ -80,6 +78,8 @@ export function CleanupLogModal({
         "minutes",
       ) as HTMLInputElement | null;
       if (minutes) minutes.value = "0";
+      // Avoid autofocusing inputs that open native pickers (causes modal wobble).
+      titleRef.current?.focus();
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -91,7 +91,7 @@ export function CleanupLogModal({
   return (
     <dialog
       ref={dialogRef}
-      className="fixed left-1/2 top-1/2 z-50 m-0 max-h-[90dvh] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-lg border border-[var(--line)] bg-white p-0 text-[var(--ink)] shadow-lg open:backdrop:bg-black/40"
+      className="fixed left-1/2 top-1/2 z-50 m-0 max-h-[90dvh] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white p-0 text-[var(--ink)] shadow-lg [scrollbar-gutter:stable] open:backdrop:bg-black/40"
       aria-labelledby={titleId}
       onCancel={(event) => {
         event.preventDefault();
@@ -132,7 +132,7 @@ export function CleanupLogModal({
             return;
           }
           onSubmit({
-            beachId: String(data.get("beachId") ?? ""),
+            beachId,
             cleanupDate: String(data.get("cleanupDate") ?? ""),
             durationMinutes: duration.minutes,
             volunteerCount: Number(data.get("volunteerCount")),
@@ -143,29 +143,14 @@ export function CleanupLogModal({
           });
         }}
       >
-        <h2 id={titleId} className="text-lg font-bold leading-snug">
-          Log your clean-up
+        <h2
+          ref={titleRef}
+          id={titleId}
+          tabIndex={-1}
+          className="text-lg font-bold leading-snug outline-none"
+        >
+          Log your clean-up at {beachName}
         </h2>
-
-        <div className="mt-4">
-          <label htmlFor={beachFieldId} className="block text-sm font-bold">
-            Beach
-          </label>
-          <select
-            id={beachFieldId}
-            name="beachId"
-            required
-            disabled={busy}
-            defaultValue={beachId}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base text-[var(--ink)]"
-          >
-            {checkinBeaches.map((beach) => (
-              <option key={beach.id} value={beach.id}>
-                {beach.name}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div className="mt-4">
           <label htmlFor={dateId} className="block text-sm font-bold">
