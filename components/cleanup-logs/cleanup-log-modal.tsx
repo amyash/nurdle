@@ -37,8 +37,8 @@ export function CleanupLogModal({
   }) => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const titleId = useId();
   const dateId = useId();
   const hoursId = useId();
@@ -79,8 +79,10 @@ export function CleanupLogModal({
       if (minutes) minutes.value = "0";
 
       dialog.showModal();
-      dialog.scrollTop = 0;
-      titleRef.current?.focus({ preventScroll: true });
+      if (panelRef.current) panelRef.current.scrollTop = 0;
+      // Focus the dialog itself (not the title/inputs) so nothing gets a
+      // focus ring and native date pickers don't open on show.
+      dialog.focus({ preventScroll: true });
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -92,9 +94,8 @@ export function CleanupLogModal({
   return (
     <dialog
       ref={dialogRef}
-      // `hidden` is required: Tailwind `flex`/`block` would override the
-      // closed <dialog> default (display:none) and leave it stuck on screen.
-      className="fixed inset-0 z-50 m-auto hidden h-fit max-h-[min(90dvh,40rem)] w-[calc(100%-2rem)] max-w-sm overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white p-0 text-[var(--ink)] shadow-lg open:block open:backdrop:bg-black/40"
+      tabIndex={-1}
+      className="fixed inset-0 z-50 m-0 hidden h-[100dvh] max-h-[100dvh] w-full max-w-none items-center justify-center overflow-hidden border-0 bg-transparent p-4 text-[var(--ink)] outline-none focus:outline-none focus-visible:outline-none open:flex open:backdrop:bg-black/40"
       aria-labelledby={titleId}
       onCancel={(event) => {
         event.preventDefault();
@@ -104,56 +105,56 @@ export function CleanupLogModal({
         if (event.target === dialogRef.current && !busy) onClose();
       }}
     >
-      <form
-        ref={formRef}
-        className="px-4 py-4"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (busy) return;
-          setLocalError(null);
-          const data = new FormData(event.currentTarget);
-          const hours = Number(data.get("hours"));
-          const minutes = Number(data.get("minutes"));
-          const duration = parseDurationMinutes(hours, minutes);
-          if (!duration.ok) {
-            setLocalError(
-              "Time spent must be between 15 minutes and 12 hours.",
-            );
-            return;
-          }
-          const volume = estimatedKgForVolume(
-            String(data.get("collectedVolume") ?? ""),
-          );
-          if (!volume.ok) {
-            setLocalError("Please choose how much you collected.");
-            return;
-          }
-          if (data.get("confirmedEstimate") !== "on") {
-            setLocalError(
-              "Please confirm that these figures are your best estimate.",
-            );
-            return;
-          }
-          onSubmit({
-            beachId,
-            cleanupDate: String(data.get("cleanupDate") ?? ""),
-            durationMinutes: duration.minutes,
-            volunteerCount: Number(data.get("volunteerCount")),
-            collectedVolume: volume.id,
-            volunteerName: String(data.get("volunteerName") ?? ""),
-            notes: String(data.get("notes") ?? ""),
-            confirmedEstimate: true,
-          });
-        }}
+      <div
+        ref={panelRef}
+        className="max-h-[90dvh] w-full max-w-sm overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white shadow-lg"
+        onClick={(event) => event.stopPropagation()}
       >
-        <h2
-          ref={titleRef}
-          id={titleId}
-          tabIndex={-1}
-          className="text-lg font-bold leading-snug outline-none"
+        <form
+          ref={formRef}
+          className="px-4 py-4"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (busy) return;
+            setLocalError(null);
+            const data = new FormData(event.currentTarget);
+            const hours = Number(data.get("hours"));
+            const minutes = Number(data.get("minutes"));
+            const duration = parseDurationMinutes(hours, minutes);
+            if (!duration.ok) {
+              setLocalError(
+                "Time spent must be between 15 minutes and 12 hours.",
+              );
+              return;
+            }
+            const volume = estimatedKgForVolume(
+              String(data.get("collectedVolume") ?? ""),
+            );
+            if (!volume.ok) {
+              setLocalError("Please choose how much you collected.");
+              return;
+            }
+            if (data.get("confirmedEstimate") !== "on") {
+              setLocalError(
+                "Please confirm that these figures are your best estimate.",
+              );
+              return;
+            }
+            onSubmit({
+              beachId,
+              cleanupDate: String(data.get("cleanupDate") ?? ""),
+              durationMinutes: duration.minutes,
+              volunteerCount: Number(data.get("volunteerCount")),
+              collectedVolume: volume.id,
+              volunteerName: String(data.get("volunteerName") ?? ""),
+              notes: String(data.get("notes") ?? ""),
+              confirmedEstimate: true,
+            });
+          }}
         >
-          Log your clean-up at {beachName}
-        </h2>
+          <h2 id={titleId} className="text-lg font-bold leading-snug">
+            Log your clean-up at {beachName}
+          </h2>
 
         <div className="mt-4">
           <label htmlFor={dateId} className="block text-sm font-bold">
@@ -337,7 +338,8 @@ export function CleanupLogModal({
             Cancel
           </button>
         </div>
-      </form>
+        </form>
+      </div>
     </dialog>
   );
 }
