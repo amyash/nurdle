@@ -152,9 +152,20 @@ export function CleanupLogModal({
             });
           }}
         >
-          <h2 id={titleId} className="text-lg font-bold leading-snug">
-            Log your clean-up at {beachName}
-          </h2>
+          <div className="flex items-start justify-between gap-3">
+            <h2 id={titleId} className="min-w-0 flex-1 text-lg font-bold leading-snug">
+              Log your clean-up at {beachName}
+            </h2>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onClose}
+              aria-label="Close"
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-2xl font-bold leading-none text-[var(--ink)] disabled:opacity-60"
+            >
+              ×
+            </button>
+          </div>
 
           <div className="mt-4 min-w-0">
             <label htmlFor={dateId} className="block text-sm font-bold">
