@@ -247,6 +247,47 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "lou-morning-cleans-jul-29",
+    datetime: "2026-07-29T21:30:00+01:00",
+    sourceName: "Lou",
+    expandable: true,
+    headline: "North Tyneside beaches having cleans in the morning:",
+    blocks: [
+      {
+        type: "bullets",
+        items: [
+          [
+            "Whitley Bay — Panama swim club from 6am (Guardian covering from 8am)",
+          ],
+          ["Cullercoats — from 7am"],
+          ["Longsands — from early"],
+          ["King Eddie's — from 7am"],
+          ["Fish Quay — from early"],
+        ],
+      },
+      {
+        type: "bullets",
+        intro: ["Small groups and individual nurdling at"],
+        items: [
+          ["Blyth from 6am (small group)"],
+          ["Seaton Sluice morning anytime (individuals)"],
+          ["Newbiggin"],
+        ],
+      },
+      {
+        type: "bullets",
+        intro: ["Checking and keeping an eye on:"],
+        items: [["Druridge Bay"]],
+      },
+      {
+        type: "p",
+        parts: [
+          "If you can't Nurdle but can report back from these locations, especially the ones with fewer people with a rough nurdle count that's great. Use general channel or the specific channel for that beach.",
+        ],
+      },
+    ],
+  },
+  {
     id: "community-press-release-jul-28",
     datetime: "2026-07-28T20:16:00+01:00",
     sourceName: "Community announcement",
