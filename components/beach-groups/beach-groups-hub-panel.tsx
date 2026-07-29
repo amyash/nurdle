@@ -310,7 +310,7 @@ export function BeachGroupsHubPanel() {
     cleanupDate: string;
     durationMinutes: number;
     volunteerCount: number;
-    estimatedWeightKg: number | null;
+    collectedVolume: string;
     volunteerName: string;
     notes: string;
     confirmedEstimate: boolean;

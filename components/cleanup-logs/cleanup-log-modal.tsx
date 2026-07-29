@@ -7,8 +7,9 @@ import {
   CLEANUP_MAX_VOLUNTEERS,
   CLEANUP_NAME_MAX,
   CLEANUP_NOTES_MAX,
+  CLEANUP_VOLUME_OPTIONS,
+  estimatedKgForVolume,
   parseDurationMinutes,
-  parseWeightKg,
 } from "@/lib/cleanup-logs/format";
 
 export function CleanupLogModal({
@@ -29,7 +30,7 @@ export function CleanupLogModal({
     cleanupDate: string;
     durationMinutes: number;
     volunteerCount: number;
-    estimatedWeightKg: number | null;
+    collectedVolume: string;
     volunteerName: string;
     notes: string;
     confirmedEstimate: boolean;
@@ -43,8 +44,7 @@ export function CleanupLogModal({
   const hoursId = useId();
   const minutesId = useId();
   const volunteersId = useId();
-  const weightId = useId();
-  const weightHelpId = useId();
+  const volumeHelpId = useId();
   const nameId = useId();
   const nameHelpId = useId();
   const notesId = useId();
@@ -118,11 +118,11 @@ export function CleanupLogModal({
             );
             return;
           }
-          const weight = parseWeightKg(String(data.get("weight") ?? ""));
-          if (!weight.ok) {
-            setLocalError(
-              "Estimated weight must be between 0 and 1,000 kg (up to two decimal places).",
-            );
+          const volume = estimatedKgForVolume(
+            String(data.get("collectedVolume") ?? ""),
+          );
+          if (!volume.ok) {
+            setLocalError("Please choose how much you collected.");
             return;
           }
           if (data.get("confirmedEstimate") !== "on") {
@@ -136,7 +136,7 @@ export function CleanupLogModal({
             cleanupDate: String(data.get("cleanupDate") ?? ""),
             durationMinutes: duration.minutes,
             volunteerCount: Number(data.get("volunteerCount")),
-            estimatedWeightKg: weight.value,
+            collectedVolume: volume.id,
             volunteerName: String(data.get("volunteerName") ?? ""),
             notes: String(data.get("notes") ?? ""),
             confirmedEstimate: true,
@@ -241,27 +241,30 @@ export function CleanupLogModal({
           />
         </div>
 
-        <div className="mt-4">
-          <label htmlFor={weightId} className="block text-sm font-bold">
-            Estimated weight of nurdles collected{" "}
-            <span className="font-normal text-[var(--mute)]">(kg, optional)</span>
-          </label>
-          <input
-            id={weightId}
-            name="weight"
-            type="number"
-            inputMode="decimal"
-            min={0}
-            max={1000}
-            step={0.1}
-            disabled={busy}
-            aria-describedby={weightHelpId}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
-          />
-          <p id={weightHelpId} className="mt-1 text-sm text-[var(--mute)]">
-            An estimate is absolutely fine. Leave this blank if you are unsure.
+        <fieldset className="mt-4" disabled={busy} aria-describedby={volumeHelpId}>
+          <legend className="text-sm font-bold">How much did you collect?</legend>
+          <div className="mt-2 space-y-1" role="radiogroup">
+            {CLEANUP_VOLUME_OPTIONS.map((option) => (
+              <label
+                key={option.id}
+                className="flex min-h-11 items-center gap-2 text-sm"
+              >
+                <input
+                  type="radio"
+                  name="collectedVolume"
+                  value={option.id}
+                  required
+                  className="h-4 w-4 shrink-0"
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+          <p id={volumeHelpId} className="mt-2 text-sm text-[var(--mute)]">
+            Estimated using 1 litre ≈ 550&nbsp;g of nurdles. Actual weight varies
+            depending on debris and moisture.
           </p>
-        </div>
+        </fieldset>
 
         <div className="mt-4">
           <label htmlFor={nameId} className="block text-sm font-bold">

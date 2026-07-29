@@ -5,8 +5,8 @@ import { SPILL_START_DATE, todayDateStringLondon } from "@/data/spill";
 import {
   CLEANUP_MAX_MINUTES,
   CLEANUP_MAX_VOLUNTEERS,
-  CLEANUP_MAX_WEIGHT_KG,
   CLEANUP_MIN_MINUTES,
+  estimatedKgForVolume,
   sanitiseCleanupName,
   sanitiseCleanupNotes,
 } from "@/lib/cleanup-logs/format";
@@ -99,11 +99,9 @@ export async function POST(request: Request) {
   const cleanupDate = String(record.cleanupDate ?? "");
   const durationMinutes = Number(record.durationMinutes);
   const volunteerCount = Number(record.volunteerCount);
-  const weightRaw = record.estimatedWeightKg;
-  const estimatedWeightKg =
-    weightRaw === null || weightRaw === undefined || weightRaw === ""
-      ? null
-      : Number(weightRaw);
+  const volume = estimatedKgForVolume(
+    record.collectedVolume == null ? "" : String(record.collectedVolume),
+  );
 
   if (!checkinBeachById[beachId]) {
     return NextResponse.json(
@@ -155,30 +153,14 @@ export async function POST(request: Request) {
     );
   }
 
-  if (estimatedWeightKg != null) {
-    if (
-      !Number.isFinite(estimatedWeightKg) ||
-      estimatedWeightKg < 0 ||
-      estimatedWeightKg > CLEANUP_MAX_WEIGHT_KG
-    ) {
-      return NextResponse.json(
-        {
-          error: "invalid_weight",
-          message: "Estimated weight must be between 0 and 1,000 kg.",
-        },
-        { status: 400 },
-      );
-    }
-    const rounded = Math.round(estimatedWeightKg * 100) / 100;
-    if (Math.abs(rounded - estimatedWeightKg) > 0.001) {
-      return NextResponse.json(
-        {
-          error: "invalid_weight",
-          message: "Use up to two decimal places for weight.",
-        },
-        { status: 400 },
-      );
-    }
+  if (!volume.ok) {
+    return NextResponse.json(
+      {
+        error: "invalid_volume",
+        message: "Please choose how much you collected.",
+      },
+      { status: 400 },
+    );
   }
 
   const nameResult = sanitiseCleanupName(
@@ -210,10 +192,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const weightForDb =
-    estimatedWeightKg == null
-      ? null
-      : Math.round(estimatedWeightKg * 100) / 100;
+  const weightForDb = volume.kg;
 
   const { data, error } = await supabase.rpc("create_cleanup_log", {
     p_beach_id: beachId,
@@ -244,9 +223,9 @@ export async function POST(request: Request) {
     } else if (lower.includes("invalid_volunteers")) {
       code = "invalid_volunteers";
       message = "Enter how many people this clean-up included (1–100).";
-    } else if (lower.includes("invalid_weight")) {
-      code = "invalid_weight";
-      message = "Estimated weight must be between 0 and 1,000 kg.";
+    } else if (lower.includes("invalid_weight") || lower.includes("invalid_volume")) {
+      code = "invalid_volume";
+      message = "Please choose how much you collected.";
     } else if (lower.includes("invalid_name")) {
       code = "invalid_name";
       message = "Please use a short name only (letters, spaces, hyphens).";
@@ -279,6 +258,7 @@ export async function POST(request: Request) {
     beachName,
     durationMinutes: row.duration_minutes,
     volunteerCount: row.volunteer_count,
+    collectedVolume: volume.label,
     estimatedWeightKg: row.estimated_weight_kg,
     volunteerName: row.volunteer_name ?? "",
     notes: row.notes ?? "",

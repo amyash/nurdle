@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { aggregateCleanupLogs } from "@/lib/cleanup-logs/aggregate";
 import {
+  estimatedKgForVolume,
   formatEstimatedWeight,
   isValidCleanupDate,
+  litresToEstimatedKg,
   parseDurationMinutes,
-  parseWeightKg,
   volunteerHoursForSubmission,
 } from "@/lib/cleanup-logs/format";
 import { SPILL_START_DATE } from "@/data/spill";
@@ -55,13 +56,28 @@ describe("parseDurationMinutes", () => {
   });
 });
 
-describe("parseWeightKg", () => {
-  it("allows blank weight", () => {
-    expect(parseWeightKg("")).toEqual({ ok: true, value: null });
+describe("estimatedKgForVolume", () => {
+  it("converts 1 litre at 550 g/L", () => {
+    expect(litresToEstimatedKg(1)).toBe(0.55);
+    expect(estimatedKgForVolume("1-litre")).toEqual({
+      ok: true,
+      id: "1-litre",
+      label: "1 litre",
+      kg: 0.55,
+    });
   });
 
-  it("accepts decimals", () => {
-    expect(parseWeightKg("2.5")).toEqual({ ok: true, value: 2.5 });
+  it("uses midpoints for volume ranges", () => {
+    expect(estimatedKgForVolume("2-5-litres")).toEqual({
+      ok: true,
+      id: "2-5-litres",
+      label: "2–5 litres",
+      kg: 1.93,
+    });
+  });
+
+  it("rejects unknown volumes", () => {
+    expect(estimatedKgForVolume("bucket")).toEqual({ ok: false });
   });
 });
 

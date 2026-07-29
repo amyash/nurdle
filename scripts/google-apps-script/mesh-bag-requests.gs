@@ -6,7 +6,9 @@
  * 2. Sheet tab "Cleanup Logs" with headers:
  *    ID | Submitted At | Cleanup Date | Beach ID | Beach Name |
  *    Duration Minutes | Volunteer Count | Estimated Weight Kg |
- *    Volunteer Name | Notes
+ *    Volunteer Name | Notes | Collected Volume
+ *    (If the sheet already has rows, add "Collected Volume" as a new
+ *     final header column — do not insert it between existing columns.)
  * 3. Extensions → Apps Script — replace with this file, Save
  * 4. Deploy → Manage deployments → New version (or New deployment)
  *    - Execute as: Me
@@ -16,6 +18,9 @@
  * Payload routing:
  * - { type: "cleanup-log", ... } → Cleanup Logs tab
  * - anything else (mesh bags) → Requests tab
+ *
+ * Weight conversion (done by the hub before POST):
+ * 1 litre ≈ 550 g of nurdles. Ranges use midpoints.
  */
 
 function doPost(e) {
@@ -44,6 +49,7 @@ function doPost(e) {
           "Estimated Weight Kg",
           "Volunteer Name",
           "Notes",
+          "Collected Volume",
         ]);
       }
 
@@ -58,6 +64,7 @@ function doPost(e) {
         data.estimatedWeightKg == null ? "" : data.estimatedWeightKg,
         data.volunteerName || "",
         data.notes || "",
+        data.collectedVolume || "",
       ]);
     } else {
       // mesh-bag (default) — existing Requests tab

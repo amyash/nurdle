@@ -33,6 +33,7 @@ export type CleanupLogErrorCode =
   | "invalid_duration"
   | "invalid_volunteers"
   | "invalid_weight"
+  | "invalid_volume"
   | "invalid_name"
   | "invalid_notes"
   | "confirmation_required"
@@ -48,7 +49,7 @@ export interface CreateCleanupLogInput {
   cleanupDate: string;
   durationMinutes: number;
   volunteerCount: number;
-  estimatedWeightKg?: number | null;
+  collectedVolume: string;
   volunteerName?: string | null;
   notes?: string | null;
   confirmedEstimate: boolean;

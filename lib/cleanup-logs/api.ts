@@ -49,10 +49,10 @@ function errorFromMessage(message: string): {
       message: "Enter how many people this clean-up included (1–100).",
     };
   }
-  if (lower.includes("invalid_weight")) {
+  if (lower.includes("invalid_weight") || lower.includes("invalid_volume")) {
     return {
-      code: "invalid_weight",
-      message: "Estimated weight must be between 0 and 1,000 kg.",
+      code: "invalid_volume",
+      message: "Please choose how much you collected.",
     };
   }
   if (lower.includes("invalid_name")) {
@@ -154,7 +154,7 @@ export async function createCleanupLog(
         cleanupDate: input.cleanupDate,
         durationMinutes: input.durationMinutes,
         volunteerCount: input.volunteerCount,
-        estimatedWeightKg: input.estimatedWeightKg ?? null,
+        collectedVolume: input.collectedVolume,
         volunteerName: input.volunteerName ?? null,
         notes: input.notes ?? null,
         confirmedEstimate: true,

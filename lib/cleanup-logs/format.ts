@@ -8,6 +8,39 @@ export const CLEANUP_MAX_MINUTES = 12 * 60;
 export const CLEANUP_MAX_VOLUNTEERS = 100;
 export const CLEANUP_MAX_WEIGHT_KG = 1000;
 
+/** 1 litre of nurdles ≈ 550 g. Midpoints used for ranges. */
+export const NURDLE_KG_PER_LITRE = 0.55;
+
+export const CLEANUP_VOLUME_OPTIONS = [
+  { id: "handful", label: "Handful", litres: 0.05 },
+  { id: "cup", label: "Cup (~250 ml)", litres: 0.25 },
+  { id: "half-litre", label: "Half litre", litres: 0.5 },
+  { id: "1-litre", label: "1 litre", litres: 1 },
+  { id: "2-5-litres", label: "2–5 litres", litres: 3.5 },
+  { id: "5-10-litres", label: "5–10 litres", litres: 7.5 },
+  { id: "more-than-10-litres", label: "More than 10 litres", litres: 12.5 },
+] as const;
+
+export type CleanupVolumeId = (typeof CLEANUP_VOLUME_OPTIONS)[number]["id"];
+
+export function litresToEstimatedKg(litres: number): number {
+  return Math.round(litres * NURDLE_KG_PER_LITRE * 100) / 100;
+}
+
+export function estimatedKgForVolume(
+  volumeId: string | null | undefined,
+): { ok: true; id: CleanupVolumeId; label: string; kg: number } | { ok: false } {
+  if (volumeId == null || volumeId === "") return { ok: false };
+  const option = CLEANUP_VOLUME_OPTIONS.find((item) => item.id === volumeId);
+  if (!option) return { ok: false };
+  return {
+    ok: true,
+    id: option.id,
+    label: option.label,
+    kg: litresToEstimatedKg(option.litres),
+  };
+}
+
 export function emptyCleanupAggregate(): CleanupAggregate {
   return {
     totalDurationMinutes: 0,
@@ -118,19 +151,3 @@ export function sanitiseCleanupNotes(raw: string | null | undefined): {
   return { ok: true, value: trimmed };
 }
 
-export function parseWeightKg(raw: string | null | undefined): {
-  ok: true;
-  value: number | null;
-} | {
-  ok: false;
-} {
-  if (raw == null) return { ok: true, value: null };
-  const trimmed = String(raw).trim();
-  if (!trimmed) return { ok: true, value: null };
-  if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return { ok: false };
-  const value = Number(trimmed);
-  if (!Number.isFinite(value) || value < 0 || value > CLEANUP_MAX_WEIGHT_KG) {
-    return { ok: false };
-  }
-  return { ok: true, value };
-}

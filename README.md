@@ -89,7 +89,7 @@ The website (Supabase) is the source of truth. The Sheet is a shared inbox (no s
 1. Keep a tab named **Requests** for mesh bags (existing headers)
 2. Add a tab named **Cleanup Logs** with header row:
 
-   `ID | Submitted At | Cleanup Date | Beach ID | Beach Name | Duration Minutes | Volunteer Count | Estimated Weight Kg | Volunteer Name | Notes`
+   `ID | Submitted At | Cleanup Date | Beach ID | Beach Name | Duration Minutes | Volunteer Count | Estimated Weight Kg | Volunteer Name | Notes | Collected Volume`
 
 3. **Extensions → Apps Script** — replace the script with [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
 4. **Deploy → Manage deployments → Edit → New version** (or New deployment if first time)
