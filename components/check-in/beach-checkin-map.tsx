@@ -23,6 +23,35 @@ function markerRadius(count: number): number {
   return 18;
 }
 
+/** One-finger scroll keeps the page moving; two fingers pan the map. */
+function setupTwoFingerPan(map: import("leaflet").Map) {
+  const container = map.getContainer();
+  const coarse =
+    typeof window !== "undefined" &&
+    window.matchMedia("(pointer: coarse)").matches;
+  if (!coarse && !("ontouchstart" in window)) return;
+
+  map.dragging.disable();
+  container.style.touchAction = "pan-y";
+
+  const syncDrag = (touchCount: number) => {
+    if (touchCount >= 2) {
+      map.dragging.enable();
+      container.style.touchAction = "none";
+    } else {
+      map.dragging.disable();
+      container.style.touchAction = "pan-y";
+    }
+  };
+
+  const onStart = (event: TouchEvent) => syncDrag(event.touches.length);
+  const onEnd = (event: TouchEvent) => syncDrag(event.touches.length);
+
+  container.addEventListener("touchstart", onStart, { passive: true });
+  container.addEventListener("touchend", onEnd, { passive: true });
+  container.addEventListener("touchcancel", onEnd, { passive: true });
+}
+
 export function BeachCheckinMap({
   beaches,
   statsById,
@@ -68,6 +97,8 @@ export function BeachCheckinMap({
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           maxZoom: 18,
         }).addTo(map);
+
+        setupTwoFingerPan(map);
 
         const layer = L.layerGroup().addTo(map);
         mapRef.current = map;
@@ -158,10 +189,14 @@ export function BeachCheckinMap({
 
     if (bounds.length > 0) {
       map.fitBounds(bounds as import("leaflet").LatLngBoundsExpression, {
-        padding: [36, 36],
-        // Allow a closer zoom so nearby Whitley Bay markers stay distinguishable
-        maxZoom: 14,
+        padding: [24, 24],
+        maxZoom: 15,
       });
+      // One step closer so nearby beaches (e.g. Whitley Bay) stay distinct
+      const zoom = map.getZoom();
+      if (typeof zoom === "number") {
+        map.setZoom(Math.min(zoom + 1, 15));
+      }
     }
 
     map.invalidateSize();
@@ -192,6 +227,9 @@ export function BeachCheckinMap({
         role="img"
         aria-label="Map of North Tyneside beaches used for volunteer check-in. Full details are listed below."
       />
+      <p className="border-t border-[var(--line)] px-3 py-2 text-xs leading-snug text-[var(--mute)] sm:hidden">
+        Use two fingers to move the map. One finger scrolls the page.
+      </p>
     </div>
   );
 }
