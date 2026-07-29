@@ -264,10 +264,9 @@ export function CleanupLogModal({
               </label>
             ))}
           </div>
-          <p id={volumeHelpId} className="mt-2 text-sm text-[var(--mute)]">
-            Estimated using 1 litre ≈ 550&nbsp;g of nurdles. Actual weight varies
-            depending on debris and moisture.
-          </p>
+            <p id={volumeHelpId} className="mt-2 text-sm text-[var(--mute)]">
+              Estimated using 1 litre ≈ 550&nbsp;g of nurdles.
+            </p>
         </fieldset>
 
         <div className="mt-4">
