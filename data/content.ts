@@ -628,6 +628,7 @@ export const techniqueGuides: TechniqueGuide[] = [
     notes: [
       "Do not overload the bags - wet sand is heavy, and will stretch even the strongest mesh. Better to do two trips with smaller loads down to the waterline, than one trip which stretches a bag out.",
       "Use small bags for carrying directly into the surf, bigger bags for fitting over a trug or bucket.",
+      "If you find Nurdles are passing through mesh bags, use those bags for seaweed capture instead, stretched over a bucket",
     ],
     images: [
       {
