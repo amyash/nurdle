@@ -249,8 +249,7 @@ export const announcements: Announcement[] = [
   {
     id: "lou-morning-cleans-jul-29",
     datetime: "2026-07-29T21:30:00+01:00",
-    sourceName: "Lou",
-    expandable: true,
+    sourceName: "Lou · Community admin",
     headline: "North Tyneside beaches having cleans in the morning:",
     blocks: [
       {
