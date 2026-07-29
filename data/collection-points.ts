@@ -36,7 +36,7 @@ export const collectionPoints: CollectionPoint[] = [
     beachId: "whitley-bay",
     latitude: 55.0534426,
     longitude: -1.4505963,
-    description: "By Rendezvous Cafe.",
+    description: "Promenade by skate park",
     landmarkUsed: "Rendezvous Cafe Google Maps pin",
     mapsUrl: "https://maps.app.goo.gl/JcnLM3QkjZFboinY8?g_st=ic",
     sourceUrl: COUNCIL_GUIDANCE_URL,
