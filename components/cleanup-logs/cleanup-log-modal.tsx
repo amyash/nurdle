@@ -107,12 +107,12 @@ export function CleanupLogModal({
     >
       <div
         ref={panelRef}
-        className="max-h-[90dvh] w-full max-w-sm overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white shadow-lg"
+        className="max-h-[90dvh] w-full min-w-0 max-w-sm overflow-x-hidden overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white shadow-lg"
         onClick={(event) => event.stopPropagation()}
       >
         <form
           ref={formRef}
-          className="px-4 py-4"
+          className="min-w-0 px-4 py-4"
           onSubmit={(event) => {
             event.preventDefault();
             if (busy) return;
@@ -156,22 +156,22 @@ export function CleanupLogModal({
             Log your clean-up at {beachName}
           </h2>
 
-        <div className="mt-4">
-          <label htmlFor={dateId} className="block text-sm font-bold">
-            Date of clean-up
-          </label>
-          <input
-            id={dateId}
-            name="cleanupDate"
-            type="date"
-            required
-            disabled={busy}
-            min={SPILL_START_DATE}
-            max={maxDate}
-            defaultValue={maxDate}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base text-[var(--ink)]"
-          />
-        </div>
+          <div className="mt-4 min-w-0">
+            <label htmlFor={dateId} className="block text-sm font-bold">
+              Date of clean-up
+            </label>
+            <input
+              id={dateId}
+              name="cleanupDate"
+              type="date"
+              required
+              disabled={busy}
+              min={SPILL_START_DATE}
+              max={maxDate}
+              defaultValue={maxDate}
+              className="mt-1 box-border w-full min-w-0 max-w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base text-[var(--ink)]"
+            />
+          </div>
 
         <fieldset className="mt-4" disabled={busy}>
           <legend className="text-sm font-bold">Time spent cleaning</legend>
