@@ -3,7 +3,7 @@ import type { OpenLetterSignaturePublic } from "@/types/open-letter";
 export type RpcOpenLetterSignatureRow = {
   id: string;
   full_name: string;
-  address: string;
+  town: string;
   signed_at: string;
 };
 
@@ -13,11 +13,12 @@ export type RpcOpenLetterStatsRow = {
 
 export function mapOpenLetterSignatureRow(
   row: RpcOpenLetterSignatureRow,
-): OpenLetterSignaturePublic {
+): OpenLetterSignaturePublic | null {
+  if (!row.town) return null;
   return {
     id: row.id,
     fullName: row.full_name,
-    address: row.address,
+    town: row.town,
     signedAt: row.signed_at,
   };
 }

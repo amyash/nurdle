@@ -1,7 +1,7 @@
 export interface OpenLetterSignaturePublic {
   id: string;
   fullName: string;
-  address: string;
+  town: string;
   signedAt: string;
 }
 
@@ -12,7 +12,9 @@ export interface OpenLetterSignatureStats {
 export type OpenLetterErrorCode =
   | "not_configured"
   | "invalid_name"
+  | "invalid_town"
   | "invalid_address"
+  | "invalid_email"
   | "consent_required"
   | "duplicate"
   | "network"
@@ -24,8 +26,10 @@ export type OpenLetterMutationResult =
 
 export interface CreateOpenLetterSignatureInput {
   fullName: string;
+  town: string;
   address: string;
-  /** When true, name and address appear on the public signatories list. */
+  email?: string | null;
+  /** When true, name and town appear on the public signatories list. */
   publishPublicly: boolean;
   consentHeld: boolean;
 }

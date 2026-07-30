@@ -311,10 +311,6 @@ export const announcements: Announcement[] = [
         parts: ["YOU ARE ALL NORTH EAST LEGENDS"],
       },
     ],
-    link: {
-      label: "Sign the open letter",
-      href: "/open-letter",
-    },
   },
   {
     id: "lou-morning-cleans-jul-29",

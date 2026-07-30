@@ -8,7 +8,9 @@ import {
 } from "@/lib/open-letter/api";
 import {
   OPEN_LETTER_ADDRESS_MAX,
+  OPEN_LETTER_EMAIL_MAX,
   OPEN_LETTER_NAME_MAX,
+  OPEN_LETTER_TOWN_MAX,
   formatSignatureCount,
   formatSignatureCountHeadline,
 } from "@/lib/open-letter/format";
@@ -25,7 +27,9 @@ function emptyStats(): OpenLetterSignatureStats {
 export function OpenLetterPanel() {
   const configured = isSupabaseConfigured();
   const nameFieldId = useId();
+  const townFieldId = useId();
   const addressFieldId = useId();
+  const emailFieldId = useId();
   const publishId = useId();
   const consentId = useId();
   const formHeadingId = useId();
@@ -82,7 +86,9 @@ export function OpenLetterPanel() {
     const form = event.currentTarget;
     const data = new FormData(form);
     const fullName = String(data.get("fullName") ?? "");
+    const town = String(data.get("town") ?? "");
     const address = String(data.get("address") ?? "");
+    const email = String(data.get("email") ?? "");
     const publishPublicly = data.get("publishPublicly") === "on";
     const consentHeld = data.get("consentHeld") === "on";
 
@@ -92,7 +98,9 @@ export function OpenLetterPanel() {
 
     const result = await createOpenLetterSignature({
       fullName,
+      town,
       address,
+      email: email || null,
       publishPublicly,
       consentHeld,
     });
@@ -106,7 +114,7 @@ export function OpenLetterPanel() {
     form.reset();
     setSuccessMessage(
       publishPublicly
-        ? "Thank you — your signature has been added publicly."
+        ? "Thank you — your name and town have been added publicly."
         : "Thank you — your signature has been counted anonymously.",
     );
 
@@ -216,9 +224,9 @@ export function OpenLetterPanel() {
           Sign the open letter
         </h2>
         <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
-          Add your name and address to support this call for a coordinated
-          marine recovery response on the River Tyne. You can keep your details
-          off the public list if you prefer.
+          Add your details to support this call for a coordinated marine
+          recovery response on the River Tyne. By default we publish only your
+          name and town; full address and email stay private for organisers.
         </p>
 
         {!configured ? (
@@ -260,10 +268,32 @@ export function OpenLetterPanel() {
 
           <div>
             <label
+              htmlFor={townFieldId}
+              className="block text-sm font-bold text-[var(--ink)]"
+            >
+              Town / city
+            </label>
+            <input
+              id={townFieldId}
+              name="town"
+              type="text"
+              required
+              disabled={busy || !configured}
+              maxLength={OPEN_LETTER_TOWN_MAX}
+              autoComplete="address-level2"
+              className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base disabled:opacity-60"
+            />
+            <p className="mt-1 text-xs leading-snug text-[var(--mute)]">
+              Shown publicly if you keep the publish option ticked.
+            </p>
+          </div>
+
+          <div>
+            <label
               htmlFor={addressFieldId}
               className="block text-sm font-bold text-[var(--ink)]"
             >
-              Address
+              Full address
             </label>
             <textarea
               id={addressFieldId}
@@ -275,6 +305,32 @@ export function OpenLetterPanel() {
               autoComplete="street-address"
               className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base disabled:opacity-60"
             />
+            <p className="mt-1 text-xs leading-snug text-[var(--mute)]">
+              Not published on the site — held for organisers only.
+            </p>
+          </div>
+
+          <div>
+            <label
+              htmlFor={emailFieldId}
+              className="block text-sm font-bold text-[var(--ink)]"
+            >
+              Email{" "}
+              <span className="font-normal text-[var(--mute)]">(optional)</span>
+            </label>
+            <input
+              id={emailFieldId}
+              name="email"
+              type="email"
+              disabled={busy || !configured}
+              maxLength={OPEN_LETTER_EMAIL_MAX}
+              autoComplete="email"
+              className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base disabled:opacity-60"
+            />
+            <p className="mt-1 text-xs leading-snug text-[var(--mute)]">
+              Never shown publicly. Used only if organisers need to contact you
+              about this letter.
+            </p>
           </div>
 
           <label
@@ -285,13 +341,13 @@ export function OpenLetterPanel() {
               id={publishId}
               name="publishPublicly"
               type="checkbox"
+              defaultChecked
               disabled={busy || !configured}
               className="mt-1 h-4 w-4 shrink-0"
             />
             <span>
-              Show my name and address publicly on this page. Leave unchecked to
-              stay anonymous on the site (organisers still receive your
-              details).
+              Show my name and town publicly on this page. Untick to stay
+              anonymous on the site (organisers still receive your details).
             </span>
           </label>
 
@@ -309,7 +365,7 @@ export function OpenLetterPanel() {
             />
             <span>
               I confirm this is my signature and community organisers may hold
-              my name and address with this letter.
+              my name, town, address and email (if provided) with this letter.
             </span>
           </label>
 
@@ -346,7 +402,8 @@ export function OpenLetterPanel() {
           Public signatories
         </h2>
         <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
-          Only people who chose to publish their details appear here.
+          Public list shows name and town only. Full address and email are never
+          shown here.
         </p>
 
         {loading ? (
@@ -367,8 +424,8 @@ export function OpenLetterPanel() {
                 <p className="font-bold text-[var(--ink)]">
                   {signature.fullName}
                 </p>
-                <p className="mt-1 whitespace-pre-line text-sm leading-snug text-[var(--mute)]">
-                  {signature.address}
+                <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
+                  {signature.town}
                 </p>
               </li>
             ))}

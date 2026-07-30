@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
-import { OpenLetterPanel } from "@/components/open-letter/open-letter-panel";
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
   title: "Open letter",
   description:
-    "Open letter calling on the Port of Tyne to allow qualified marine operators to assist river-source nurdle recovery. Sign with your name and address.",
+    "Open letter signing is temporarily paused while we review how signature data is handled.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function OpenLetterPage() {
   return (
     <PageShell title="Open letter">
-      <noscript>
-        <p className="mb-4 text-sm leading-snug text-[var(--mute)]">
-          Signing needs JavaScript. You can still read the letter, then sign
-          once JavaScript is available.
+      <div className="space-y-4">
+        <p className="text-base leading-snug text-[var(--ink)]">
+          Signing is temporarily paused while we review how signature data is
+          handled.
         </p>
-      </noscript>
-      <OpenLetterPanel />
+        <p className="text-sm leading-snug text-[var(--mute)]">
+          Thanks for your patience — this page will return once we’re confident
+          the process protects people’s privacy.
+        </p>
+      </div>
     </PageShell>
   );
 }

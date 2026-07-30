@@ -76,7 +76,9 @@ var OPEN_LETTER_HEADERS = [
   "ID",
   "Signed At",
   "Full Name",
+  "Town",
   "Address",
+  "Email",
   "Public",
 ];
 
@@ -280,7 +282,9 @@ function doPost(e) {
         data.id || "",
         data.signedAt || "",
         data.fullName || "",
+        data.town || "",
         data.address || "",
+        data.email || "",
         data.isPublic || "",
       ]);
       return jsonResponse_({

@@ -42,7 +42,7 @@ export async function fetchOpenLetterData(): Promise<
   try {
     const supabase = getSupabaseBrowserClient();
     const [listResult, statsResult] = await Promise.all([
-      supabase.rpc("list_open_letter_signatures"),
+      supabase.rpc("list_public_open_letter_signatories"),
       supabase.rpc("get_open_letter_signature_stats"),
     ]);
 
@@ -54,9 +54,9 @@ export async function fetchOpenLetterData(): Promise<
       };
     }
 
-    const signatures = (
-      (listResult.data ?? []) as RpcOpenLetterSignatureRow[]
-    ).map(mapOpenLetterSignatureRow);
+    const signatures = ((listResult.data ?? []) as RpcOpenLetterSignatureRow[])
+      .map(mapOpenLetterSignatureRow)
+      .filter((item): item is OpenLetterSignaturePublic => item != null);
 
     const statsRows = (statsResult.data ?? []) as RpcOpenLetterStatsRow[];
 
@@ -90,7 +90,9 @@ export async function createOpenLetterSignature(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fullName: input.fullName,
+        town: input.town,
         address: input.address,
+        email: input.email ?? null,
         publishPublicly: input.publishPublicly,
         consentHeld: input.consentHeld,
       }),

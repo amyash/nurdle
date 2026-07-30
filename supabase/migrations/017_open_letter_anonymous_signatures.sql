@@ -1,11 +1,13 @@
 -- Open letter: allow anonymous (non-public) signatures; list only public names.
 -- Run after 016_open_letter_signatures.sql.
+--
+-- Safe to run: adds a column and replaces functions. Does not delete signature rows.
+-- (No DROP TABLE / DELETE — only function definitions change.)
 
 alter table public.open_letter_signatures
   add column if not exists is_public boolean not null default true;
 
-drop function if exists public.create_open_letter_signature(text, text);
-
+-- New overload with p_is_public (old 2-arg function can remain unused)
 create or replace function public.create_open_letter_signature(
   p_full_name text,
   p_address text,
