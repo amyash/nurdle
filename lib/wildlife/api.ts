@@ -113,7 +113,13 @@ export async function createWildlifeReport(
     });
 
     const payload = (await response.json().catch(() => null)) as
-      | { id?: string; error?: string; message?: string }
+      | {
+          id?: string;
+          status?: string;
+          report?: WildlifeReportPublic | null;
+          error?: string;
+          message?: string;
+        }
       | null;
 
     if (!response.ok || !payload?.id) {
@@ -126,7 +132,11 @@ export async function createWildlifeReport(
       );
     }
 
-    return { ok: true, id: payload.id };
+    return {
+      ok: true,
+      id: payload.id,
+      report: payload.report ?? null,
+    };
   } catch {
     return fail(
       "network",

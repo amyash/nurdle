@@ -293,7 +293,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: code, message }, { status: 400 });
   }
 
-  const rows = (data ?? []) as { id: string; status: string; submitted_at: string }[];
+  const rows = (
+    Array.isArray(data) ? data : data ? [data] : []
+  ) as { id: string; status: string; submitted_at: string }[];
   const row = rows[0];
   if (!row) {
     return NextResponse.json(
@@ -326,7 +328,33 @@ export async function POST(request: Request) {
     reporterName: nameResult.value ?? "",
   });
 
-  return NextResponse.json({ id: row.id, status: row.status });
+  // Public payload for immediate UI update (no PII).
+  return NextResponse.json({
+    id: row.id,
+    status: row.status,
+    report: beach
+      ? {
+          id: row.id,
+          beachId,
+          beachName: beach.name,
+          dateObserved,
+          timeObserved,
+          animalType,
+          species: speciesResult.value,
+          count,
+          condition,
+          description: descriptionResult.value,
+          hasSupportingEvidence: Boolean(record.hasSupportingEvidence),
+          // Show on the public board immediately even if the DB row is still
+          // pending (auto-publish migration not applied yet).
+          status: "approved",
+          verifiedAt: row.submitted_at,
+          submittedAt: row.submitted_at,
+          latitude: beach.latitude,
+          longitude: beach.longitude,
+        }
+      : null,
+  });
 }
 
 export async function DELETE(request: Request) {

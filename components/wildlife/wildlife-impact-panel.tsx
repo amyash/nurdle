@@ -168,11 +168,47 @@ export function WildlifeImpactPanel() {
 
     setFormOpen(false);
     setShowSuccess(true);
+    setFilter("all");
+
+    if (result.report) {
+      setReports((prev) => [
+        result.report!,
+        ...prev.filter((item) => item.id !== result.report!.id),
+      ]);
+      setStats((prev) => ({
+        verifiedReports: prev.verifiedReports + 1,
+        animalsReported: prev.animalsReported + result.report!.count,
+        speciesRecorded: prev.speciesRecorded,
+      }));
+    }
+
     const refreshed = await fetchWildlifeImpactData();
-    if (refreshed.ok) {
+    if (!refreshed.ok) return;
+
+    const serverHasNew = refreshed.reports.some((item) => item.id === result.id);
+    if (serverHasNew || !result.report) {
       setReports(refreshed.reports);
       setStats(refreshed.stats);
+      return;
     }
+
+    // DB may still be on pending-only create (migration 015 not applied).
+    // Keep the just-submitted report visible and merge any other approved rows.
+    setReports([
+      result.report,
+      ...refreshed.reports.filter((item) => item.id !== result.report!.id),
+    ]);
+    setStats({
+      verifiedReports: Math.max(
+        refreshed.stats.verifiedReports,
+        refreshed.reports.length + 1,
+      ),
+      animalsReported: Math.max(
+        refreshed.stats.animalsReported,
+        refreshed.stats.animalsReported + result.report.count,
+      ),
+      speciesRecorded: refreshed.stats.speciesRecorded,
+    });
   }
 
   async function handleRemove(email: string) {

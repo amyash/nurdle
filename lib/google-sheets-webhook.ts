@@ -5,7 +5,7 @@
  */
 export async function postGoogleAppsScriptWebhook(
   webhookUrl: string,
-  payload: Record<string, string | number | null>,
+  payload: Record<string, string | number | boolean | null>,
 ): Promise<{ ok: boolean; status: number; body: string }> {
   const response = await fetch(webhookUrl, {
     method: "POST",

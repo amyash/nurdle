@@ -1,6 +1,6 @@
--- Wildlife impact reports (moderated community sightings)
+-- Wildlife impact reports (community sightings)
 -- Run in the Supabase SQL editor after prior migrations.
--- Reports default to pending; only approved rows appear publicly.
+-- Reports are published on submit; only non-removed approved rows appear publicly.
 
 create table if not exists public.wildlife_reports (
   id uuid primary key default gen_random_uuid(),
@@ -15,7 +15,7 @@ create table if not exists public.wildlife_reports (
   has_supporting_evidence boolean not null default false,
   email text not null,
   reporter_name text,
-  status text not null default 'pending',
+  status text not null default 'approved',
   verified_at timestamptz,
   submitted_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
@@ -158,7 +158,8 @@ begin
     has_supporting_evidence,
     email,
     reporter_name,
-    status
+    status,
+    verified_at
   )
   values (
     p_beach_id,
@@ -172,7 +173,8 @@ begin
     coalesce(p_has_supporting_evidence, false),
     v_email,
     v_name,
-    'pending'
+    'approved',
+    now()
   )
   returning
     wildlife_reports.id,

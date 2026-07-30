@@ -39,8 +39,8 @@ const collectContentOrder = [
 
 export default function HowToCleanPage() {
   return (
-    <PageShell title="How to clean" className="!pb-0">
-      <Section id="bring" title="What to bring">
+    <PageShell className="!pb-0">
+      <Section id="bring" title="What to bring" showDivider={false}>
         <p className="mb-3 text-base font-bold leading-snug text-[var(--ink)]">
           {whatToBringIntro}
         </p>

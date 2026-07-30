@@ -278,9 +278,11 @@ export function BeachGroupsHubPanel() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm leading-snug text-[var(--mute)]">
-        Check in when you arrive, join the beach WhatsApp group, and log your
-        clean-up. Check-ins expire after two hours.
+      <p className="text-base leading-snug text-[var(--ink)]">
+        Find where volunteers are cleaning, join the beach WhatsApp group, check
+        in when you arrive, and log your clean-up. Cards also show council
+        nurdle collection points where available. Check-ins expire after two
+        hours.
       </p>
 
       <CleanupOverallCallout

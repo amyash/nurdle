@@ -66,7 +66,7 @@ export type WildlifeErrorCode =
   | "unknown";
 
 export type WildlifeMutationResult =
-  | { ok: true; id: string }
+  | { ok: true; id: string; report: WildlifeReportPublic | null }
   | { ok: false; error: WildlifeErrorCode; message: string };
 
 export type WildlifeDeleteResult =

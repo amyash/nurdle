@@ -18,7 +18,7 @@ export function OrganiserMessagePanel({
         {message.headline}
       </h2>
 
-      <div className="mt-3 space-y-2 text-sm leading-snug text-[var(--ink)]">
+      <div className="mt-3 space-y-2 text-base leading-snug text-[var(--ink)]">
         {message.context.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
