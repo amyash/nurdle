@@ -247,6 +247,76 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "sally-what-now-jul-30",
+    datetime: "2026-07-30T18:25:00+01:00",
+    sourceName: "Sally Yonder · Community admin",
+    headline: "⚡️ What now? ⚡️",
+    blocks: [
+      {
+        type: "lg",
+        parts: ["Is there an end?!"],
+      },
+      {
+        type: "p",
+        parts: [
+          "We have it under good authority that the sense of urgency and the need for ‘two tidal sessions a day’ cleans will end on Monday as the tides switch. Instead there will be a need for weekly cleans for those that are able to support and continued individual collecting.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "Sadly this does not mean the situation will go away it means that we will have these nurdles in our world for a long time to come but we have done our absolute best. Where others that are paid to act and failed this community has shown exceptional initiative, passion, creativity, leadership, skills, resilience - we’ve thrown the kitchen sink at it and we cannot be disheartened by that. Ever.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "By Monday the expectation is that the groups that have formed within this near 2000 person strong WhatsApp Community - (and what fun we’ve had 🤝🙌🤯😅☹️⚡️😮‍💨😫😥) will be supported in splitting into their own sub groups - hopefully with an umbrella overview to support and continue pursing policy change and holding those in positions of responsibility accountable.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["⚡️We have one final push ⚡️"],
+      },
+      {
+        type: "p",
+        parts: [
+          "I would like us to focus our attention also to the Port of Tyne specifically. According to the BBC It took three days to acknowledge the spill. It took a further two days - to get acting. Where fast acting efforts could have been made, our river, our seas, beaches and wild life were failed.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "Not only this but there are STILL thousands of nurdles in the river despite voluntary efforts being made to step up, they have been asked instead to step down by the Port of Tyne.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "The nurdles that are in the river can easily be collected - they are floating. We have it on good authority that they can be collected if given the chance to step in.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["⚡️Sign the community open letter ⚡️"],
+      },
+      {
+        type: "p",
+        parts: [
+          "Urgently sign our Open Letter written on behalf of this community addressed to the Port of Tyne demanding that they allow trained volunteers into the river to do their job and clean the nurdles from the source.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["YOU ARE ALL NORTH EAST LEGENDS"],
+      },
+    ],
+    link: {
+      label: "Sign the open letter",
+      href: "/open-letter",
+    },
+  },
+  {
     id: "lou-morning-cleans-jul-29",
     datetime: "2026-07-29T21:30:00+01:00",
     sourceName: "Lou · Community admin",

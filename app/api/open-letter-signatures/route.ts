@@ -80,7 +80,8 @@ export async function POST(request: Request) {
   }
 
   const record = body as Record<string, unknown>;
-  const consentPublic = record.consentPublic === true;
+  const publishPublicly = record.publishPublicly === true;
+  const consentHeld = record.consentHeld === true;
 
   const nameResult = sanitiseOpenLetterName(
     record.fullName == null ? null : String(record.fullName),
@@ -118,12 +119,12 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!consentPublic) {
+  if (!consentHeld) {
     return NextResponse.json(
       {
         error: "consent_required",
         message:
-          "Please confirm you understand your name and address will appear publicly on this letter.",
+          "Please confirm organisers may hold your details with this signature.",
       },
       { status: 400 },
     );
@@ -132,6 +133,7 @@ export async function POST(request: Request) {
   const { data, error } = await supabase.rpc("create_open_letter_signature", {
     p_full_name: nameResult.value,
     p_address: addressResult.value,
+    p_is_public: publishPublicly,
   });
 
   if (error) {
@@ -159,6 +161,7 @@ export async function POST(request: Request) {
     full_name: string;
     address: string;
     signed_at: string;
+    is_public?: boolean;
   }[];
   const row = rows[0];
   if (!row) {
@@ -171,20 +174,25 @@ export async function POST(request: Request) {
     );
   }
 
+  const isPublic = row.is_public ?? publishPublicly;
+
   void appendToGoogleSheet({
     id: row.id,
     signedAt: formatDateTimeForSheet(row.signed_at),
     fullName: row.full_name,
     address: row.address,
+    isPublic: isPublic ? "yes" : "no",
   });
 
   return NextResponse.json({
     id: row.id,
-    signature: {
-      id: row.id,
-      fullName: row.full_name,
-      address: row.address,
-      signedAt: row.signed_at,
-    },
+    signature: isPublic
+      ? {
+          id: row.id,
+          fullName: row.full_name,
+          address: row.address,
+          signedAt: row.signed_at,
+        }
+      : null,
   });
 }

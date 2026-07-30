@@ -77,6 +77,7 @@ var OPEN_LETTER_HEADERS = [
   "Signed At",
   "Full Name",
   "Address",
+  "Public",
 ];
 
 function jsonResponse_(payload) {
@@ -280,6 +281,7 @@ function doPost(e) {
         data.signedAt || "",
         data.fullName || "",
         data.address || "",
+        data.isPublic || "",
       ]);
       return jsonResponse_({
         ok: true,

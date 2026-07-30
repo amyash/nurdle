@@ -12,7 +12,6 @@ const nav: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/news", label: "News" },
   { href: "/how-to-clean", label: "How to clean" },
-  { href: "/beaches", label: "Beaches" },
   { href: "/wildlife-impact", label: "Wildlife impact" },
   { href: "/photos", label: "Photos" },
   { href: whatsappCommunity.url, label: "Join WhatsApp", external: true },
@@ -26,6 +25,7 @@ const nav: NavItem[] = [
 
 export function SiteNav() {
   const pathname = usePathname();
+  const beachesActive = pathname.startsWith("/beaches");
 
   return (
     <nav aria-label="Site" className="mt-4 py-2">
@@ -67,6 +67,14 @@ export function SiteNav() {
           );
         })}
       </ul>
+
+      <Link
+        href="/beaches"
+        className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-center text-sm font-bold text-white sm:text-base"
+        aria-current={beachesActive ? "page" : undefined}
+      >
+        Join a beach clean
+      </Link>
     </nav>
   );
 }

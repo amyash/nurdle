@@ -91,7 +91,8 @@ export async function createOpenLetterSignature(
       body: JSON.stringify({
         fullName: input.fullName,
         address: input.address,
-        consentPublic: input.consentPublic,
+        publishPublicly: input.publishPublicly,
+        consentHeld: input.consentHeld,
       }),
     });
 

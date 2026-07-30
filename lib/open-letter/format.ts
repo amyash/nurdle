@@ -47,3 +47,7 @@ export function formatSignatureCount(count: number): string {
   if (count === 1) return "1 signature";
   return `${count.toLocaleString("en-GB")} signatures`;
 }
+
+export function formatSignatureCountHeadline(count: number): string {
+  return count.toLocaleString("en-GB");
+}

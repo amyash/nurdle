@@ -10,6 +10,7 @@ import {
   OPEN_LETTER_ADDRESS_MAX,
   OPEN_LETTER_NAME_MAX,
   formatSignatureCount,
+  formatSignatureCountHeadline,
 } from "@/lib/open-letter/format";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type {
@@ -25,9 +26,11 @@ export function OpenLetterPanel() {
   const configured = isSupabaseConfigured();
   const nameFieldId = useId();
   const addressFieldId = useId();
+  const publishId = useId();
   const consentId = useId();
   const formHeadingId = useId();
   const listHeadingId = useId();
+  const countHeadingId = useId();
 
   const [signatures, setSignatures] = useState<OpenLetterSignaturePublic[]>(
     [],
@@ -80,7 +83,8 @@ export function OpenLetterPanel() {
     const data = new FormData(form);
     const fullName = String(data.get("fullName") ?? "");
     const address = String(data.get("address") ?? "");
-    const consentPublic = data.get("consentPublic") === "on";
+    const publishPublicly = data.get("publishPublicly") === "on";
+    const consentHeld = data.get("consentHeld") === "on";
 
     setBusy(true);
     setFormError(null);
@@ -89,7 +93,8 @@ export function OpenLetterPanel() {
     const result = await createOpenLetterSignature({
       fullName,
       address,
-      consentPublic,
+      publishPublicly,
+      consentHeld,
     });
     setBusy(false);
 
@@ -99,16 +104,21 @@ export function OpenLetterPanel() {
     }
 
     form.reset();
-    setSuccessMessage("Thank you — your signature has been added.");
+    setSuccessMessage(
+      publishPublicly
+        ? "Thank you — your signature has been added publicly."
+        : "Thank you — your signature has been counted anonymously.",
+    );
+
+    setStats((prev) => ({
+      signatureCount: prev.signatureCount + 1,
+    }));
 
     if (result.signature) {
       setSignatures((prev) => [
         result.signature!,
         ...prev.filter((item) => item.id !== result.signature!.id),
       ]);
-      setStats((prev) => ({
-        signatureCount: prev.signatureCount + 1,
-      }));
     }
 
     const refreshed = await fetchOpenLetterData();
@@ -120,6 +130,30 @@ export function OpenLetterPanel() {
 
   return (
     <div className="space-y-6">
+      <section
+        aria-labelledby={countHeadingId}
+        className="rounded-lg border-2 border-[var(--mark)] bg-white px-4 py-4"
+      >
+        <h2
+          id={countHeadingId}
+          className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]"
+        >
+          Community signatures
+        </h2>
+        <p className="mt-2 text-4xl font-bold tabular-nums text-[var(--mark)]">
+          {loading ? "…" : formatSignatureCountHeadline(stats.signatureCount)}
+        </p>
+        <p className="mt-1 text-sm font-bold leading-snug text-[var(--ink)]">
+          {loading
+            ? "Loading signature total…"
+            : formatSignatureCount(stats.signatureCount)}
+        </p>
+        <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
+          Every signature counts — including anonymous ones that are not shown
+          in the public list below.
+        </p>
+      </section>
+
       <article aria-labelledby="open-letter-title">
         <h2
           id="open-letter-title"
@@ -141,17 +175,29 @@ export function OpenLetterPanel() {
           {openLetter.concernsHeading}
         </h3>
         <ol className="mt-3 space-y-3">
-          {openLetter.concerns.map((concern, index) => (
-            <li
-              key={concern.title}
-              className="text-base leading-snug text-[var(--ink)]"
-            >
-              <span className="font-bold">
-                {index + 1}. {concern.title}:
-              </span>{" "}
-              {concern.text}
-            </li>
-          ))}
+          {openLetter.concerns.map((concern, index) => {
+            const title = "title" in concern ? concern.title : null;
+            return (
+              <li
+                key={title ?? concern.text}
+                className="text-base leading-snug text-[var(--ink)]"
+              >
+                {title ? (
+                  <>
+                    <span className="font-bold">
+                      {index + 1}. {title}:
+                    </span>{" "}
+                    {concern.text}
+                  </>
+                ) : (
+                  <>
+                    <span className="font-bold">{index + 1}.</span>{" "}
+                    {concern.text}
+                  </>
+                )}
+              </li>
+            );
+          })}
         </ol>
 
         <p className="mt-5 text-base leading-snug text-[var(--ink)]">
@@ -171,12 +217,8 @@ export function OpenLetterPanel() {
         </h2>
         <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
           Add your name and address to support this call for a coordinated
-          marine recovery response on the River Tyne.
-        </p>
-        <p className="mt-2 text-sm font-bold text-[var(--ink)]" role="status">
-          {loading
-            ? "Loading signatures…"
-            : formatSignatureCount(stats.signatureCount)}
+          marine recovery response on the River Tyne. You can keep your details
+          off the public list if you prefer.
         </p>
 
         {!configured ? (
@@ -185,7 +227,7 @@ export function OpenLetterPanel() {
             role="note"
           >
             Signing isn’t connected for this environment yet. Add Supabase
-            credentials and run the open letter SQL migration to enable
+            credentials and run the open letter SQL migrations to enable
             signatures.
           </aside>
         ) : null}
@@ -236,20 +278,38 @@ export function OpenLetterPanel() {
           </div>
 
           <label
+            htmlFor={publishId}
+            className="flex items-start gap-2 text-sm leading-snug text-[var(--ink)]"
+          >
+            <input
+              id={publishId}
+              name="publishPublicly"
+              type="checkbox"
+              disabled={busy || !configured}
+              className="mt-1 h-4 w-4 shrink-0"
+            />
+            <span>
+              Show my name and address publicly on this page. Leave unchecked to
+              stay anonymous on the site (organisers still receive your
+              details).
+            </span>
+          </label>
+
+          <label
             htmlFor={consentId}
             className="flex items-start gap-2 text-sm leading-snug text-[var(--ink)]"
           >
             <input
               id={consentId}
-              name="consentPublic"
+              name="consentHeld"
               type="checkbox"
               required
               disabled={busy || !configured}
               className="mt-1 h-4 w-4 shrink-0"
             />
             <span>
-              I understand my name and address will appear publicly on this open
-              letter.
+              I confirm this is my signature and community organisers may hold
+              my name and address with this letter.
             </span>
           </label>
 
@@ -260,7 +320,10 @@ export function OpenLetterPanel() {
           ) : null}
 
           {successMessage ? (
-            <p role="status" className="text-sm font-bold leading-snug text-[var(--mark)]">
+            <p
+              role="status"
+              className="text-sm font-bold leading-snug text-[var(--mark)]"
+            >
               {successMessage}
             </p>
           ) : null}
@@ -280,8 +343,11 @@ export function OpenLetterPanel() {
           id={listHeadingId}
           className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]"
         >
-          Signatories
+          Public signatories
         </h2>
+        <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
+          Only people who chose to publish their details appear here.
+        </p>
 
         {loading ? (
           <p className="mt-2 text-sm text-[var(--mute)]" role="status">
@@ -289,7 +355,7 @@ export function OpenLetterPanel() {
           </p>
         ) : signatures.length === 0 ? (
           <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
-            No signatures yet. Be the first to add your name.
+            No public signatories yet. You can still sign anonymously above.
           </p>
         ) : (
           <ul className="mt-3 space-y-3">

@@ -25,5 +25,7 @@ export type OpenLetterMutationResult =
 export interface CreateOpenLetterSignatureInput {
   fullName: string;
   address: string;
-  consentPublic: boolean;
+  /** When true, name and address appear on the public signatories list. */
+  publishPublicly: boolean;
+  consentHeld: boolean;
 }

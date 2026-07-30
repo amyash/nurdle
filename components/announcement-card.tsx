@@ -165,14 +165,23 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
       )}
       {announcement.link && (
         <p className="mt-4">
-          <a
-            href={announcement.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
-          >
-            {announcement.link.label}
-          </a>
+          {/^https?:\/\//.test(announcement.link.href) ? (
+            <a
+              href={announcement.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
+            >
+              {announcement.link.label}
+            </a>
+          ) : (
+            <Link
+              href={announcement.link.href}
+              className="inline-flex w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-center text-sm font-bold text-white"
+            >
+              {announcement.link.label}
+            </Link>
+          )}
         </p>
       )}
     </>
