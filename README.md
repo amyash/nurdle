@@ -6,8 +6,8 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 
 - `/` — community effort totals + organiser message + actions + scientific briefing
 - `/news` — community news and updates
-- `/how-to-clean` — what to bring, how to collect, videos, cleanup techniques, FAQs
-- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, mesh bags, log clean-ups
+- `/how-to-clean` — what to bring, how to collect, mesh filter bag drop-offs, videos, cleanup techniques, FAQs
+- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, log clean-ups
 - `/drop-off-points` — official North Tyneside Council bag drop-off points (map + list)
 - `/photos` — volunteer photos
 - `/press-release` — press / media information
@@ -29,7 +29,7 @@ Edit **`data/content.ts`** for most site copy. Beach hub locations + WhatsApp li
 
 ## Beach groups hub (Supabase)
 
-Check-in counts and mesh bag requests need a Supabase project. Features show a “not configured” note until env vars are set.
+Check-in counts, clean-up logs, and mesh bag drop-offs need a Supabase project. Features show a “not configured” note until env vars are set.
 
 ### 1. Create a Supabase project
 
@@ -45,17 +45,18 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 
 1. `supabase/migrations/001_volunteer_checkins.sql` (beaches + check-ins + RPCs)
 2. Later beach inserts if needed: `002`–`006`
-3. `supabase/migrations/007_mesh_bag_requests.sql` (mesh bag requests + RPCs)
+3. `supabase/migrations/007_mesh_bag_requests.sql` (legacy; no longer used by the site)
 4. `supabase/migrations/008_split_whitley_bay_beaches.sql` (split Whitley Bay into four locations)
 5. `supabase/migrations/009_cleanup_logs.sql` (retrospective clean-up logs + stats RPCs)
+6. `supabase/migrations/010_mesh_bag_dropoffs.sql` (bag-maker drop-offs + RPCs)
 
-`007` creates:
+`010` creates:
 
-- `mesh_bag_requests`
-- RPCs: create, list visible, mark delivered, cancel
+- `mesh_bag_dropoffs`
+- RPCs: `create_mesh_bag_dropoff`, `list_recent_mesh_bag_dropoffs`
 - RLS so visitors cannot read/write the table directly
 
-Delivered requests stay visible on the public hub for **10 hours**, then drop from the list (rows are not deleted).
+Drop-offs stay visible on **How to clean** for **24 hours** from the logged drop-off time (rows are not deleted).
 
 `009` creates:
 
@@ -75,7 +76,7 @@ Fill in:
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
 
-# Optional — sewing team Google Sheet intake
+# Optional — Google Sheet intake (clean-up logs + bag drop-offs)
 GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 ```
 
@@ -83,24 +84,26 @@ GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
 
 Restart `npm run dev`.
 
-### 4. Google Sheet setup (mesh bags + clean-up logs)
+### 4. Google Sheet setup (bag drop-offs + clean-up logs)
 
 The website (Supabase) is the source of truth. Sheets are a shared inbox (no sync back).
-
-Use **two spreadsheets** so cleanup data can stay private while mesh bags stay public:
 
 1. **Private spreadsheet** (Restricted): tab **Cleanup Logs** with header row:
 
    `ID | Submitted At | Cleanup Date | Beach ID | Beach Name | Duration Minutes | Volunteer Count | Estimated Weight Kg | Volunteer Name | Notes | Collected Volume`
 
 2. On the **private** spreadsheet: **Extensions → Apps Script** — paste [`scripts/google-apps-script/mesh-bag-requests.gs`](scripts/google-apps-script/mesh-bag-requests.gs)
-3. Optional: set `REQUESTS_SPREADSHEET_ID` in the script to the public mesh-bag spreadsheet ID
+3. Optional: set `DROPOFFS_SPREADSHEET_ID` in the script if bag drop-offs should go to a separate spreadsheet
 4. **Deploy → New deployment → Web app**
    - Execute as: Me
    - Who has access: Anyone
 5. Put the web app `/exec` URL in `GOOGLE_SHEETS_WEBHOOK_URL` (local + Vercel) and redeploy
 
-`doGet` returns `{ version: "private-v2-..." }` so you can confirm the live webhook is the new script.
+`doGet` returns `{ version: "private-v3-..." }` so you can confirm the live webhook is the new script.
+
+Bag drop-offs are written to a **Bag Drop-offs** tab:
+
+`ID | Submitted At | Quantity | Location ID | Location Label | Location Other | Dropped At | Maker Name`
 
 ### 5. Local testing checklist
 
@@ -108,11 +111,10 @@ Use **two spreadsheets** so cleanup data can stay private while mesh bags stay p
 2. Confirm the map loads (or the list still works if the map fails)
 3. Tap **Check in** → optional first name → **Confirm check-in**
 4. Confirm the card shows **You’re here**, with check-out / extend actions
-5. Tap **Request mesh bags** → submit ASAP or scheduled → success message
-6. Tap **Log your clean-up** → submit hours/minutes → totals update on the card and below the map
-7. Open the bag summary / ⋯ menu → mark delivered / cancel with confirm
-8. If `GOOGLE_SHEETS_WEBHOOK_URL` is set, confirm Sheet rows appear on **Requests** / **Cleanup Logs**
-9. Open a private window and confirm volunteer counts increase across sessions
+5. Tap **Log your clean-up** → submit hours/minutes → totals update on the card and below the map
+6. Open `/how-to-clean` → **Mesh filter bags** card → ⋯ → **Log a bag drop-off** → submit → list updates
+7. If `GOOGLE_SHEETS_WEBHOOK_URL` is set, confirm Sheet rows appear on **Cleanup Logs** / **Bag Drop-offs**
+8. Open a private window and confirm volunteer counts increase across sessions
 
 ### 6. Vercel deployment
 
@@ -140,4 +142,4 @@ npm test
 - Check-ins are approximate, anonymous (browser session ID in `localStorage`), and expire after two hours.
 - Exact GPS location is never requested.
 - Names are optional and are not shown as a public roster.
-- Multiple mesh bag requests per beach are allowed; the card shows an aggregated summary.
+- Mesh bag drop-offs on How to clean expire from the public list after 24 hours.

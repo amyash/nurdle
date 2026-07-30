@@ -7,9 +7,6 @@ import { CheckInModal } from "@/components/check-in/check-in-modal";
 import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
 import { CleanupLogSuccessModal } from "@/components/cleanup-logs/cleanup-log-success-modal";
 import { CleanupOverallCallout } from "@/components/cleanup-logs/cleanup-overall-callout";
-import { MeshBagRequestModal } from "@/components/mesh-bags/mesh-bag-request-modal";
-import { MeshBagRequestsModal } from "@/components/mesh-bags/mesh-bag-requests-modal";
-import { MeshBagSuccessModal } from "@/components/mesh-bags/mesh-bag-success-modal";
 import {
   checkinBeaches,
   otherBeachWhatsappGroups,
@@ -28,19 +25,12 @@ import {
   emptyCleanupStats,
   fetchCleanupStats,
 } from "@/lib/cleanup-logs/api";
-import {
-  cancelMeshBagRequest,
-  createMeshBagRequest,
-  fetchVisibleMeshBagRequests,
-  markMeshBagDelivered,
-} from "@/lib/mesh-bags/api";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type {
   ActiveSessionCheckin,
   BeachCheckinStats,
 } from "@/types/check-in";
 import type { CleanupStatsResponse } from "@/types/cleanup-log";
-import type { MeshBagNeededType, MeshBagRequest } from "@/types/mesh-bags";
 
 const BeachCheckinMap = dynamic(
   () =>
@@ -75,7 +65,6 @@ export function BeachGroupsHubPanel() {
   const configured = isSupabaseConfigured();
   const sessionIdRef = useRef<string | null>(null);
   const [stats, setStats] = useState<BeachCheckinStats[]>(emptyStats);
-  const [bagRequests, setBagRequests] = useState<MeshBagRequest[]>([]);
   const [cleanupStats, setCleanupStats] = useState<CleanupStatsResponse | null>(
     null,
   );
@@ -87,16 +76,9 @@ export function BeachGroupsHubPanel() {
   const [busy, setBusy] = useState(false);
   const [modalBeachId, setModalBeachId] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
-  const [bagRequestBeachId, setBagRequestBeachId] = useState<string | null>(
-    null,
-  );
-  const [bagRequestError, setBagRequestError] = useState<string | null>(null);
-  const [bagListBeachId, setBagListBeachId] = useState<string | null>(null);
-  const [showBagSuccess, setShowBagSuccess] = useState(false);
   const [cleanupBeachId, setCleanupBeachId] = useState<string | null>(null);
   const [cleanupError, setCleanupError] = useState<string | null>(null);
   const [showCleanupSuccess, setShowCleanupSuccess] = useState(false);
-  const [nowMs, setNowMs] = useState(() => Date.now());
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   function ensureSessionId(): string {
@@ -111,34 +93,16 @@ export function BeachGroupsHubPanel() {
     [stats],
   );
 
-  const bagsByBeachId = useMemo(() => {
-    const map: Record<string, MeshBagRequest[]> = {};
-    for (const beach of checkinBeaches) map[beach.id] = [];
-    for (const request of bagRequests) {
-      if (!map[request.beachId]) map[request.beachId] = [];
-      map[request.beachId].push(request);
-    }
-    return map;
-  }, [bagRequests]);
-
   const modalBeach = modalBeachId
     ? checkinBeaches.find((beach) => beach.id === modalBeachId)
     : undefined;
-  const bagRequestBeach = bagRequestBeachId
-    ? checkinBeaches.find((beach) => beach.id === bagRequestBeachId)
-    : undefined;
-  const bagListBeach = bagListBeachId
-    ? checkinBeaches.find((beach) => beach.id === bagListBeachId)
-    : undefined;
 
   const refresh = useCallback(async (sid: string) => {
-    const [statsResult, mineResult, bagsResult, cleanupResult] =
-      await Promise.all([
-        fetchBeachCheckinStats(),
-        fetchMyActiveCheckin(sid),
-        fetchVisibleMeshBagRequests(),
-        fetchCleanupStats(),
-      ]);
+    const [statsResult, mineResult, cleanupResult] = await Promise.all([
+      fetchBeachCheckinStats(),
+      fetchMyActiveCheckin(sid),
+      fetchCleanupStats(),
+    ]);
 
     if (statsResult.ok) {
       const byId = Object.fromEntries(
@@ -167,18 +131,11 @@ export function BeachGroupsHubPanel() {
       setMyCheckin(mineResult.checkin);
     }
 
-    if (bagsResult.ok) {
-      setBagRequests(bagsResult.requests);
-    } else if (bagsResult.error !== "not_configured") {
-      setLoadError((prev) => prev ?? bagsResult.message);
-    }
-
     if (cleanupResult.ok) {
       setCleanupStats(cleanupResult.stats);
     } else if (cleanupResult.error === "not_configured") {
       setCleanupStats(emptyCleanupStats());
     }
-    // Clean-up stats failures must not block check-in / mesh bags
     setCleanupStatsLoading(false);
   }, []);
 
@@ -195,13 +152,11 @@ export function BeachGroupsHubPanel() {
 
     const poll = window.setInterval(() => {
       void refresh(sid);
-      setNowMs(Date.now());
     }, POLL_MS);
 
     const onVisible = () => {
       if (document.visibilityState === "visible") {
         void refresh(sid);
-        setNowMs(Date.now());
       }
     };
     document.addEventListener("visibilitychange", onVisible);
@@ -281,18 +236,6 @@ export function BeachGroupsHubPanel() {
     setModalBeachId(beachId);
   }
 
-  function openBagRequest(beachId: string) {
-    if (!configured) {
-      setActionError(
-        "Mesh bag requests aren’t connected yet. Please try again later.",
-      );
-      return;
-    }
-    setActionError(null);
-    setBagRequestError(null);
-    setBagRequestBeachId(beachId);
-  }
-
   function openCleanupLog(beachId: string) {
     if (!configured) {
       setActionError(
@@ -332,76 +275,11 @@ export function BeachGroupsHubPanel() {
     await refresh(ensureSessionId());
   }
 
-  async function handleSubmitBagRequest(input: {
-    quantityRequested: number;
-    neededType: MeshBagNeededType;
-    neededAt: string | null;
-    requesterName: string;
-    note: string;
-  }) {
-    if (!bagRequestBeachId || busy) return;
-    setBusy(true);
-    setBagRequestError(null);
-    const result = await createMeshBagRequest({
-      beachId: bagRequestBeachId,
-      quantityRequested: input.quantityRequested,
-      neededType: input.neededType,
-      neededAt: input.neededAt,
-      requesterName: input.requesterName,
-      note: input.note,
-    });
-    setBusy(false);
-
-    if (!result.ok) {
-      setBagRequestError(result.message);
-      return;
-    }
-
-    setBagRequestBeachId(null);
-    setShowBagSuccess(true);
-    setStatusMessage("Mesh bag request submitted.");
-    await refresh(ensureSessionId());
-  }
-
-  async function handleDeliver(request: MeshBagRequest) {
-    const confirmed = window.confirm(
-      `Mark ${request.quantityRequested} ${request.quantityRequested === 1 ? "bag" : "bags"} as delivered?`,
-    );
-    if (!confirmed) return;
-    setBusy(true);
-    setActionError(null);
-    const result = await markMeshBagDelivered(request.id);
-    setBusy(false);
-    if (!result.ok) {
-      setActionError(result.message);
-      return;
-    }
-    setStatusMessage("Marked mesh bags as delivered.");
-    await refresh(ensureSessionId());
-  }
-
-  async function handleCancelBag(request: MeshBagRequest) {
-    const confirmed = window.confirm(
-      `Cancel request for ${request.quantityRequested} ${request.quantityRequested === 1 ? "bag" : "bags"}?`,
-    );
-    if (!confirmed) return;
-    setBusy(true);
-    setActionError(null);
-    const result = await cancelMeshBagRequest(request.id);
-    setBusy(false);
-    if (!result.ok) {
-      setActionError(result.message);
-      return;
-    }
-    setStatusMessage("Mesh bag request cancelled.");
-    await refresh(ensureSessionId());
-  }
-
   return (
     <div className="space-y-4">
       <p className="text-sm leading-snug text-[var(--mute)]">
-        Check in when you arrive, join the beach WhatsApp group, and request
-        mesh bags for the sewing team. Check-ins expire after two hours.
+        Check in when you arrive, join the beach WhatsApp group, and log your
+        clean-up. Check-ins expire after two hours.
       </p>
 
       <CleanupOverallCallout
@@ -434,7 +312,7 @@ export function BeachGroupsHubPanel() {
           className="rounded-lg border border-amber-800/40 bg-amber-50 p-3 text-sm leading-snug text-amber-950"
           role="note"
         >
-          Live check-in and mesh bag storage isn’t configured for this
+          Live check-in and clean-up logging isn’t configured for this
           environment yet. You can still browse the beaches below. An organiser
           needs to add Supabase credentials before live features work.
         </aside>
@@ -453,21 +331,16 @@ export function BeachGroupsHubPanel() {
             <BeachHubCard
               beach={beach}
               stats={statsById[beach.id]}
-              bagRequests={bagsByBeachId[beach.id] ?? []}
               cleanupStats={cleanupStats?.byBeach[beach.id]}
               cleanupStatsLoading={cleanupStatsLoading}
               isCheckedInHere={myCheckin?.beachId === beach.id}
               checkInDisabled={!configured}
-              bagsDisabled={!configured}
               cleanupDisabled={!configured}
               busy={busy}
-              nowMs={nowMs}
               onCheckIn={() => openCheckIn(beach.id)}
               onCheckOut={() => void handleCheckOut()}
               onExtend={() => void handleExtend()}
-              onRequestBags={() => openBagRequest(beach.id)}
               onLogCleanup={() => openCleanupLog(beach.id)}
-              onOpenBagRequests={() => setBagListBeachId(beach.id)}
             />
           </li>
         ))}
@@ -503,7 +376,7 @@ export function BeachGroupsHubPanel() {
       <p className="text-xs leading-snug text-[var(--mute)]">
         Check-ins are approximate, automatically expire after two hours and are
         only intended to help volunteers understand where people are currently
-        helping. Mesh bag requests are shared with the sewing team.
+        helping. Mesh filter bags are listed on the How to clean page.
       </p>
 
       <CheckInModal
@@ -515,22 +388,6 @@ export function BeachGroupsHubPanel() {
           if (!busy) setModalBeachId(null);
         }}
         onConfirm={(firstName) => void handleConfirmCheckIn(firstName)}
-      />
-
-      <MeshBagRequestModal
-        beachName={bagRequestBeach?.name ?? "this beach"}
-        open={bagRequestBeachId != null}
-        busy={busy}
-        error={bagRequestError}
-        onClose={() => {
-          if (!busy) setBagRequestBeachId(null);
-        }}
-        onSubmit={(input) => void handleSubmitBagRequest(input)}
-      />
-
-      <MeshBagSuccessModal
-        open={showBagSuccess}
-        onClose={() => setShowBagSuccess(false)}
       />
 
       <CleanupLogModal
@@ -547,19 +404,6 @@ export function BeachGroupsHubPanel() {
       <CleanupLogSuccessModal
         open={showCleanupSuccess}
         onClose={() => setShowCleanupSuccess(false)}
-      />
-
-      <MeshBagRequestsModal
-        beachName={bagListBeach?.name ?? "this beach"}
-        requests={bagListBeachId ? (bagsByBeachId[bagListBeachId] ?? []) : []}
-        open={bagListBeachId != null}
-        busy={busy}
-        nowMs={nowMs}
-        onClose={() => {
-          if (!busy) setBagListBeachId(null);
-        }}
-        onDeliver={(request) => void handleDeliver(request)}
-        onCancel={(request) => void handleCancelBag(request)}
       />
     </div>
   );

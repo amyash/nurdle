@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 
-export function MeshBagSuccessModal({
+export function MeshBagDropoffSuccessModal({
   open,
   onClose,
 }: {
@@ -34,14 +34,10 @@ export function MeshBagSuccessModal({
     >
       <div className="px-4 py-4">
         <h2 id={titleId} className="text-lg font-bold leading-snug">
-          Request submitted
+          Thanks — the bag drop-off has been added.
         </h2>
-        <p className="mt-3 text-sm leading-snug text-[var(--ink)]">
-          Thanks! Your request has been added.
-        </p>
-        <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
-          The sewing team use this website alongside their WhatsApp group, so
-          someone should pick it up shortly.
+        <p className="mt-3 text-sm leading-snug text-[var(--mute)]">
+          Volunteers can see it on the How to clean page for the next 24 hours.
         </p>
         <button
           type="button"

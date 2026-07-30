@@ -7,14 +7,14 @@
  *   Who has access: Anyone
  * Copy the /exec URL into GOOGLE_SHEETS_WEBHOOK_URL (Vercel + .env.local) and redeploy.
  *
- * Optional: set REQUESTS_SPREADSHEET_ID to the public mesh-bag spreadsheet ID
- * so Requests rows still go to the public file.
+ * Optional: set DROPOFFS_SPREADSHEET_ID to a public mesh-bag spreadsheet ID
+ * so drop-off rows go to a separate public file.
  */
 
-var SCRIPT_VERSION = "private-v2-2026-07-29";
+var SCRIPT_VERSION = "private-v3-2026-07-30";
 
-/** Public mesh-bag spreadsheet ID (from /d/<ID>/edit). Leave blank to skip. */
-var REQUESTS_SPREADSHEET_ID = "";
+/** Optional public mesh-bag drop-offs spreadsheet ID (from /d/<ID>/edit). Leave blank to use active. */
+var DROPOFFS_SPREADSHEET_ID = "";
 
 var CLEANUP_LOG_HEADERS = [
   "ID",
@@ -28,6 +28,17 @@ var CLEANUP_LOG_HEADERS = [
   "Volunteer Name",
   "Notes",
   "Collected Volume",
+];
+
+var DROPOFF_HEADERS = [
+  "ID",
+  "Submitted At",
+  "Quantity",
+  "Location ID",
+  "Location Label",
+  "Location Other",
+  "Dropped At",
+  "Maker Name",
 ];
 
 function jsonResponse_(payload) {
@@ -54,16 +65,21 @@ function getCleanupSheet_() {
   return sheet;
 }
 
-function getRequestsSheet_() {
+function getDropoffsSheet_() {
   var spreadsheet;
-  if (REQUESTS_SPREADSHEET_ID) {
-    spreadsheet = SpreadsheetApp.openById(REQUESTS_SPREADSHEET_ID);
+  if (DROPOFFS_SPREADSHEET_ID) {
+    spreadsheet = SpreadsheetApp.openById(DROPOFFS_SPREADSHEET_ID);
   } else {
     spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   }
-  return (
-    spreadsheet.getSheetByName("Requests") || spreadsheet.getActiveSheet()
-  );
+  var sheet = spreadsheet.getSheetByName("Bag Drop-offs");
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet("Bag Drop-offs");
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(DROPOFF_HEADERS);
+  }
+  return sheet;
 }
 
 /**
@@ -115,25 +131,31 @@ function doPost(e) {
       });
     }
 
-    // mesh-bag (default)
-    var sheet = getRequestsSheet_();
-    sheet.appendRow([
-      data.requestId || "",
-      data.submitted || "",
-      data.beach || "",
-      data.quantity || "",
-      data.needed || "",
-      data.requester || "",
-      data.notes || "",
-      data.status || "requested",
-      data.claimedBy || "",
-      data.eta || "",
-      data.delivered || "",
-    ]);
+    if (data.type === "mesh-bag-dropoff") {
+      var dropoffSheet = getDropoffsSheet_();
+      dropoffSheet.appendRow([
+        data.id || "",
+        data.submittedAt || "",
+        data.quantity || "",
+        data.locationId || "",
+        data.locationLabel || "",
+        data.locationOther || "",
+        data.droppedAt || "",
+        data.makerName || "",
+      ]);
+      return jsonResponse_({
+        ok: true,
+        target: DROPOFFS_SPREADSHEET_ID
+          ? "public-bag-dropoffs"
+          : "active-bag-dropoffs",
+        version: SCRIPT_VERSION,
+      });
+    }
+
     return jsonResponse_({
-      ok: true,
-      target: REQUESTS_SPREADSHEET_ID ? "public-requests" : "active-requests",
+      ok: false,
       version: SCRIPT_VERSION,
+      error: "unknown_type",
     });
   } catch (error) {
     return jsonResponse_({

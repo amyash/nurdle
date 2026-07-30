@@ -2,55 +2,42 @@
 
 import type { CheckinBeach } from "@/data/checkin-beaches";
 import { BeachCleanupStats } from "@/components/cleanup-logs/beach-cleanup-stats";
-import { beachBagSummary } from "@/lib/mesh-bags/format";
 import {
   namedHelpingLabel,
   volunteerCountLabel,
 } from "@/lib/check-in/format";
 import type { CleanupAggregate } from "@/types/cleanup-log";
 import type { BeachCheckinStats } from "@/types/check-in";
-import type { MeshBagRequest } from "@/types/mesh-bags";
 
 export function BeachHubCard({
   beach,
   stats,
-  bagRequests,
   cleanupStats,
   cleanupStatsLoading,
   isCheckedInHere,
   checkInDisabled,
-  bagsDisabled,
   cleanupDisabled,
   busy,
-  nowMs,
   onCheckIn,
   onCheckOut,
   onExtend,
-  onRequestBags,
   onLogCleanup,
-  onOpenBagRequests,
 }: {
   beach: CheckinBeach;
   stats: BeachCheckinStats | undefined;
-  bagRequests: MeshBagRequest[];
   cleanupStats: CleanupAggregate | undefined;
   cleanupStatsLoading: boolean;
   isCheckedInHere: boolean;
   checkInDisabled: boolean;
-  bagsDisabled: boolean;
   cleanupDisabled: boolean;
   busy: boolean;
-  nowMs: number;
   onCheckIn: () => void;
   onCheckOut: () => void;
   onExtend: () => void;
-  onRequestBags: () => void;
   onLogCleanup: () => void;
-  onOpenBagRequests: () => void;
 }) {
   const count = stats?.volunteerCount ?? 0;
   const named = namedHelpingLabel(stats?.sampleFirstName ?? null, count);
-  const bagSummary = beachBagSummary(bagRequests, nowMs);
 
   return (
     <article
@@ -81,22 +68,11 @@ export function BeachHubCard({
             </p>
           )}
         </div>
-        <div className="flex shrink-0 items-center gap-1">
-          {isCheckedInHere ? (
-            <p className="rounded-md bg-[var(--mark)] px-2 py-1 text-xs font-bold text-white">
-              You’re here
-            </p>
-          ) : null}
-          <button
-            type="button"
-            disabled={busy || bagsDisabled}
-            onClick={onOpenBagRequests}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md text-lg font-bold text-[var(--mute)] hover:bg-[var(--board)] disabled:opacity-60"
-            aria-label={`Mesh bag requests for ${beach.name}`}
-          >
-            <span aria-hidden="true">⋯</span>
-          </button>
-        </div>
+        {isCheckedInHere ? (
+          <p className="shrink-0 rounded-md bg-[var(--mark)] px-2 py-1 text-xs font-bold text-white">
+            You’re here
+          </p>
+        ) : null}
       </div>
 
       <BeachCleanupStats stats={cleanupStats} loading={cleanupStatsLoading} />
@@ -109,26 +85,6 @@ export function BeachHubCard({
       {named ? (
         <p className="mt-1 text-sm leading-snug text-[var(--mute)]">{named}</p>
       ) : null}
-
-      {bagSummary.primary ? (
-        <button
-          type="button"
-          onClick={onOpenBagRequests}
-          className="mt-2 block w-full rounded-md text-left text-sm font-bold leading-snug text-[var(--ink)] underline-offset-2 hover:underline"
-        >
-          <span aria-hidden="true">
-            {bagSummary.tone === "delivered" ? "🟢 " : "🟠 "}
-          </span>
-          <span>{bagSummary.primary}</span>
-          {bagSummary.detail ? (
-            <span className="mt-0.5 block font-normal text-[var(--mute)] no-underline">
-              {bagSummary.detail}
-            </span>
-          ) : null}
-        </button>
-      ) : (
-        <p className="mt-2 text-sm text-[var(--mute)]">No mesh bags requested</p>
-      )}
 
       {isCheckedInHere ? (
         <div className="mt-3 flex flex-col gap-2">
@@ -148,24 +104,14 @@ export function BeachHubCard({
           >
             I’ve finished — check me out
           </button>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <button
-              type="button"
-              disabled={busy}
-              onClick={onExtend}
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
-            >
-              Extend my check-in
-            </button>
-            <button
-              type="button"
-              disabled={busy || bagsDisabled}
-              onClick={onRequestBags}
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
-            >
-              Request mesh bags
-            </button>
-          </div>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onExtend}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+          >
+            Extend my check-in
+          </button>
         </div>
       ) : (
         <div className="mt-3 flex flex-col gap-2">
@@ -177,24 +123,14 @@ export function BeachHubCard({
           >
             Log your clean-up
           </button>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <button
-              type="button"
-              disabled={busy || checkInDisabled}
-              onClick={onCheckIn}
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
-            >
-              Check in
-            </button>
-            <button
-              type="button"
-              disabled={busy || bagsDisabled}
-              onClick={onRequestBags}
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
-            >
-              Request mesh bags
-            </button>
-          </div>
+          <button
+            type="button"
+            disabled={busy || checkInDisabled}
+            onClick={onCheckIn}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+          >
+            Check in
+          </button>
         </div>
       )}
     </article>

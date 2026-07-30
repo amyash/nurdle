@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CommunityCleanupMessagePanel } from "@/components/community-cleanup-message";
 import { InstagramEmbed } from "@/components/instagram-embed";
+import { MeshBagDropoffsPanel } from "@/components/mesh-bags/mesh-bag-dropoffs-panel";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
@@ -45,6 +46,7 @@ export default function HowToCleanPage() {
     <PageShell title="How to clean" className="!pb-0">
       <CommunityCleanupMessagePanel message={communityCleanupMessage} />
       <TideTimesPanel />
+      <MeshBagDropoffsPanel />
 
       <Section id="bring" title="What to bring">
         <p className="mb-3 text-base font-bold leading-snug text-[var(--ink)]">
