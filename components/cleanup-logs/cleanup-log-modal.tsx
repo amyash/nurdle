@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { checkinBeachById } from "@/data/checkin-beaches";
-import { SPILL_START_DATE, todayDateStringLondon } from "@/data/spill";
+import { CLEANUP_LOG_MIN_DATE, todayDateStringLondon } from "@/data/spill";
 import {
   CLEANUP_MAX_VOLUNTEERS,
   CLEANUP_NAME_MAX,
@@ -121,42 +121,56 @@ export function CleanupLogModal({
           onSubmit={(event) => {
             event.preventDefault();
             if (busy) return;
-            setLocalError(null);
-            const data = new FormData(event.currentTarget);
-            const hours = Number(data.get("hours"));
-            const minutes = Number(data.get("minutes"));
-            const duration = parseDurationMinutes(hours, minutes);
-            if (!duration.ok) {
-              setLocalError(
-                "Time spent must be between 15 minutes and 12 hours.",
-              );
-              return;
-            }
-            const volume = estimatedKgForVolume(
-              String(data.get("collectedVolume") ?? ""),
+          setLocalError(null);
+          const data = new FormData(event.currentTarget);
+          const cleanupDate = String(data.get("cleanupDate") ?? "");
+          const today = todayDateStringLondon();
+          if (!cleanupDate) {
+            setLocalError("Choose a clean-up date.");
+            return;
+          }
+          if (cleanupDate > today) {
+            setLocalError("Logged time is in the future");
+            return;
+          }
+          if (cleanupDate < CLEANUP_LOG_MIN_DATE) {
+            setLocalError("Please log time after nurdle spill");
+            return;
+          }
+          const hours = Number(data.get("hours"));
+          const minutes = Number(data.get("minutes"));
+          const duration = parseDurationMinutes(hours, minutes);
+          if (!duration.ok) {
+            setLocalError(
+              "Time spent must be between 15 minutes and 12 hours.",
             );
-            if (!volume.ok) {
-              setLocalError("Please choose how much you collected.");
-              return;
-            }
-            if (data.get("confirmedEstimate") !== "on") {
-              setLocalError(
-                "Please confirm that these figures are your best estimate.",
-              );
-              return;
-            }
-            onSubmit({
-              beachId,
-              cleanupDate: String(data.get("cleanupDate") ?? ""),
-              durationMinutes: duration.minutes,
-              volunteerCount: Number(data.get("volunteerCount")),
-              collectedVolume: volume.id,
-              volunteerName: String(data.get("volunteerName") ?? ""),
-              notes: String(data.get("notes") ?? ""),
-              confirmedEstimate: true,
-            });
-          }}
-        >
+            return;
+          }
+          const volume = estimatedKgForVolume(
+            String(data.get("collectedVolume") ?? ""),
+          );
+          if (!volume.ok) {
+            setLocalError("Please choose how much you collected.");
+            return;
+          }
+          if (data.get("confirmedEstimate") !== "on") {
+            setLocalError(
+              "Please confirm that these figures are your best estimate.",
+            );
+            return;
+          }
+          onSubmit({
+            beachId,
+            cleanupDate,
+            durationMinutes: duration.minutes,
+            volunteerCount: Number(data.get("volunteerCount")),
+            collectedVolume: volume.id,
+            volunteerName: String(data.get("volunteerName") ?? ""),
+            notes: String(data.get("notes") ?? ""),
+            confirmedEstimate: true,
+          });
+        }}
+      >
           <div className="flex items-start justify-between gap-3">
             <h2 id={titleId} className="min-w-0 flex-1 text-lg font-bold leading-snug">
               Log your clean-up at {beachName}
@@ -183,9 +197,26 @@ export function CleanupLogModal({
               type="date"
               required
               disabled={busy}
-              min={SPILL_START_DATE}
+              min={CLEANUP_LOG_MIN_DATE}
               max={maxDate}
               defaultValue={maxDate}
+              onInvalid={(event) => {
+                const input = event.currentTarget;
+                if (input.validity.rangeOverflow) {
+                  input.setCustomValidity("Logged time is in the future");
+                } else if (input.validity.rangeUnderflow) {
+                  input.setCustomValidity(
+                    "Please log time after nurdle spill",
+                  );
+                } else if (input.validity.valueMissing) {
+                  input.setCustomValidity("Choose a clean-up date.");
+                } else {
+                  input.setCustomValidity("");
+                }
+              }}
+              onInput={(event) => {
+                event.currentTarget.setCustomValidity("");
+              }}
               className="mt-1 box-border w-full min-w-0 max-w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base text-[var(--ink)]"
             />
           </div>

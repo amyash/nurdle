@@ -34,7 +34,7 @@ function errorFromMessage(message: string): {
   if (lower.includes("invalid_date")) {
     return {
       code: "invalid_date",
-      message: "Choose a clean-up date between the spill and today.",
+      message: "Please log time after nurdle spill",
     };
   }
   if (lower.includes("invalid_duration")) {

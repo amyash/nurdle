@@ -1,4 +1,4 @@
-import { SPILL_START_DATE, todayDateStringLondon } from "@/data/spill";
+import { CLEANUP_LOG_MIN_DATE, todayDateStringLondon } from "@/data/spill";
 import type { CleanupAggregate } from "@/types/cleanup-log";
 
 export const CLEANUP_NAME_MAX = 40;
@@ -93,7 +93,7 @@ export function isValidCleanupDate(
   nowMs: number = Date.now(),
 ): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
-  if (dateStr < SPILL_START_DATE) return false;
+  if (dateStr < CLEANUP_LOG_MIN_DATE) return false;
   if (dateStr > todayDateStringLondon(nowMs)) return false;
   return true;
 }

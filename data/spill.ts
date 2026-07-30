@@ -4,6 +4,13 @@
  */
 export const SPILL_START_DATE = "2026-07-19";
 
+/**
+ * Earliest date volunteers can log a clean-up (inclusive).
+ * Kept separate from SPILL_START_DATE so community “since the spill” copy
+ * can still reference the collision date.
+ */
+export const CLEANUP_LOG_MIN_DATE = "2026-07-24";
+
 /** YYYY-MM-DD for date inputs / comparisons (Europe/London calendar day). */
 export function todayDateStringLondon(nowMs: number = Date.now()): string {
   return new Date(nowMs).toLocaleDateString("en-CA", {

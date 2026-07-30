@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { CLEANUP_LOG_MIN_DATE } from "@/data/spill";
 import { aggregateCleanupLogs } from "@/lib/cleanup-logs/aggregate";
 import {
   estimatedKgForVolume,
@@ -8,7 +9,6 @@ import {
   parseDurationMinutes,
   volunteerHoursForSubmission,
 } from "@/lib/cleanup-logs/format";
-import { SPILL_START_DATE } from "@/data/spill";
 
 describe("volunteerHoursForSubmission", () => {
   it("counts one person for two hours as two volunteer hours", () => {
@@ -88,12 +88,12 @@ describe("isValidCleanupDate", () => {
     expect(isValidCleanupDate("2026-07-30", now)).toBe(false);
   });
 
-  it("rejects dates before the spill", () => {
-    expect(isValidCleanupDate("2026-07-18", now)).toBe(false);
+  it("rejects dates before the clean-up logging start", () => {
+    expect(isValidCleanupDate("2026-07-23", now)).toBe(false);
   });
 
-  it("accepts the spill start date", () => {
-    expect(isValidCleanupDate(SPILL_START_DATE, now)).toBe(true);
+  it("accepts the clean-up logging start date", () => {
+    expect(isValidCleanupDate(CLEANUP_LOG_MIN_DATE, now)).toBe(true);
   });
 });
 

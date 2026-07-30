@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { checkinBeachById } from "@/data/checkin-beaches";
-import { SPILL_START_DATE, todayDateStringLondon } from "@/data/spill";
+import { CLEANUP_LOG_MIN_DATE, todayDateStringLondon } from "@/data/spill";
 import {
   CLEANUP_MAX_MINUTES,
   CLEANUP_MAX_VOLUNTEERS,
@@ -135,15 +135,29 @@ export async function POST(request: Request) {
   }
 
   const today = todayDateStringLondon();
-  if (
-    !/^\d{4}-\d{2}-\d{2}$/.test(cleanupDate) ||
-    cleanupDate < SPILL_START_DATE ||
-    cleanupDate > today
-  ) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(cleanupDate)) {
     return NextResponse.json(
       {
         error: "invalid_date",
-        message: "Choose a clean-up date between the spill and today.",
+        message: "Choose a valid clean-up date.",
+      },
+      { status: 400 },
+    );
+  }
+  if (cleanupDate > today) {
+    return NextResponse.json(
+      {
+        error: "invalid_date",
+        message: "Logged time is in the future",
+      },
+      { status: 400 },
+    );
+  }
+  if (cleanupDate < CLEANUP_LOG_MIN_DATE) {
+    return NextResponse.json(
+      {
+        error: "invalid_date",
+        message: "Please log time after nurdle spill",
       },
       { status: 400 },
     );
@@ -240,7 +254,7 @@ export async function POST(request: Request) {
       message = "Clean-up logging is paused for this beach.";
     } else if (lower.includes("invalid_date")) {
       code = "invalid_date";
-      message = "Choose a clean-up date between the spill and today.";
+      message = "Please log time after nurdle spill";
     } else if (lower.includes("invalid_duration")) {
       code = "invalid_duration";
       message = "Time spent must be between 15 minutes and 12 hours.";
