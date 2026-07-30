@@ -53,9 +53,9 @@ export function conditionLabel(id: string): string {
 }
 
 export function statusLabel(status: WildlifeReportStatus): string {
-  if (status === "approved") return "Verified";
-  if (status === "rejected") return "Not published";
-  return "Awaiting review";
+  if (status === "approved") return "Published";
+  if (status === "rejected") return "Removed";
+  return "Pending";
 }
 
 export function displaySpecies(

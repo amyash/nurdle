@@ -208,8 +208,8 @@ export function WildlifeReportModal({
           </div>
 
           <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
-            Reports are reviewed before appearing publicly. Your email is never
-            shown.
+            Reports appear on the map straight away. Your email is never shown
+            publicly.
           </p>
 
           <label htmlFor={beachId} className="mt-4 block text-sm font-bold">

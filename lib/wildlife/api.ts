@@ -10,6 +10,7 @@ import {
 } from "@/lib/wildlife/map";
 import type {
   CreateWildlifeReportInput,
+  WildlifeDeleteResult,
   WildlifeErrorCode,
   WildlifeImpactStats,
   WildlifeMutationResult,
@@ -20,6 +21,13 @@ function fail(
   code: WildlifeErrorCode,
   message: string,
 ): WildlifeMutationResult {
+  return { ok: false, error: code, message };
+}
+
+function failDelete(
+  code: WildlifeErrorCode,
+  message: string,
+): WildlifeDeleteResult {
   return { ok: false, error: code, message };
 }
 
@@ -123,6 +131,47 @@ export async function createWildlifeReport(
     return fail(
       "network",
       "We couldn’t save your report just now. Please try again.",
+    );
+  }
+}
+
+export async function removeWildlifeReport(
+  id: string,
+  email: string,
+): Promise<WildlifeDeleteResult> {
+  if (!isSupabaseConfigured()) {
+    return failDelete(
+      "not_configured",
+      "Wildlife reporting isn’t connected yet. Please try again later.",
+    );
+  }
+
+  try {
+    const response = await fetch("/api/wildlife-reports", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, email }),
+    });
+
+    const payload = (await response.json().catch(() => null)) as
+      | { id?: string; error?: string; message?: string }
+      | null;
+
+    if (!response.ok || !payload?.id) {
+      return failDelete(
+        response.status === 503
+          ? "not_configured"
+          : ((payload?.error as WildlifeErrorCode) ?? "unknown"),
+        payload?.message ??
+          "We couldn’t remove that report just now. Please try again.",
+      );
+    }
+
+    return { ok: true, id: payload.id };
+  } catch {
+    return failDelete(
+      "network",
+      "We couldn’t remove that report just now. Please try again.",
     );
   }
 }

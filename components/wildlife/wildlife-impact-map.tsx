@@ -6,7 +6,6 @@ import {
   conditionLabel,
   displaySpecies,
   formatObservedDate,
-  statusLabel,
 } from "@/lib/wildlife/format";
 import "leaflet/dist/leaflet.css";
 
@@ -68,7 +67,6 @@ function popupHtml(cluster: BeachCluster): string {
         <p style="margin:0;font-weight:700">${species}</p>
         <p style="margin:0.2rem 0 0;font-size:0.8rem">${condition} · ${date}</p>
         <p style="margin:0.35rem 0 0;font-size:0.8rem;line-height:1.35">${description}</p>
-        <p style="margin:0.35rem 0 0;font-size:0.75rem;font-weight:700">${escapeHtml(statusLabel(report.status))}</p>
         ${evidence}
       </div>`;
     })

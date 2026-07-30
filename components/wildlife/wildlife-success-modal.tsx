@@ -34,11 +34,12 @@ export function WildlifeSuccessModal({
     >
       <div className="px-4 py-4">
         <h2 id={titleId} className="text-lg font-bold leading-snug">
-          Thanks — your wildlife report has been submitted.
+          Thanks — your wildlife report has been added.
         </h2>
         <p className="mt-3 text-sm leading-snug text-[var(--mute)]">
-          It will appear on the public map after review. We may email you if
-          supporting evidence would help.
+          It’s now on the public map and list. If you submitted by mistake, use
+          Remove on the report and confirm with the email you entered. We may
+          still email you if supporting evidence would help.
         </p>
         <button
           type="button"

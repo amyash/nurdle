@@ -46,7 +46,6 @@ export interface WildlifeImpactStats {
   verifiedReports: number;
   animalsReported: number;
   speciesRecorded: number;
-  awaitingReview: number;
 }
 
 export type WildlifeErrorCode =
@@ -61,10 +60,16 @@ export type WildlifeErrorCode =
   | "invalid_email"
   | "invalid_name"
   | "consent_required"
+  | "not_found"
+  | "email_mismatch"
   | "network"
   | "unknown";
 
 export type WildlifeMutationResult =
+  | { ok: true; id: string }
+  | { ok: false; error: WildlifeErrorCode; message: string };
+
+export type WildlifeDeleteResult =
   | { ok: true; id: string }
   | { ok: false; error: WildlifeErrorCode; message: string };
 

@@ -2,12 +2,14 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
+import { WildlifeRemoveModal } from "@/components/wildlife/wildlife-remove-modal";
 import { WildlifeReportCard } from "@/components/wildlife/wildlife-report-card";
 import { WildlifeReportModal } from "@/components/wildlife/wildlife-report-modal";
 import { WildlifeSuccessModal } from "@/components/wildlife/wildlife-success-modal";
 import {
   createWildlifeReport,
   fetchWildlifeImpactData,
+  removeWildlifeReport,
 } from "@/lib/wildlife/api";
 import {
   WILDLIFE_FILTERS,
@@ -46,7 +48,6 @@ function emptyStats(): WildlifeImpactStats {
     verifiedReports: 0,
     animalsReported: 0,
     speciesRecorded: 0,
-    awaitingReview: 0,
   };
 }
 
@@ -61,6 +62,11 @@ export function WildlifeImpactPanel() {
   const [formError, setFormError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [removeReport, setRemoveReport] = useState<WildlifeReportPublic | null>(
+    null,
+  );
+  const [removeError, setRemoveError] = useState<string | null>(null);
+  const [removing, setRemoving] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -162,7 +168,6 @@ export function WildlifeImpactPanel() {
 
     setFormOpen(false);
     setShowSuccess(true);
-    // Refresh stats so awaiting-review increments; approved list unchanged
     const refreshed = await fetchWildlifeImpactData();
     if (refreshed.ok) {
       setReports(refreshed.reports);
@@ -170,11 +175,28 @@ export function WildlifeImpactPanel() {
     }
   }
 
+  async function handleRemove(email: string) {
+    if (!removeReport || removing) return;
+    setRemoving(true);
+    setRemoveError(null);
+    const result = await removeWildlifeReport(removeReport.id, email);
+    setRemoving(false);
+
+    if (!result.ok) {
+      setRemoveError(result.message);
+      return;
+    }
+
+    setReports((prev) => prev.filter((item) => item.id !== removeReport.id));
+    setRemoveReport(null);
+    const refreshed = await fetchWildlifeImpactData();
+    if (refreshed.ok) setStats(refreshed.stats);
+  }
+
   const statCards = [
-    { label: "Verified reports", value: stats.verifiedReports },
+    { label: "Reports", value: stats.verifiedReports },
     { label: "Animals reported", value: stats.animalsReported },
     { label: "Species recorded", value: stats.speciesRecorded },
-    { label: "Reports awaiting review", value: stats.awaitingReview },
   ];
 
   return (
@@ -197,7 +219,7 @@ export function WildlifeImpactPanel() {
         <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
           Community statistics
         </h2>
-        <ul className="mt-3 grid grid-cols-2 gap-2">
+        <ul className="mt-3 grid grid-cols-3 gap-2">
           {statCards.map((card) => (
             <li
               key={card.label}
@@ -220,9 +242,7 @@ export function WildlifeImpactPanel() {
           role="note"
         >
           Wildlife impact isn’t connected for this environment yet. Add Supabase
-          credentials and run{" "}
-          <code className="text-xs">013_wildlife_reports.sql</code> to enable
-          reporting.
+          credentials and run the wildlife SQL migrations to enable reporting.
         </aside>
       ) : null}
 
@@ -234,7 +254,7 @@ export function WildlifeImpactPanel() {
 
       <section aria-label="Wildlife reports map">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
-          Map of verified reports
+          Map of reports
         </h2>
         <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
           Pins show beach-level locations only (not exact GPS). Reports at the
@@ -277,7 +297,7 @@ export function WildlifeImpactPanel() {
 
       <section aria-label="Latest wildlife reports">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
-          Latest verified reports
+          Latest reports
         </h2>
         {loading ? (
           <p className="mt-2 text-sm text-[var(--mute)]" role="status">
@@ -285,13 +305,20 @@ export function WildlifeImpactPanel() {
           </p>
         ) : filtered.length === 0 ? (
           <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
-            No verified reports match this filter yet.
+            No reports match this filter yet.
           </p>
         ) : (
           <ul className="mt-3 space-y-3">
             {filtered.map((report) => (
               <li key={report.id}>
-                <WildlifeReportCard report={report} />
+                <WildlifeReportCard
+                  report={report}
+                  removeDisabled={removing}
+                  onRemove={(item) => {
+                    setRemoveError(null);
+                    setRemoveReport(item);
+                  }}
+                />
               </li>
             ))}
           </ul>
@@ -311,6 +338,17 @@ export function WildlifeImpactPanel() {
       <WildlifeSuccessModal
         open={showSuccess}
         onClose={() => setShowSuccess(false)}
+      />
+
+      <WildlifeRemoveModal
+        report={removeReport}
+        open={removeReport != null}
+        busy={removing}
+        error={removeError}
+        onClose={() => {
+          if (!removing) setRemoveReport(null);
+        }}
+        onConfirm={(email) => void handleRemove(email)}
       />
     </div>
   );

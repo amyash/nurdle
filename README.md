@@ -53,18 +53,15 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 8. `supabase/migrations/012_remove_mesh_bag_dropoffs.sql` (remove drop-offs from public list)
 9. `supabase/migrations/013_wildlife_reports.sql` (wildlife impact reports + RPCs)
 10. `supabase/migrations/014_add_browns_bay.sql` (Brown’s Bay beach)
+11. `supabase/migrations/015_wildlife_auto_publish.sql` (publish on submit + email-confirmed remove)
 
-`013` creates:
+`013` / `015` create:
 
-- `wildlife_reports` (default status `pending`)
-- RPCs: `create_wildlife_report`, `list_approved_wildlife_reports`, `get_wildlife_impact_stats`, `set_wildlife_report_status`
-- Public UI only shows **approved** reports (email / name never returned)
+- `wildlife_reports` (published on submit; soft-removed with matching email)
+- RPCs: `create_wildlife_report`, `list_approved_wildlife_reports`, `get_wildlife_impact_stats`, `remove_wildlife_report`
+- Public UI never returns email / reporter name
 
-Approve a report in the SQL editor:
-
-```sql
-select * from public.set_wildlife_report_status('REPORT_UUID_HERE', 'approved');
-```
+To remove a mistaken report from the site, use **Remove** on the card and confirm with the email entered on the form.
 
 `011` creates:
 

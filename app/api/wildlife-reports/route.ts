@@ -328,3 +328,112 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ id: row.id, status: row.status });
 }
+
+export async function DELETE(request: Request) {
+  const supabase = getServerSupabase();
+  if (!supabase) {
+    return NextResponse.json(
+      {
+        error: "not_configured",
+        message:
+          "Wildlife reporting isn’t connected yet. Please try again later.",
+      },
+      { status: 503 },
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "unknown", message: "Invalid request body." },
+      { status: 400 },
+    );
+  }
+
+  const record = body as Record<string, unknown>;
+  const id = String(record.id ?? "").trim();
+  const emailResult = sanitiseWildlifeEmail(
+    record.email == null ? null : String(record.email),
+  );
+
+  if (!id) {
+    return NextResponse.json(
+      {
+        error: "not_found",
+        message: "That report couldn’t be found.",
+      },
+      { status: 404 },
+    );
+  }
+
+  if (!emailResult.ok) {
+    return NextResponse.json(
+      {
+        error: "invalid_email",
+        message: "Enter the email address used on the original report.",
+      },
+      { status: 400 },
+    );
+  }
+
+  const { data, error } = await supabase.rpc("remove_wildlife_report", {
+    p_id: id,
+    p_email: emailResult.value,
+  });
+
+  if (error) {
+    const lower = error.message.toLowerCase();
+    if (lower.includes("email_mismatch")) {
+      return NextResponse.json(
+        {
+          error: "email_mismatch",
+          message:
+            "That email doesn’t match this report. Use the address entered when it was submitted.",
+        },
+        { status: 403 },
+      );
+    }
+    if (lower.includes("not_found")) {
+      return NextResponse.json(
+        {
+          error: "not_found",
+          message: "That report couldn’t be found (it may already be removed).",
+        },
+        { status: 404 },
+      );
+    }
+    if (lower.includes("invalid_email")) {
+      return NextResponse.json(
+        {
+          error: "invalid_email",
+          message: "Enter the email address used on the original report.",
+        },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json(
+      {
+        error: "unknown",
+        message:
+          "We couldn’t remove that report just now. Please try again.",
+      },
+      { status: 400 },
+    );
+  }
+
+  const rows = (data ?? []) as { id: string; removed_at: string }[];
+  const row = rows[0];
+  if (!row) {
+    return NextResponse.json(
+      {
+        error: "not_found",
+        message: "That report couldn’t be found (it may already be removed).",
+      },
+      { status: 404 },
+    );
+  }
+
+  return NextResponse.json({ id: row.id });
+}

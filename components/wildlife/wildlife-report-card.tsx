@@ -5,13 +5,16 @@ import {
   conditionLabel,
   displaySpecies,
   formatObservedDate,
-  statusLabel,
 } from "@/lib/wildlife/format";
 
 export function WildlifeReportCard({
   report,
+  onRemove,
+  removeDisabled,
 }: {
   report: WildlifeReportPublic;
+  onRemove: (report: WildlifeReportPublic) => void;
+  removeDisabled?: boolean;
 }) {
   return (
     <article className="rounded-lg border border-[var(--line)] bg-white px-3 py-3">
@@ -19,9 +22,14 @@ export function WildlifeReportCard({
         <h3 className="font-bold leading-snug text-[var(--ink)]">
           {displaySpecies(report.animalType, report.species)}
         </h3>
-        <p className="rounded-md bg-[var(--board)] px-2 py-1 text-xs font-bold text-[var(--ink)]">
-          {statusLabel(report.status)}
-        </p>
+        <button
+          type="button"
+          disabled={removeDisabled}
+          onClick={() => onRemove(report)}
+          className="shrink-0 rounded-md px-2 py-1 text-sm font-bold text-[var(--mute)] underline underline-offset-2 hover:text-[var(--ink)] disabled:opacity-60"
+        >
+          Remove
+        </button>
       </div>
       <p className="mt-1 text-sm font-bold text-[var(--ink)]">
         {conditionLabel(report.condition)}

@@ -27,7 +27,7 @@ export type RpcWildlifeStatsRow = {
   verified_reports: number | string;
   animals_reported: number | string;
   species_recorded: number | string;
-  awaiting_review: number | string;
+  awaiting_review?: number | string;
 };
 
 export function mapWildlifeReportRow(
@@ -62,6 +62,5 @@ export function mapWildlifeStatsRow(
     verifiedReports: Number(row?.verified_reports ?? 0),
     animalsReported: Number(row?.animals_reported ?? 0),
     speciesRecorded: Number(row?.species_recorded ?? 0),
-    awaitingReview: Number(row?.awaiting_review ?? 0),
   };
 }
