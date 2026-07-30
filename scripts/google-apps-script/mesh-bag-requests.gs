@@ -11,7 +11,7 @@
  * so drop-off rows go to a separate public file.
  */
 
-var SCRIPT_VERSION = "private-v3-2026-07-30";
+var SCRIPT_VERSION = "private-v4-2026-07-30";
 
 /** Optional public mesh-bag drop-offs spreadsheet ID (from /d/<ID>/edit). Leave blank to use active. */
 var DROPOFFS_SPREADSHEET_ID = "";
@@ -39,6 +39,17 @@ var DROPOFF_HEADERS = [
   "Location Other",
   "Dropped At",
   "Maker Name",
+];
+
+var ADMIN_TIME_HEADERS = [
+  "ID",
+  "Submitted At",
+  "Work Date",
+  "Duration Minutes",
+  "Category",
+  "Category Label",
+  "Person Name",
+  "Notes",
 ];
 
 function jsonResponse_(payload) {
@@ -78,6 +89,18 @@ function getDropoffsSheet_() {
   }
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(DROPOFF_HEADERS);
+  }
+  return sheet;
+}
+
+function getAdminTimeSheet_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName("Admin Time");
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet("Admin Time");
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(ADMIN_TIME_HEADERS);
   }
   return sheet;
 }
@@ -148,6 +171,25 @@ function doPost(e) {
         target: DROPOFFS_SPREADSHEET_ID
           ? "public-bag-dropoffs"
           : "active-bag-dropoffs",
+        version: SCRIPT_VERSION,
+      });
+    }
+
+    if (data.type === "admin-time-log") {
+      var adminSheet = getAdminTimeSheet_();
+      adminSheet.appendRow([
+        data.id || "",
+        data.submittedAt || "",
+        data.workDate || "",
+        data.durationMinutes || "",
+        data.category || "",
+        data.categoryLabel || "",
+        data.personName || "",
+        data.notes || "",
+      ]);
+      return jsonResponse_({
+        ok: true,
+        target: "admin-time",
         version: SCRIPT_VERSION,
       });
     }

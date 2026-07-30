@@ -5,7 +5,7 @@ import { PageShell } from "@/components/page-shell";
 export const metadata: Metadata = {
   title: "Beaches",
   description:
-    "Check in at North Tyneside beaches, join WhatsApp groups, request mesh bags, and log clean-ups.",
+    "Check in at North Tyneside beaches, join WhatsApp groups, log clean-ups, and record organising time.",
 };
 
 export default function BeachesPage() {

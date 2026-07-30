@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AdminTimePanel } from "@/components/admin-time/admin-time-panel";
 import { BeachHubCard } from "@/components/beach-groups/beach-hub-card";
 import { CheckInModal } from "@/components/check-in/check-in-modal";
 import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
@@ -372,6 +373,8 @@ export function BeachGroupsHubPanel() {
           ))}
         </ul>
       </section>
+
+      <AdminTimePanel />
 
       <p className="text-xs leading-snug text-[var(--mute)]">
         Check-ins are approximate, automatically expire after two hours and are

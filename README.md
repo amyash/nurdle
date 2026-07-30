@@ -7,7 +7,7 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 - `/` — community effort totals + organiser message + actions + scientific briefing
 - `/news` — community news and updates
 - `/how-to-clean` — what to bring, how to collect, mesh filter bag drop-offs, videos, cleanup techniques, FAQs
-- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, log clean-ups
+- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, log clean-ups, admin time
 - `/drop-off-points` — official North Tyneside Council bag drop-off points (map + list)
 - `/photos` — volunteer photos
 - `/press-release` — press / media information
@@ -29,7 +29,7 @@ Edit **`data/content.ts`** for most site copy. Beach hub locations + WhatsApp li
 
 ## Beach groups hub (Supabase)
 
-Check-in counts, clean-up logs, and mesh bag drop-offs need a Supabase project. Features show a “not configured” note until env vars are set.
+Check-in counts, clean-up logs, mesh bag drop-offs, and admin time need a Supabase project. Features show a “not configured” note until env vars are set.
 
 ### 1. Create a Supabase project
 
@@ -49,6 +49,13 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 4. `supabase/migrations/008_split_whitley_bay_beaches.sql` (split Whitley Bay into four locations)
 5. `supabase/migrations/009_cleanup_logs.sql` (retrospective clean-up logs + stats RPCs)
 6. `supabase/migrations/010_mesh_bag_dropoffs.sql` (bag-maker drop-offs + RPCs)
+7. `supabase/migrations/011_admin_time_logs.sql` (organising / admin time + RPCs)
+
+`011` creates:
+
+- `admin_time_logs`
+- RPCs: `create_admin_time_log`, `get_admin_time_stats`
+- Separate from beach clean-up totals; shown on the Beaches page card
 
 `010` creates:
 
