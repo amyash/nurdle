@@ -5,7 +5,7 @@ export function TideTimesPanel() {
   const tide = northShieldsTideTimes;
 
   return (
-    <div className="mb-6">
+    <div>
       <TideTimesWidget scriptSrc={tide.widgetSrc} cssHref={tide.widgetCss} />
       <p className="mt-2 text-xs text-[var(--mute)]">
         Live tide times from{" "}

@@ -41,7 +41,6 @@ const collectContentOrder = [
 export default function HowToCleanPage() {
   return (
     <PageShell title="How to clean" className="!pb-0">
-      <TideTimesPanel />
       <MeshBagDropoffsPanel />
 
       <Section id="bring" title="What to bring">
@@ -294,6 +293,10 @@ export default function HowToCleanPage() {
           ))}
         </div>
       </section>
+
+      <div className="mt-6 border-t border-[var(--line)] pt-6 pb-8">
+        <TideTimesPanel />
+      </div>
     </PageShell>
   );
 }
