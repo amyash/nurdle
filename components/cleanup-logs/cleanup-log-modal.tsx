@@ -52,6 +52,7 @@ export function CleanupLogModal({
   const communityId = useId();
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
+  const [maxDate, setMaxDate] = useState(() => todayDateStringLondon());
 
   const beachName = checkinBeachById[beachId]?.name ?? "this beach";
 
@@ -59,12 +60,17 @@ export function CleanupLogModal({
     const dialog = dialogRef.current;
     if (!dialog) return;
     if (open && !dialog.open) {
+      const today = todayDateStringLondon();
+      setMaxDate(today);
       setLocalError(null);
       formRef.current?.reset();
       const dateInput = formRef.current?.elements.namedItem(
         "cleanupDate",
       ) as HTMLInputElement | null;
-      if (dateInput) dateInput.value = todayDateStringLondon();
+      if (dateInput) {
+        dateInput.max = today;
+        dateInput.value = today;
+      }
       const volunteers = formRef.current?.elements.namedItem(
         "volunteerCount",
       ) as HTMLInputElement | null;
@@ -89,7 +95,6 @@ export function CleanupLogModal({
   }, [open, beachId]);
 
   const displayError = localError ?? error;
-  const maxDate = todayDateStringLondon();
 
   return (
     <dialog
@@ -173,6 +178,7 @@ export function CleanupLogModal({
             </label>
             <input
               id={dateId}
+              key={maxDate}
               name="cleanupDate"
               type="date"
               required
