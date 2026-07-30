@@ -14,6 +14,7 @@ export type MeshBagDropoffErrorCode =
   | "invalid_location"
   | "invalid_dropped_at"
   | "invalid_name"
+  | "not_found"
   | "network"
   | "unknown";
 

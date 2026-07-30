@@ -6,6 +6,7 @@ import { MeshBagDropoffSuccessModal } from "@/components/mesh-bags/mesh-bag-drop
 import {
   createMeshBagDropoff,
   fetchRecentMeshBagDropoffs,
+  removeMeshBagDropoff,
 } from "@/lib/mesh-bags/dropoff-api";
 import { formatDropoffListItem } from "@/lib/mesh-bags/dropoff-format";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
@@ -22,10 +23,12 @@ export function MeshBagDropoffsPanel() {
   const [dropoffs, setDropoffs] = useState<MeshBagDropoff[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [removingId, setRemovingId] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const refresh = useCallback(async () => {
@@ -153,6 +156,32 @@ export function MeshBagDropoffsPanel() {
     setShowSuccess(true);
   }
 
+  async function handleRemove(dropoff: MeshBagDropoff) {
+    if (busy || removingId) return;
+    const label = formatDropoffListItem({
+      quantity: dropoff.quantity,
+      locationLabel: dropoff.locationLabel,
+      locationOther: dropoff.locationOther,
+      droppedAt: dropoff.droppedAt,
+    });
+    const confirmed = window.confirm(
+      `Remove this drop-off from the list?\n\n${label}`,
+    );
+    if (!confirmed) return;
+
+    setActionError(null);
+    setRemovingId(dropoff.id);
+    const result = await removeMeshBagDropoff(dropoff.id);
+    setRemovingId(null);
+
+    if (!result.ok) {
+      setActionError(result.message);
+      return;
+    }
+
+    setDropoffs((prev) => prev.filter((item) => item.id !== dropoff.id));
+  }
+
   return (
     <>
       <section
@@ -226,26 +255,45 @@ export function MeshBagDropoffsPanel() {
             No bag drop-offs have been logged yet.
           </p>
         ) : (
-          <ul className="mt-2 space-y-1.5">
-            {dropoffs.map((dropoff) => (
-              <li
-                key={dropoff.id}
-                className="text-base leading-snug text-[var(--ink)]"
-              >
-                {formatDropoffListItem({
-                  quantity: dropoff.quantity,
-                  locationLabel: dropoff.locationLabel,
-                  locationOther: dropoff.locationOther,
-                  droppedAt: dropoff.droppedAt,
-                })}
-              </li>
-            ))}
+          <ul className="mt-2 space-y-2">
+            {dropoffs.map((dropoff) => {
+              const label = formatDropoffListItem({
+                quantity: dropoff.quantity,
+                locationLabel: dropoff.locationLabel,
+                locationOther: dropoff.locationOther,
+                droppedAt: dropoff.droppedAt,
+              });
+              const isRemoving = removingId === dropoff.id;
+              return (
+                <li
+                  key={dropoff.id}
+                  className="flex items-start justify-between gap-3 text-base leading-snug text-[var(--ink)]"
+                >
+                  <span className="min-w-0 flex-1">{label}</span>
+                  <button
+                    type="button"
+                    disabled={busy || removingId != null}
+                    onClick={() => void handleRemove(dropoff)}
+                    className="shrink-0 rounded-md px-2 py-1 text-sm font-bold text-[var(--mute)] underline underline-offset-2 hover:text-[var(--ink)] disabled:opacity-60"
+                    aria-label={`Remove drop-off: ${label}`}
+                  >
+                    {isRemoving ? "Removing…" : "Remove"}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
 
+        {actionError ? (
+          <p role="alert" className="mt-2 text-sm leading-snug text-red-800">
+            {actionError}
+          </p>
+        ) : null}
+
         <p className="mt-3 text-xs leading-snug text-[var(--mute)]">
           Availability may change quickly. Drop-offs are automatically removed
-          after 24 hours.
+          after 24 hours. Use Remove when bags have been collected.
         </p>
       </section>
 

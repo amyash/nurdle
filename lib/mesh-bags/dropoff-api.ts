@@ -103,3 +103,43 @@ export async function createMeshBagDropoff(
     );
   }
 }
+
+export async function removeMeshBagDropoff(
+  id: string,
+): Promise<MeshBagDropoffMutationResult> {
+  if (!isSupabaseConfigured()) {
+    return fail(
+      "not_configured",
+      "Bag drop-offs aren’t connected yet. Please try again later.",
+    );
+  }
+
+  try {
+    const response = await fetch("/api/mesh-bag-dropoffs", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+
+    const payload = (await response.json().catch(() => null)) as
+      | { dropoff?: RpcMeshBagDropoffRow; error?: string; message?: string }
+      | null;
+
+    if (!response.ok || !payload?.dropoff) {
+      return fail(
+        response.status === 503
+          ? "not_configured"
+          : ((payload?.error as MeshBagDropoffErrorCode) ?? "unknown"),
+        payload?.message ??
+          "We couldn’t remove that bag drop-off just now. Please try again.",
+      );
+    }
+
+    return { ok: true, dropoff: mapMeshBagDropoffRow(payload.dropoff) };
+  } catch {
+    return fail(
+      "network",
+      "We couldn’t remove that bag drop-off just now. Please try again.",
+    );
+  }
+}

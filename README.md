@@ -50,6 +50,7 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 5. `supabase/migrations/009_cleanup_logs.sql` (retrospective clean-up logs + stats RPCs)
 6. `supabase/migrations/010_mesh_bag_dropoffs.sql` (bag-maker drop-offs + RPCs)
 7. `supabase/migrations/011_admin_time_logs.sql` (organising / admin time + RPCs)
+8. `supabase/migrations/012_remove_mesh_bag_dropoffs.sql` (remove drop-offs from public list)
 
 `011` creates:
 

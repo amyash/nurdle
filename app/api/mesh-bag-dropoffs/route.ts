@@ -247,3 +247,77 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ dropoff: row });
 }
+
+export async function DELETE(request: Request) {
+  const supabase = getServerSupabase();
+  if (!supabase) {
+    return NextResponse.json(
+      {
+        error: "not_configured",
+        message:
+          "Bag drop-offs aren’t connected yet. Please try again later.",
+      },
+      { status: 503 },
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "unknown", message: "Invalid request body." },
+      { status: 400 },
+    );
+  }
+
+  const id = String((body as Record<string, unknown>).id ?? "").trim();
+  if (!id) {
+    return NextResponse.json(
+      {
+        error: "not_found",
+        message: "That bag drop-off couldn’t be found.",
+      },
+      { status: 404 },
+    );
+  }
+
+  const { data, error } = await supabase.rpc("remove_mesh_bag_dropoff", {
+    p_id: id,
+  });
+
+  if (error) {
+    const lower = error.message.toLowerCase();
+    if (lower.includes("not_found")) {
+      return NextResponse.json(
+        {
+          error: "not_found",
+          message: "That bag drop-off couldn’t be found (it may already be gone).",
+        },
+        { status: 404 },
+      );
+    }
+    return NextResponse.json(
+      {
+        error: "unknown",
+        message:
+          "We couldn’t remove that bag drop-off just now. Please try again.",
+      },
+      { status: 400 },
+    );
+  }
+
+  const rows = (data ?? []) as RpcMeshBagDropoffRow[];
+  const row = rows[0];
+  if (!row) {
+    return NextResponse.json(
+      {
+        error: "not_found",
+        message: "That bag drop-off couldn’t be found (it may already be gone).",
+      },
+      { status: 404 },
+    );
+  }
+
+  return NextResponse.json({ dropoff: row });
+}
