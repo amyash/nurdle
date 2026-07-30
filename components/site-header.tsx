@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
-import { siteDisclaimer, whatsappCommunity } from "@/data/content";
+import { siteDisclaimer } from "@/data/content";
 
 export function SiteHeader() {
   return (
@@ -21,28 +21,12 @@ export function SiteHeader() {
             {siteDisclaimer}
           </p>
 
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            <a
-              href={whatsappCommunity.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#5eead4] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
-            >
-              Join WhatsApp
-            </a>
-            <a
-              href="https://www.northtyneside.gov.uk/form/plastic-pellets-on-beaches-nurdl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#5eead4] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
-            >
-              Report nurdles
-            </a>
+          <div className="mt-3">
             <Link
-              href="/press-release"
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#5eead4] px-1.5 py-2 text-center text-[11px] font-bold leading-tight text-[#111827] sm:text-sm"
+              href="/open-letter"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[#5eead4] px-3 py-2.5 text-center text-sm font-bold leading-tight text-[#111827] sm:text-base"
             >
-              Press release
+              Sign the open letter now
             </Link>
           </div>
         </div>
