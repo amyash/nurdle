@@ -36,7 +36,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/collection-points",
-        destination: "/drop-off-points",
+        destination: "/beaches",
+        permanent: true,
+      },
+      {
+        source: "/drop-off-points",
+        destination: "/beaches",
         permanent: true,
       },
       {

@@ -7,13 +7,12 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 - `/` — community effort totals + organiser message + actions + scientific briefing
 - `/news` — community news and updates
 - `/how-to-clean` — what to bring, how to collect, mesh filter bag drop-offs, videos, cleanup techniques, FAQs
-- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, log clean-ups, admin time
+- `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, official collection points, log clean-ups, admin time
 - `/wildlife-impact` — community wildlife sightings (moderated; local feature until promoted)
-- `/drop-off-points` — official North Tyneside Council bag drop-off points (map + list)
 - `/photos` — volunteer photos
 - `/press-release` — press / media information
 
-Old paths (`/announcements`, `/beach-cleanup`, `/beach-groups`, `/collection-points`, `/community-images`, `/updates`, `/volunteer-check-in`) permanently redirect to the new URLs.
+Old paths (`/announcements`, `/beach-cleanup`, `/beach-groups`, `/collection-points`, `/drop-off-points`, `/community-images`, `/updates`, `/volunteer-check-in`) permanently redirect to the new URLs.
 
 ## Run
 

@@ -605,8 +605,8 @@ export const howToCollect: CollectStep[] = [
       href: "https://www.northtyneside.gov.uk/residents/report-it",
     },
     cta: {
-      label: "Drop-off points",
-      href: "/drop-off-points",
+      label: "See collection points on Beaches",
+      href: "/beaches",
     },
   },
 ];

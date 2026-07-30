@@ -1,6 +1,10 @@
 "use client";
 
 import type { CheckinBeach } from "@/data/checkin-beaches";
+import {
+  collectionPointForBeach,
+  collectionPointLabel,
+} from "@/data/collection-points";
 import { BeachCleanupStats } from "@/components/cleanup-logs/beach-cleanup-stats";
 import {
   namedHelpingLabel,
@@ -92,6 +96,7 @@ export function BeachHubCard({
 }) {
   const count = stats?.volunteerCount ?? 0;
   const named = namedHelpingLabel(stats?.sampleFirstName ?? null, count);
+  const collectionPoint = collectionPointForBeach(beach.id);
 
   return (
     <article
@@ -138,6 +143,20 @@ export function BeachHubCard({
 
       {named ? (
         <p className="mt-1 text-sm leading-snug text-[var(--mute)]">{named}</p>
+      ) : null}
+
+      {collectionPoint ? (
+        <p className="mt-2 text-sm leading-snug text-[var(--ink)]">
+          Official collection point: {collectionPointLabel(collectionPoint)}{" "}
+          <a
+            href={collectionPoint.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-[var(--mark)] underline underline-offset-2"
+          >
+            Google Maps
+          </a>
+        </p>
       ) : null}
 
       <BeachNestSection beach={beach} />

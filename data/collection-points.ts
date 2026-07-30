@@ -33,7 +33,8 @@ export const collectionPoints: CollectionPoint[] = [
   {
     id: "whitley-bay",
     name: "Whitley Bay",
-    beachId: "whitley-bay",
+    // Shared council point for the Whitley Bay coastline segments
+    beachId: "whitley-bay-central",
     latitude: 55.0534426,
     longitude: -1.4505963,
     description: "Promenade by skate park",
@@ -108,4 +109,28 @@ export const collectionPoints: CollectionPoint[] = [
 
 export function directionsUrl(point: CollectionPoint): string {
   return point.mapsUrl;
+}
+
+/** Whitley Bay coastline check-in beaches that share the skate-park collection point. */
+const WHITLEY_BAY_COLLECTION_BEACH_IDS = new Set([
+  "st-marys-lighthouse",
+  "whitley-bay-north",
+  "whitley-bay-central",
+  "whitley-bay-south",
+  "browns-bay",
+]);
+
+export function collectionPointForBeach(
+  beachId: string,
+): CollectionPoint | undefined {
+  const direct = collectionPoints.find((point) => point.beachId === beachId);
+  if (direct) return direct;
+  if (WHITLEY_BAY_COLLECTION_BEACH_IDS.has(beachId)) {
+    return collectionPoints.find((point) => point.id === "whitley-bay");
+  }
+  return undefined;
+}
+
+export function collectionPointLabel(point: CollectionPoint): string {
+  return point.description.replace(/\.$/, "");
 }
