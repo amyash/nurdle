@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { InstagramEmbed } from "@/components/instagram-embed";
-import { MeshBagDropoffsPanel } from "@/components/mesh-bags/mesh-bag-dropoffs-panel";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
@@ -41,8 +40,6 @@ const collectContentOrder = [
 export default function HowToCleanPage() {
   return (
     <PageShell title="How to clean" className="!pb-0">
-      <MeshBagDropoffsPanel />
-
       <Section id="bring" title="What to bring">
         <p className="mb-3 text-base font-bold leading-snug text-[var(--ink)]">
           {whatToBringIntro}
