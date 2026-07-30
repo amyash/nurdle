@@ -53,6 +53,7 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 7. `supabase/migrations/011_admin_time_logs.sql` (organising / admin time + RPCs)
 8. `supabase/migrations/012_remove_mesh_bag_dropoffs.sql` (remove drop-offs from public list)
 9. `supabase/migrations/013_wildlife_reports.sql` (wildlife impact reports + RPCs)
+10. `supabase/migrations/014_add_browns_bay.sql` (Brown’s Bay beach)
 
 `013` creates:
 
