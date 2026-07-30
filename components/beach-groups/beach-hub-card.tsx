@@ -147,7 +147,7 @@ export function BeachHubCard({
 
       {collectionPoint ? (
         <p className="mt-2 text-sm leading-snug text-[var(--ink)]">
-          Official collection point: {collectionPointLabel(collectionPoint)}{" "}
+          Council nurdle collection point: {collectionPointLabel(collectionPoint)}{" "}
           <a
             href={collectionPoint.mapsUrl}
             target="_blank"
