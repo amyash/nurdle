@@ -9,6 +9,60 @@ import {
 import type { CleanupAggregate } from "@/types/cleanup-log";
 import type { BeachCheckinStats } from "@/types/check-in";
 
+function BeachNestSection({ beach }: { beach: CheckinBeach }) {
+  const nest = beach.nest;
+  const equipment = nest?.equipment?.filter((item) => item.trim()) ?? [];
+  const mapsUrl = nest?.mapsUrl?.trim() || null;
+  const locationLabel = nest?.locationLabel?.trim() || null;
+  const hasDetails = Boolean(locationLabel || equipment.length > 0 || mapsUrl);
+
+  return (
+    <div className="mt-3 border-t border-[var(--line)] pt-3">
+      <p className="text-sm font-bold leading-snug text-[var(--ink)]">
+        Nurdle Equipment Stations (NESTs) location:
+      </p>
+      {!hasDetails ? (
+        <p className="mt-1 text-sm italic leading-snug text-[var(--mute)]">
+          Details coming soon
+        </p>
+      ) : (
+        <>
+          {locationLabel ? (
+            <p className="mt-1 text-sm leading-snug text-[var(--ink)]">
+              {locationLabel}
+            </p>
+          ) : null}
+          {equipment.length > 0 ? (
+            <ul className="mt-1.5 list-disc space-y-0.5 pl-5 text-sm leading-snug text-[var(--ink)]">
+              {equipment.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-1 text-sm italic leading-snug text-[var(--mute)]">
+              Equipment list coming soon
+            </p>
+          )}
+          {mapsUrl ? (
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block text-sm font-bold text-[var(--mark)] underline underline-offset-2"
+            >
+              Open in Google Maps
+            </a>
+          ) : (
+            <p className="mt-2 text-sm italic leading-snug text-[var(--mute)]">
+              Map link coming soon
+            </p>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 export function BeachHubCard({
   beach,
   stats,
@@ -86,16 +140,28 @@ export function BeachHubCard({
         <p className="mt-1 text-sm leading-snug text-[var(--mute)]">{named}</p>
       ) : null}
 
+      <BeachNestSection beach={beach} />
+
       {isCheckedInHere ? (
         <div className="mt-3 flex flex-col gap-2">
-          <button
-            type="button"
-            disabled={busy || cleanupDisabled}
-            onClick={onLogCleanup}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
-          >
-            Log your clean-up
-          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              disabled={busy || cleanupDisabled}
+              onClick={onLogCleanup}
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
+            >
+              Log your clean-up
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onExtend}
+              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+            >
+              Extend check-in
+            </button>
+          </div>
           <button
             type="button"
             disabled={busy}
@@ -104,22 +170,14 @@ export function BeachHubCard({
           >
             I’ve finished — check me out
           </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onExtend}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
-          >
-            Extend my check-in
-          </button>
         </div>
       ) : (
-        <div className="mt-3 flex flex-col gap-2">
+        <div className="mt-3 grid grid-cols-2 gap-2">
           <button
             type="button"
             disabled={busy || cleanupDisabled}
             onClick={onLogCleanup}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
+            className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
           >
             Log your clean-up
           </button>
@@ -127,7 +185,7 @@ export function BeachHubCard({
             type="button"
             disabled={busy || checkInDisabled}
             onClick={onCheckIn}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+            className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
           >
             Check in
           </button>

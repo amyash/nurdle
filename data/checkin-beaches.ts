@@ -1,11 +1,27 @@
 /**
- * Predefined beaches for the Beach groups hub (check-in + mesh bags).
+ * Predefined beaches for the Beach groups hub (check-in + clean-ups).
  * Coordinates are approximate coastline points for map markers only —
  * not used for GPS tracking.
  *
  * IDs must match rows seeded in supabase/migrations.
  * Add or rename beaches here — the hub UI and map render from this list.
+ *
+ * Optional `nest` (Nurdle Equipment Station) example:
+ *   nest: {
+ *     locationLabel: "Promenade by the skate park",
+ *     mapsUrl: "https://maps.google.com/?q=...",
+ *     equipment: ["Buckets", "Mesh bags", "Shovels"],
+ *   },
  */
+export interface BeachNest {
+  /** Short place description shown under the NEST heading. */
+  locationLabel?: string | null;
+  /** Google Maps link for the station. */
+  mapsUrl?: string | null;
+  /** Kit available at this NEST. */
+  equipment?: string[];
+}
+
 export interface CheckinBeach {
   id: string;
   name: string;
@@ -15,12 +31,11 @@ export interface CheckinBeach {
   displayOrder: number;
   /** Beach WhatsApp invite — null until confirmed. */
   whatsappUrl: string | null;
+  /** Nurdle Equipment Station details — omit until known. */
+  nest?: BeachNest | null;
 }
 
 export const CHECKIN_EXPIRY_HOURS = 2;
-
-/** Delivered mesh bag requests stay visible this long on the public hub. */
-export const MESH_BAG_DELIVERED_VISIBLE_HOURS = 10;
 
 /** Shared WhatsApp for the Whitley Bay coastline segments. */
 const WHITLEY_BAY_WHATSAPP =
