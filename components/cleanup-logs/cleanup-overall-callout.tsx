@@ -26,9 +26,9 @@ export function CleanupOverallCallout({
   if (!stats || stats.overall.submissionCount === 0) {
     return (
       <aside className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4">
-        <p className="text-sm font-bold uppercase tracking-wide text-[var(--alert-ink)]">
+        <h2 className="text-xl font-bold tracking-tight text-[var(--alert-ink)]">
           Community effort since the spill
-        </p>
+        </h2>
         <p className="mt-2 text-sm leading-snug text-[var(--alert-ink)]">
           No clean-ups logged yet. Use <strong>Log your clean-up</strong> on a
           beach card to add time after you’ve finished.
@@ -43,9 +43,9 @@ export function CleanupOverallCallout({
 
   return (
     <aside className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4">
-      <p className="text-sm font-bold uppercase tracking-wide text-[var(--alert-ink)]">
+      <h2 className="text-xl font-bold tracking-tight text-[var(--alert-ink)]">
         Community effort since the spill
-      </p>
+      </h2>
       <ul className="mt-2 space-y-1 text-base font-bold leading-snug text-[var(--alert-ink)]">
         <li>{formatVolunteerHours(overall.totalVolunteerHours)}</li>
         <li>{formatVolunteerSessions(overall.totalVolunteerSessions)}</li>

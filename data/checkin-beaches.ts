@@ -8,18 +8,33 @@
  *
  * Optional `nest` (Nurdle Equipment Station) example:
  *   nest: {
- *     locationLabel: "Promenade by the skate park",
- *     mapsUrl: "https://maps.google.com/?q=...",
- *     equipment: ["Buckets", "Mesh bags", "Shovels"],
+ *     mapsUrl: "https://maps.app.goo.gl/...",
+ *     // or multiple links:
+ *     locationLinks: [{ label: "The Kiln Studios", url: "https://..." }],
+ *     paragraphs: ["The equipment container is located…"],
+ *     equipmentIntro: "Most NESTs are stocked with…",
+ *     equipment: ["Mesh sieves", "Collection bags"],
+ *     notes: ["Please return any borrowed equipment…"],
  *   },
  */
+export interface BeachNestLocationLink {
+  label: string;
+  url: string;
+}
+
 export interface BeachNest {
-  /** Short place description shown under the NEST heading. */
-  locationLabel?: string | null;
-  /** Google Maps link for the station. */
+  /** Single Google Maps link — shown as “Location” when `locationLinks` is omitted. */
   mapsUrl?: string | null;
+  /** One or more location links (overrides `mapsUrl` when present). */
+  locationLinks?: BeachNestLocationLink[];
+  /** Intro / location paragraphs inside the expandable section. */
+  paragraphs?: string[];
+  /** Optional intro line above the equipment list. */
+  equipmentIntro?: string | null;
   /** Kit available at this NEST. */
   equipment?: string[];
+  /** Extra notes after the equipment list. */
+  notes?: string[];
 }
 
 export interface CheckinBeach {
@@ -40,6 +55,30 @@ export const CHECKIN_EXPIRY_HOURS = 2;
 /** Shared WhatsApp for the Whitley Bay coastline segments. */
 const WHITLEY_BAY_WHATSAPP =
   "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE";
+
+const LONGSANDS_NEST: BeachNest = {
+  mapsUrl: "https://maps.app.goo.gl/FoDtaM8pL6ooUK8d7",
+  paragraphs: [
+    "The Longsands NEST is a community equipment station located at the ramp close to Crusoe's.",
+    "The equipment box is stored overnight at the back of Crusoe's, near the brooms, and is usually put out each morning by volunteers.",
+    "If you're able to help by putting the box out in the morning or returning it in the evening, please let the beach WhatsApp group know.",
+  ],
+  equipmentIntro:
+    "Most NESTs are stocked with a selection of the following items.",
+  equipment: [
+    "Mesh sieves",
+    "Collection bags",
+    "Gloves",
+    "Buckets",
+    "Soft brushes",
+    "Other donated equipment",
+  ],
+  notes: [
+    "Stock levels may vary, and some items may be temporarily unavailable.",
+    "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+    "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+  ],
+};
 
 export const checkinBeaches: CheckinBeach[] = [
   {
@@ -97,6 +136,28 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4328,
     displayOrder: 6,
     whatsappUrl: "https://chat.whatsapp.com/LJIE5xqsqWmGAIl2pLt4t2",
+    nest: {
+      mapsUrl: "https://maps.app.goo.gl/TCt1biSsvFaLMcwq8",
+      paragraphs: [
+        "The equipment container is located at the bottom of the beach access ramp at Cullercoats Bay, next to the lifebuoy housing and council bins.",
+        "The container is usually unlocked between 6:00–8:00 am and locked between 9:00–11:00 pm. Should this not be the case, volunteers can ask in the beach WhatsApp group, where a local PSC keyholder may be able to help.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items:",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
   },
   {
     id: "longsands-north",
@@ -106,6 +167,7 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4296,
     displayOrder: 7,
     whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
+    nest: LONGSANDS_NEST,
   },
   {
     id: "longsands-south",
@@ -115,6 +177,7 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4269,
     displayOrder: 8,
     whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
+    nest: LONGSANDS_NEST,
   },
   {
     id: "king-edwards-bay",
@@ -151,6 +214,23 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5085,
     displayOrder: 12,
     whatsappUrl: null,
+    nest: {
+      paragraphs: [
+        "Thanks to Robin, who has generously offered to store the Blyth NEST equipment at his home.",
+        "If you need to borrow or return equipment, please contact Robin on [07843 411770] to arrange a convenient time.",
+        "As this is a volunteer's home, please be respectful and return all equipment clean and in good condition.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items.",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+    },
   },
   {
     id: "seaton-sluice",
@@ -178,6 +258,40 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4372,
     displayOrder: 15,
     whatsappUrl: "https://chat.whatsapp.com/E3UFrnJFRE719lT7BztWoo",
+    nest: {
+      locationLinks: [
+        {
+          label: "Search The Kiln Studios on Google Maps",
+          url: "https://www.google.com/maps/search/?api=1&query=The+Kiln+Studios+North+Shields",
+        },
+        {
+          label: "Search Mooring buoy art monument on Google Maps",
+          url: "https://www.google.com/maps/search/?api=1&query=Mooring+buoy+art+monument+Fish+Quay",
+        },
+      ],
+      paragraphs: [
+        "The Fish Quay NEST is based at The Kiln Studios, around a two-minute walk from Fish Quay Beach. It serves as an equipment collection and drop-off point for volunteers.",
+        "Equipment can be collected and returned during The Kiln Studios' opening hours. The NEST is located just inside the studio entrance and is clearly signposted. Equipment is stored securely inside when the studio is closed.",
+        "Thanks to Ron, who has kindly offered space at The Kiln Studios to support the community response.",
+        "Note: Throughout the day you might also find volunteer equipment at the painted blue buoys.",
+        "Outside the regular opening times, volunteers can ask in the beach WhatsApp group, where a local PSC keyholder may be able to help.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items.",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
   },
 ];
 

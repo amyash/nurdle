@@ -39,7 +39,7 @@ export const collectionPoints: CollectionPoint[] = [
     longitude: -1.4505963,
     description: "Promenade by skate park",
     landmarkUsed: "Rendezvous Cafe Google Maps pin",
-    mapsUrl: "https://maps.app.goo.gl/JcnLM3QkjZFboinY8?g_st=ic",
+    mapsUrl: "https://maps.app.goo.gl/6Ve4Gc6JXrbDdC1D7?g_st=ic",
     sourceUrl: COUNCIL_GUIDANCE_URL,
     displayOrder: 1,
   },
