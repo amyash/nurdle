@@ -11,7 +11,7 @@
  * so drop-off rows go to a separate public file.
  */
 
-var SCRIPT_VERSION = "private-v4-2026-07-30";
+var SCRIPT_VERSION = "private-v5-2026-07-30";
 
 /** Optional public mesh-bag drop-offs spreadsheet ID (from /d/<ID>/edit). Leave blank to use active. */
 var DROPOFFS_SPREADSHEET_ID = "";
@@ -50,6 +50,26 @@ var ADMIN_TIME_HEADERS = [
   "Category Label",
   "Person Name",
   "Notes",
+];
+
+var WILDLIFE_HEADERS = [
+  "ID",
+  "Submitted At",
+  "Status",
+  "Beach ID",
+  "Beach Name",
+  "Date Observed",
+  "Time Observed",
+  "Animal Type",
+  "Animal Type Label",
+  "Species",
+  "Count",
+  "Condition",
+  "Condition Label",
+  "Description",
+  "Has Supporting Evidence",
+  "Email",
+  "Reporter Name",
 ];
 
 function jsonResponse_(payload) {
@@ -101,6 +121,18 @@ function getAdminTimeSheet_() {
   }
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(ADMIN_TIME_HEADERS);
+  }
+  return sheet;
+}
+
+function getWildlifeSheet_() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getSheetByName("Wildlife Reports");
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet("Wildlife Reports");
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(WILDLIFE_HEADERS);
   }
   return sheet;
 }
@@ -190,6 +222,34 @@ function doPost(e) {
       return jsonResponse_({
         ok: true,
         target: "admin-time",
+        version: SCRIPT_VERSION,
+      });
+    }
+
+    if (data.type === "wildlife-report") {
+      var wildlifeSheet = getWildlifeSheet_();
+      wildlifeSheet.appendRow([
+        data.id || "",
+        data.submittedAt || "",
+        data.status || "pending",
+        data.beachId || "",
+        data.beachName || "",
+        data.dateObserved || "",
+        data.timeObserved || "",
+        data.animalType || "",
+        data.animalTypeLabel || "",
+        data.species || "",
+        data.count || "",
+        data.condition || "",
+        data.conditionLabel || "",
+        data.description || "",
+        data.hasSupportingEvidence === true ? "yes" : "no",
+        data.email || "",
+        data.reporterName || "",
+      ]);
+      return jsonResponse_({
+        ok: true,
+        target: "wildlife-reports",
         version: SCRIPT_VERSION,
       });
     }

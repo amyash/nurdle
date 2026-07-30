@@ -8,6 +8,7 @@ const nav = [
   { href: "/news", label: "News" },
   { href: "/how-to-clean", label: "How to clean" },
   { href: "/beaches", label: "Beaches" },
+  { href: "/wildlife-impact", label: "Wildlife impact" },
   { href: "/drop-off-points", label: "Drop-off points" },
   { href: "/photos", label: "Photos" },
 ];

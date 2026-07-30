@@ -8,6 +8,7 @@ Mobile-first emergency information for community volunteers cleaning beaches aro
 - `/news` — community news and updates
 - `/how-to-clean` — what to bring, how to collect, mesh filter bag drop-offs, videos, cleanup techniques, FAQs
 - `/beaches` — beach hub: map, volunteer check-in, WhatsApp links, log clean-ups, admin time
+- `/wildlife-impact` — community wildlife sightings (moderated; local feature until promoted)
 - `/drop-off-points` — official North Tyneside Council bag drop-off points (map + list)
 - `/photos` — volunteer photos
 - `/press-release` — press / media information
@@ -51,6 +52,19 @@ In the Supabase dashboard open **SQL → New query**, paste and run:
 6. `supabase/migrations/010_mesh_bag_dropoffs.sql` (bag-maker drop-offs + RPCs)
 7. `supabase/migrations/011_admin_time_logs.sql` (organising / admin time + RPCs)
 8. `supabase/migrations/012_remove_mesh_bag_dropoffs.sql` (remove drop-offs from public list)
+9. `supabase/migrations/013_wildlife_reports.sql` (wildlife impact reports + RPCs)
+
+`013` creates:
+
+- `wildlife_reports` (default status `pending`)
+- RPCs: `create_wildlife_report`, `list_approved_wildlife_reports`, `get_wildlife_impact_stats`, `set_wildlife_report_status`
+- Public UI only shows **approved** reports (email / name never returned)
+
+Approve a report in the SQL editor:
+
+```sql
+select * from public.set_wildlife_report_status('REPORT_UUID_HERE', 'approved');
+```
 
 `011` creates:
 

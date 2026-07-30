@@ -1,0 +1,317 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { useEffect, useMemo, useState } from "react";
+import { WildlifeReportCard } from "@/components/wildlife/wildlife-report-card";
+import { WildlifeReportModal } from "@/components/wildlife/wildlife-report-modal";
+import { WildlifeSuccessModal } from "@/components/wildlife/wildlife-success-modal";
+import {
+  createWildlifeReport,
+  fetchWildlifeImpactData,
+} from "@/lib/wildlife/api";
+import {
+  WILDLIFE_FILTERS,
+  isValidAnimalType,
+  isValidCondition,
+  matchesWildlifeFilter,
+} from "@/lib/wildlife/format";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import type {
+  CreateWildlifeReportInput,
+  WildlifeFilter,
+  WildlifeImpactStats,
+  WildlifeReportPublic,
+} from "@/types/wildlife";
+
+const WildlifeImpactMap = dynamic(
+  () =>
+    import("@/components/wildlife/wildlife-impact-map").then(
+      (mod) => mod.WildlifeImpactMap,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        role="status"
+        className="flex h-72 items-center justify-center rounded-lg border border-[var(--line)] bg-white text-sm text-[var(--mute)] sm:h-80"
+      >
+        Loading map…
+      </div>
+    ),
+  },
+);
+
+function emptyStats(): WildlifeImpactStats {
+  return {
+    verifiedReports: 0,
+    animalsReported: 0,
+    speciesRecorded: 0,
+    awaitingReview: 0,
+  };
+}
+
+export function WildlifeImpactPanel() {
+  const configured = isSupabaseConfigured();
+  const [reports, setReports] = useState<WildlifeReportPublic[]>([]);
+  const [stats, setStats] = useState<WildlifeImpactStats>(emptyStats);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<WildlifeFilter>("all");
+  const [formOpen, setFormOpen] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      if (!isSupabaseConfigured()) {
+        if (!cancelled) {
+          setReports([]);
+          setStats(emptyStats());
+          setLoading(false);
+        }
+        return;
+      }
+
+      const result = await fetchWildlifeImpactData();
+      if (cancelled) return;
+      if (result.ok) {
+        setReports(result.reports);
+        setStats(result.stats);
+        setLoadError(null);
+      } else if (result.error === "not_configured") {
+        setReports([]);
+        setStats(emptyStats());
+      } else {
+        setLoadError(result.message);
+      }
+      setLoading(false);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const filtered = useMemo(
+    () =>
+      reports.filter((report) =>
+        matchesWildlifeFilter(report.condition, filter),
+      ),
+    [reports, filter],
+  );
+
+  function openForm() {
+    if (!configured) {
+      setFormError(
+        "Wildlife reporting isn’t connected yet. Please try again later.",
+      );
+      setFormOpen(true);
+      return;
+    }
+    setFormError(null);
+    setFormOpen(true);
+  }
+
+  async function handleSubmit(raw: {
+    beachId: string;
+    dateObserved: string;
+    timeObserved: string | null;
+    animalType: string;
+    species: string;
+    count: number;
+    condition: string;
+    description: string;
+    hasSupportingEvidence: boolean;
+    email: string;
+    reporterName: string;
+    consentPublic: boolean;
+  }) {
+    if (busy) return;
+    if (!isValidAnimalType(raw.animalType) || !isValidCondition(raw.condition)) {
+      setFormError("Please check the animal type and condition.");
+      return;
+    }
+
+    const input: CreateWildlifeReportInput = {
+      beachId: raw.beachId,
+      dateObserved: raw.dateObserved,
+      timeObserved: raw.timeObserved,
+      animalType: raw.animalType,
+      species: raw.species || null,
+      count: raw.count,
+      condition: raw.condition,
+      description: raw.description,
+      hasSupportingEvidence: raw.hasSupportingEvidence,
+      email: raw.email,
+      reporterName: raw.reporterName || null,
+      consentPublic: raw.consentPublic,
+    };
+
+    setBusy(true);
+    setFormError(null);
+    const result = await createWildlifeReport(input);
+    setBusy(false);
+
+    if (!result.ok) {
+      setFormError(result.message);
+      return;
+    }
+
+    setFormOpen(false);
+    setShowSuccess(true);
+    // Refresh stats so awaiting-review increments; approved list unchanged
+    const refreshed = await fetchWildlifeImpactData();
+    if (refreshed.ok) {
+      setReports(refreshed.reports);
+      setStats(refreshed.stats);
+    }
+  }
+
+  const statCards = [
+    { label: "Verified reports", value: stats.verifiedReports },
+    { label: "Animals reported", value: stats.animalsReported },
+    { label: "Species recorded", value: stats.speciesRecorded },
+    { label: "Reports awaiting review", value: stats.awaitingReview },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <p className="text-base leading-snug text-[var(--ink)]">
+        Help document wildlife possibly affected by the nurdle spill. Community
+        reports build a shared picture of impact and let organisations follow up
+        for evidence when needed — without uploading photos to this site.
+      </p>
+
+      <button
+        type="button"
+        onClick={openForm}
+        className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white"
+      >
+        Report a wildlife sighting
+      </button>
+
+      <section aria-label="Community statistics">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
+          Community statistics
+        </h2>
+        <ul className="mt-3 grid grid-cols-2 gap-2">
+          {statCards.map((card) => (
+            <li
+              key={card.label}
+              className="rounded-lg border border-[var(--line)] bg-white px-3 py-3"
+            >
+              <p className="text-2xl font-bold tabular-nums text-[var(--ink)]">
+                {loading ? "…" : card.value.toLocaleString("en-GB")}
+              </p>
+              <p className="mt-1 text-xs font-bold leading-snug text-[var(--mute)]">
+                {card.label}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {!configured ? (
+        <aside
+          className="rounded-lg border border-amber-800/40 bg-amber-50 p-3 text-sm leading-snug text-amber-950"
+          role="note"
+        >
+          Wildlife impact isn’t connected for this environment yet. Add Supabase
+          credentials and run{" "}
+          <code className="text-xs">013_wildlife_reports.sql</code> to enable
+          reporting.
+        </aside>
+      ) : null}
+
+      {loadError ? (
+        <p role="alert" className="text-sm leading-snug text-red-800">
+          {loadError}
+        </p>
+      ) : null}
+
+      <section aria-label="Wildlife reports map">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
+          Map of verified reports
+        </h2>
+        <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
+          Pins show beach-level locations only (not exact GPS). Reports at the
+          same beach are grouped together.
+        </p>
+        <div className="mt-3">
+          <WildlifeImpactMap reports={filtered} />
+        </div>
+      </section>
+
+      <section aria-label="Filter reports">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
+          Filter
+        </h2>
+        <div
+          className="mt-2 flex flex-wrap gap-2"
+          role="group"
+          aria-label="Filter wildlife reports"
+        >
+          {WILDLIFE_FILTERS.map((item) => {
+            const active = filter === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setFilter(item.id)}
+                className={`inline-flex min-h-10 items-center rounded-md border px-3 text-sm font-bold ${
+                  active
+                    ? "border-[var(--ink)] bg-[var(--ink)] text-white"
+                    : "border-[var(--line)] bg-white text-[var(--ink)]"
+                }`}
+                aria-pressed={active}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section aria-label="Latest wildlife reports">
+        <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
+          Latest verified reports
+        </h2>
+        {loading ? (
+          <p className="mt-2 text-sm text-[var(--mute)]" role="status">
+            Loading reports…
+          </p>
+        ) : filtered.length === 0 ? (
+          <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
+            No verified reports match this filter yet.
+          </p>
+        ) : (
+          <ul className="mt-3 space-y-3">
+            {filtered.map((report) => (
+              <li key={report.id}>
+                <WildlifeReportCard report={report} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <WildlifeReportModal
+        open={formOpen}
+        busy={busy}
+        error={formError}
+        onClose={() => {
+          if (!busy) setFormOpen(false);
+        }}
+        onSubmit={(input) => void handleSubmit(input)}
+      />
+
+      <WildlifeSuccessModal
+        open={showSuccess}
+        onClose={() => setShowSuccess(false)}
+      />
+    </div>
+  );
+}
