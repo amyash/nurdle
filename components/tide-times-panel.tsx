@@ -5,19 +5,10 @@ export function TideTimesPanel() {
   const tide = northShieldsTideTimes;
 
   return (
-    <section
-      className="mb-6 rounded-lg border-2 border-[var(--ink)] bg-white p-4"
-      aria-labelledby="tide-times-heading"
-    >
-      <h2
-        id="tide-times-heading"
-        className="text-lg font-bold leading-snug text-[var(--ink)]"
-      >
-        {tide.title}
-      </h2>
+    <div className="mb-6">
       <TideTimesWidget scriptSrc={tide.widgetSrc} cssHref={tide.widgetCss} />
-      <p className="mt-3 text-xs text-[var(--mute)]">
-        Live widget powered by{" "}
+      <p className="mt-2 text-xs text-[var(--mute)]">
+        Live tide times from{" "}
         <a
           href={tide.sourceUrl}
           target="_blank"
@@ -28,6 +19,6 @@ export function TideTimesPanel() {
         </a>
         .
       </p>
-    </section>
+    </div>
   );
 }

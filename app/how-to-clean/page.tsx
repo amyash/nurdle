@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { CommunityCleanupMessagePanel } from "@/components/community-cleanup-message";
 import { InstagramEmbed } from "@/components/instagram-embed";
 import { MeshBagDropoffsPanel } from "@/components/mesh-bags/mesh-bag-dropoffs-panel";
 import { PageShell } from "@/components/page-shell";
@@ -8,11 +7,9 @@ import { TideTimesPanel } from "@/components/tide-times-panel";
 import { YoutubeEmbed } from "@/components/youtube-embed";
 import Image from "next/image";
 import {
-  communityCleanupMessage,
   faqs,
   howToCollect,
   howToCollectIntro,
-  photosNote,
   techniqueGuides,
   trainingVideos,
   whatToBring,
@@ -44,7 +41,6 @@ const collectContentOrder = [
 export default function HowToCleanPage() {
   return (
     <PageShell title="How to clean" className="!pb-0">
-      <CommunityCleanupMessagePanel message={communityCleanupMessage} />
       <TideTimesPanel />
       <MeshBagDropoffsPanel />
 
@@ -265,38 +261,6 @@ export default function HowToCleanPage() {
           })}
         </ul>
       </Section>
-
-      <aside
-        className="rounded-lg border border-[var(--ink)] bg-white px-3 py-3 text-sm leading-snug text-[var(--ink)]"
-        role="note"
-      >
-        <p className="text-xs font-bold uppercase tracking-wide text-[var(--mute)]">
-          Photos needed
-        </p>
-        <p className="mt-1">
-          {photosNote.beforeLink}
-          <a
-            href={photosNote.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-[var(--tide)] underline underline-offset-2"
-          >
-            {photosNote.linkLabel}
-          </a>
-          {photosNote.afterLink}
-        </p>
-        <p className="mt-2">
-          {photosNote.nurdleHunt.beforeLink}
-          <a
-            href={photosNote.nurdleHunt.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-[var(--tide)] underline underline-offset-2"
-          >
-            {photosNote.nurdleHunt.linkLabel}
-          </a>
-        </p>
-      </aside>
 
       <div className="mt-6 border-t border-[var(--line)] pb-8" aria-hidden="true" />
 
