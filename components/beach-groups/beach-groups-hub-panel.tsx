@@ -374,7 +374,10 @@ export function BeachGroupsHubPanel() {
         </ul>
       </section>
 
-      <div className="border-t border-[var(--line)]" aria-hidden="true" />
+      <div
+        className="my-6 border-t border-[var(--line)] pt-6"
+        aria-hidden="true"
+      />
 
       <AdminTimePanel />
 
