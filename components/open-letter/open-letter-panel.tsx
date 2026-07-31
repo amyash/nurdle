@@ -9,11 +9,7 @@ export function OpenLetterPanel() {
         <p className="mt-2 text-4xl font-bold tabular-nums text-mark">
           {openLetter.whatsappMemberCount.toLocaleString("en-GB")}
         </p>
-        <p className="mt-2 text-body font-bold">
-          Signed by {openLetter.whatsappMemberCount.toLocaleString("en-GB")}{" "}
-          members of a voluntary effort to respond to the Port of Tyne Nurdle
-          Spill
-        </p>
+        <p className="mt-2 text-body font-bold">{openLetter.signedByLabel}</p>
       </Callout>
 
       <article aria-labelledby="open-letter-addressee">

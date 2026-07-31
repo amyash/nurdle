@@ -8,7 +8,7 @@ export function SiteFooter() {
           href="https://amyash.co.uk"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold text-mark underline underline-offset-2"
+          className="text-mute underline underline-offset-2"
         >
           Amy
         </a>
@@ -18,7 +18,7 @@ export function SiteFooter() {
           href="https://wa.me/447745720319"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold text-mark underline underline-offset-2"
+          className="text-mute underline underline-offset-2"
         >
           WhatsApp
         </a>
@@ -27,7 +27,7 @@ export function SiteFooter() {
           href="https://github.com/amyash/nurdle"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold text-mark underline underline-offset-2"
+          className="text-mute underline underline-offset-2"
         >
           GitHub
         </a>
