@@ -8,9 +8,9 @@ export const openLetter = {
     "An Open Letter to Matt Beeton, Chief Executive of the Port of Tyne,",
   title:
     "Port of Tyne Inadequate Response While Nurdle Spill Continues Unchecked - Request to Authorise Trained Volunteers to Assist.",
-  whatsappMemberCount: 2388,
+  whatsappMemberCount: 2242,
   signedByLabel:
-    "Signed by 2388 members of the voluntary effort to respond to the Port of Tyne Nurdle Catastrophe",
+    "Signed by 2242 members of the voluntary effort to respond to the Port of Tyne Nurdle Catastrophe",
   paragraphs: [
     "Nearly two weeks after over 24 tonnes of raw plastic pellets (‘nurdles’) were spilled into the River Tyne, community organisers and regional marine groups are expressing outrage over the Port of Tyne’s inadequate response.",
     "While official contractors (Briggs Marine and Ambipar) have been deployed (with minimal workers) the response in the River Tyne remains vastly inadequate. There are millions of nurdles still simply floating amongst wildlife, waiting to be collected, with a steady stream heading out of the piers into the North Sea and onto our beaches.",
