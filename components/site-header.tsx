@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { siteDisclaimer } from "@/data/content";
+import { openLetter } from "@/data/open-letter";
 
 export function SiteHeader() {
   return (
@@ -20,6 +21,15 @@ export function SiteHeader() {
           <p className="mt-2 text-[10px] leading-tight text-white/70">
             {siteDisclaimer}
           </p>
+
+          <div className="mt-3">
+            <Link
+              href="/open-letter"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[#5eead4] px-3 py-2.5 text-center text-sm font-bold leading-tight text-[#111827] sm:text-base"
+            >
+              {openLetter.headerCtaLabel}
+            </Link>
+          </div>
         </div>
       </div>
 

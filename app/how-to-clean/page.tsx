@@ -9,6 +9,7 @@ import {
   faqs,
   howToCollect,
   howToCollectIntro,
+  ecosystemProtection,
   techniqueGuides,
   trainingVideos,
   whatToBring,
@@ -256,6 +257,22 @@ export default function HowToCleanPage() {
             );
           })}
         </ul>
+
+        <div className="mt-6 space-y-3">
+          <h3 className="text-base font-bold leading-snug text-[var(--ink)]">
+            {ecosystemProtection.title}
+          </h3>
+          {ecosystemProtection.blocks.map((block) => (
+            <div key={block.heading}>
+              <p className="text-base font-bold leading-snug text-[var(--ink)]">
+                {block.heading}
+              </p>
+              <p className="mt-1 text-base leading-snug text-[var(--ink)]">
+                {block.text}
+              </p>
+            </div>
+          ))}
+        </div>
       </Section>
 
       <div className="mt-6 border-t border-[var(--line)] pb-8" aria-hidden="true" />

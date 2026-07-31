@@ -640,6 +640,25 @@ export const whatToBring: BringItem[] = [
 export const howToCollectIntro =
   "Avoid treading nurdles into the sand as best you can.";
 
+/** Ecosystem care guidance shown under How to collect. */
+export const ecosystemProtection = {
+  title: "Protect our ecosystems when collecting Nurdles",
+  blocks: [
+    {
+      heading: "On digging",
+      text: "Please avoid digging or taking mechanical approaches.",
+    },
+    {
+      heading: "Wet sand",
+      text: "The damp intertidal band (the sand exposed between tides) is the most biologically productive part of the beach. It is packed with burrowing infauna — lugworms, ragworms, cockles, tellins, razor clams, sandhoppers — which are the main food supply for wading birds and inshore fish. Turning or excavating this sand kills and exposes those buried animals directly, and it flips oxygen-poor sediment up to the surface.",
+    },
+    {
+      heading: "Move and remove as little seaweed as possible.",
+      text: "Seaweed is a vital part of our beach ecosystem. It's home to lots of helpful tiny life forms and the local birds too! Pick it up, shake it into a bucket to catch nurdles, remove nurdles from under it, and put it back.",
+    },
+  ],
+} as const;
+
 export const howToCollect: CollectStep[] = [
   {
     step: 1,
