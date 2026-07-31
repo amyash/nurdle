@@ -192,11 +192,6 @@ export function BeachCheckinMap({
         padding: [24, 24],
         maxZoom: 15,
       });
-      // One step closer so nearby beaches (e.g. Whitley Bay) stay distinct
-      const zoom = map.getZoom();
-      if (typeof zoom === "number") {
-        map.setZoom(Math.min(zoom + 1, 15));
-      }
     }
 
     map.invalidateSize();

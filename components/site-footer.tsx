@@ -1,6 +1,6 @@
 export function SiteFooter() {
   return (
-    <footer className="mx-auto max-w-lg border-t border-line px-4 py-4 text-meta">
+    <footer className="mx-auto max-w-lg border-t border-line px-4 py-4 text-xs leading-snug text-mute">
       <p>Community-created information hub for North Tyneside volunteers.</p>
       <p className="mt-2">
         This website is maintained by{" "}

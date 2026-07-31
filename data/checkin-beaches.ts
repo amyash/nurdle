@@ -293,6 +293,16 @@ export const checkinBeaches: CheckinBeach[] = [
       ],
     },
   },
+  {
+    id: "south-shields",
+    name: "South Shields",
+    slug: "south-shields",
+    // Littlehaven / South Shields seafront — approximate map pin only
+    latitude: 55.0042,
+    longitude: -1.4245,
+    displayOrder: 16,
+    whatsappUrl: "https://chat.whatsapp.com/Kfd0BABx0dTH9Q9UgUks4r",
+  },
 ];
 
 /** WhatsApp-only groups without check-in map points. */
@@ -300,13 +310,7 @@ export const otherBeachWhatsappGroups: {
   id: string;
   name: string;
   whatsappUrl: string | null;
-}[] = [
-  {
-    id: "south-tyneside",
-    name: "South Tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/Kfd0BABx0dTH9Q9UgUks4r",
-  },
-];
+}[] = [];
 
 export const checkinBeachById = Object.fromEntries(
   checkinBeaches.map((beach) => [beach.id, beach]),

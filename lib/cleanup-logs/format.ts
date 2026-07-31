@@ -66,26 +66,26 @@ export function formatVolunteerHours(hours: number): string {
       ? String(Math.round(rounded))
       : rounded.toFixed(1);
   const value = Number(display).toLocaleString("en-GB");
-  return `${value} volunteer hour${Math.abs(Number(display)) === 1 ? "" : "s"}`;
+  return `${value} volunteer clean-up hour${Math.abs(Number(display)) === 1 ? "" : "s"}`;
 }
 
 export function formatVolunteerSessions(count: number): string {
   const value = count.toLocaleString("en-GB");
-  return `${value} volunteer session${count === 1 ? "" : "s"}`;
+  return `${value} volunteer clean-up session${count === 1 ? "" : "s"}`;
 }
 
 export function formatEstimatedWeight(kg: number): string {
-  if (kg <= 0) return "0 kg estimated collected";
+  if (kg <= 0) return "~0 kg collected";
   if (kg >= 1000) {
     const tonnes = Math.round((kg / 1000) * 10) / 10;
     const label = Number.isInteger(tonnes) ? String(tonnes) : tonnes.toFixed(1);
-    return `${label} tonne${Number(label) === 1 ? "" : "s"} estimated collected`;
+    return `~${label} tonne${Number(label) === 1 ? "" : "s"} collected`;
   }
   const rounded = Math.round(kg * 10) / 10;
   const nice = rounded.toLocaleString("en-GB", {
     maximumFractionDigits: 1,
   });
-  return `${nice} kg estimated collected`;
+  return `~${nice} kg collected`;
 }
 
 export function isValidCleanupDate(

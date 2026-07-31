@@ -16,13 +16,11 @@ import {
 } from "@/data/checkin-beaches";
 import {
   checkInVolunteer,
-  checkOutVolunteer,
-  extendCheckin,
   fetchBeachCheckinStats,
   fetchMyActiveCheckin,
 } from "@/lib/check-in/api";
-import { summaryLabel } from "@/lib/check-in/format";
 import { getOrCreateCheckinSessionId } from "@/lib/check-in/session";
+import { fetchAdminTimeStats } from "@/lib/admin-time/api";
 import {
   createCleanupLog,
   emptyCleanupStats,
@@ -71,9 +69,9 @@ export function BeachGroupsHubPanel() {
   const [cleanupStats, setCleanupStats] = useState<CleanupStatsResponse | null>(
     null,
   );
+  const [adminTotalMinutes, setAdminTotalMinutes] = useState(0);
   const [cleanupStatsLoading, setCleanupStatsLoading] = useState(true);
   const [myCheckin, setMyCheckin] = useState<ActiveSessionCheckin | null>(null);
-  const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -101,11 +99,13 @@ export function BeachGroupsHubPanel() {
     : undefined;
 
   const refresh = useCallback(async (sid: string) => {
-    const [statsResult, mineResult, cleanupResult] = await Promise.all([
-      fetchBeachCheckinStats(),
-      fetchMyActiveCheckin(sid),
-      fetchCleanupStats(),
-    ]);
+    const [statsResult, mineResult, cleanupResult, adminResult] =
+      await Promise.all([
+        fetchBeachCheckinStats(),
+        fetchMyActiveCheckin(sid),
+        fetchCleanupStats(),
+        fetchAdminTimeStats(),
+      ]);
 
     if (statsResult.ok) {
       const byId = Object.fromEntries(
@@ -139,19 +139,19 @@ export function BeachGroupsHubPanel() {
     } else if (cleanupResult.error === "not_configured") {
       setCleanupStats(emptyCleanupStats());
     }
+
+    if (adminResult.ok) {
+      setAdminTotalMinutes(adminResult.stats.totalDurationMinutes);
+    } else {
+      setAdminTotalMinutes(0);
+    }
     setCleanupStatsLoading(false);
   }, []);
 
   useEffect(() => {
     const sid = ensureSessionId();
-    let cancelled = false;
 
-    async function boot() {
-      await refresh(sid);
-      if (!cancelled) setLoading(false);
-    }
-
-    void boot();
+    void refresh(sid);
 
     const poll = window.setInterval(() => {
       void refresh(sid);
@@ -165,7 +165,6 @@ export function BeachGroupsHubPanel() {
     document.addEventListener("visibilitychange", onVisible);
 
     return () => {
-      cancelled = true;
       window.clearInterval(poll);
       document.removeEventListener("visibilitychange", onVisible);
     };
@@ -191,39 +190,6 @@ export function BeachGroupsHubPanel() {
     setMyCheckin(result.checkin);
     setModalBeachId(null);
     setStatusMessage(`Checked in at ${modalBeach?.name ?? "the beach"}.`);
-    await refresh(sessionId);
-  }
-
-  async function handleCheckOut() {
-    const sessionId = ensureSessionId();
-    setBusy(true);
-    setActionError(null);
-    const result = await checkOutVolunteer(sessionId);
-    setBusy(false);
-    if (!result.ok) {
-      setActionError(result.message);
-      return;
-    }
-    setMyCheckin(null);
-    setStatusMessage("You’re checked out. Thank you for helping.");
-    await refresh(sessionId);
-  }
-
-  async function handleExtend() {
-    const sessionId = ensureSessionId();
-    setBusy(true);
-    setActionError(null);
-    const result = await extendCheckin(sessionId);
-    setBusy(false);
-    if (!result.ok) {
-      setActionError(result.message);
-      if (result.error === "expired") {
-        setMyCheckin(null);
-      }
-      return;
-    }
-    setMyCheckin(result.checkin);
-    setStatusMessage("Check-in extended for another two hours.");
     await refresh(sessionId);
   }
 
@@ -281,21 +247,17 @@ export function BeachGroupsHubPanel() {
   return (
     <div className="space-y-4">
       <p className="text-body">
-        Find where volunteers are cleaning, join the beach WhatsApp group, check
-        in when you arrive, and log your clean-up. Cards also show council
-        nurdle collection points where available. Check-ins expire after two
-        hours.
+        Find where volunteers are cleaning, join the beach WhatsApp group, and
+        log your clean-up when you finish. Cards have information on equipment
+        stations and council nurdle collection points where available.
       </p>
 
       <CleanupOverallCallout
         stats={cleanupStats}
+        adminTotalMinutes={adminTotalMinutes}
         loading={cleanupStatsLoading}
         activeBeachCount={checkinBeaches.length}
       />
-
-      <p className="text-sm font-bold leading-snug text-ink" aria-live="polite">
-        {loading ? "Loading beach updates…" : summaryLabel(stats)}
-      </p>
 
       {(loadError || actionError) && (
         <p role="alert" className="text-sm leading-snug text-red-800">
@@ -329,43 +291,39 @@ export function BeachGroupsHubPanel() {
           <li key={beach.id}>
             <BeachHubCard
               beach={beach}
-              stats={statsById[beach.id]}
               cleanupStats={cleanupStats?.byBeach[beach.id]}
               cleanupStatsLoading={cleanupStatsLoading}
-              isCheckedInHere={myCheckin?.beachId === beach.id}
-              checkInDisabled={!configured}
               cleanupDisabled={!configured}
               busy={busy}
-              onCheckIn={() => openCheckIn(beach.id)}
-              onCheckOut={() => void handleCheckOut()}
-              onExtend={() => void handleExtend()}
               onLogCleanup={() => openCleanupLog(beach.id)}
             />
           </li>
         ))}
       </ul>
 
-      <Card padding="sm">
-        <h3 className="text-eyebrow text-mute">Other WhatsApp groups</h3>
-        <ul className="mt-2 space-y-2">
-          {otherBeachWhatsappGroups.map((group) => (
-            <li key={group.id} className="flex flex-wrap items-center gap-2">
-              <p className="text-sm font-bold text-ink">{group.name}</p>
-              {group.whatsappUrl ? (
-                <ButtonLink
-                  href={group.whatsappUrl}
-                  variant="whatsapp"
-                  external
-                >
-                  Join WhatsApp
-                </ButtonLink>
-              ) : (
-                <p className="text-sm italic text-mute">Link not yet added</p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </Card>
+      {otherBeachWhatsappGroups.length > 0 ? (
+        <Card padding="sm">
+          <h3 className="text-eyebrow text-mute">Other WhatsApp groups</h3>
+          <ul className="mt-2 space-y-2">
+            {otherBeachWhatsappGroups.map((group) => (
+              <li key={group.id} className="flex flex-wrap items-center gap-2">
+                <p className="text-sm font-bold text-ink">{group.name}</p>
+                {group.whatsappUrl ? (
+                  <ButtonLink
+                    href={group.whatsappUrl}
+                    variant="whatsapp"
+                    external
+                  >
+                    Join WhatsApp
+                  </ButtonLink>
+                ) : (
+                  <p className="text-sm italic text-mute">Link not yet added</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ) : null}
 
       <div className="my-6 border-t border-line pt-6" aria-hidden="true" />
 

@@ -58,14 +58,32 @@ export function parseAdminDurationMinutes(
   return { ok: true, minutes: total };
 }
 
-export function formatAdminHours(totalMinutes: number): string {
+function formatHoursValue(totalMinutes: number): {
+  display: string;
+  value: string;
+  numeric: number;
+} {
   const hours = Math.round((totalMinutes / 60) * 10) / 10;
   const display =
     Number.isInteger(hours) || Math.abs(hours - Math.round(hours)) < 0.05
       ? String(Math.round(hours))
       : hours.toFixed(1);
-  const value = Number(display).toLocaleString("en-GB");
-  return `${value} admin hour${Math.abs(Number(display)) === 1 ? "" : "s"}`;
+  return {
+    display,
+    value: Number(display).toLocaleString("en-GB"),
+    numeric: Math.abs(Number(display)),
+  };
+}
+
+export function formatAdminHours(totalMinutes: number): string {
+  const { value, numeric } = formatHoursValue(totalMinutes);
+  return `${value} admin hour${numeric === 1 ? "" : "s"}`;
+}
+
+/** Community-effort callout label for organising / sewing time. */
+export function formatAdminEffortHours(totalMinutes: number): string {
+  const { value, numeric } = formatHoursValue(totalMinutes);
+  return `${value} volunteer admin and manufacturing hour${numeric === 1 ? "" : "s"}`;
 }
 
 export function sanitiseAdminName(raw: string | null | undefined): {
