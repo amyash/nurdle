@@ -6,6 +6,11 @@ import {
   collectionPointLabel,
 } from "@/data/collection-points";
 import { BeachCleanupStats } from "@/components/cleanup-logs/beach-cleanup-stats";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Disclosure } from "@/components/ui/disclosure";
+import { cn } from "@/lib/cn";
 import {
   namedHelpingLabel,
   volunteerCountLabel,
@@ -30,7 +35,7 @@ function NestParagraphText({ text }: { text: string }) {
       {beforeClean}
       <a
         href={phoneHref}
-        className="font-bold text-[var(--mark)] underline underline-offset-2"
+        className="font-bold text-mark underline underline-offset-2"
       >
         {phoneDisplay}
       </a>
@@ -63,28 +68,20 @@ function BeachNestSection({ beach }: { beach: CheckinBeach }) {
   return (
     <div className="mt-3">
       {!hasExpandableContent ? (
-        <>
-          <p className="text-sm font-bold leading-snug text-[var(--ink)]">
+        <div>
+          <p className="text-sm font-bold leading-snug text-ink">
             Nurdle Equipment Stations (NESTs) information:
           </p>
-          <p className="mt-1 text-sm italic leading-snug text-[var(--mute)]">
+          <Badge quiet className="mt-1 block">
             Details coming soon
-          </p>
-        </>
+          </Badge>
+        </div>
       ) : (
-        <details className="group">
-          <summary className="cursor-pointer list-none py-1 text-sm font-bold leading-snug text-[var(--ink)] marker:content-none [&::-webkit-details-marker]:hidden">
-            <span className="flex items-start justify-between gap-2">
-              <span>Nurdle Equipment Stations (NESTs) information:</span>
-              <span
-                className="shrink-0 text-lg font-bold leading-none transition group-open:rotate-45"
-                aria-hidden="true"
-              >
-                +
-              </span>
-            </span>
-          </summary>
-          <div className="mt-2 space-y-3 text-sm leading-snug text-[var(--ink)]">
+        <Disclosure
+          summaryClassName="text-sm font-bold leading-snug text-ink"
+          summary="Nurdle Equipment Stations (NESTs) information:"
+        >
+          <div className="space-y-3 text-sm leading-snug text-ink">
             {locationLinks.length > 0 ? (
               <ul className="space-y-1">
                 {locationLinks.map((link) => (
@@ -93,7 +90,7 @@ function BeachNestSection({ beach }: { beach: CheckinBeach }) {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-bold text-[var(--mark)] underline underline-offset-2"
+                      className="font-bold text-mark underline underline-offset-2"
                     >
                       {link.label}
                     </a>
@@ -128,7 +125,7 @@ function BeachNestSection({ beach }: { beach: CheckinBeach }) {
               <p key={note}>{note}</p>
             ))}
           </div>
-        </details>
+        </Disclosure>
       )}
     </div>
   );
@@ -166,23 +163,22 @@ export function BeachHubCard({
   const collectionPoint = collectionPointForBeach(beach.id);
 
   return (
-    <article
-      className={`rounded-lg border px-3 py-3 ${
-        isCheckedInHere
-          ? "border-[var(--mark)] bg-[var(--mark)]/5 ring-2 ring-[var(--mark)]"
-          : "border-[var(--line)] bg-white"
-      }`}
+    <Card
+      padding="sm"
+      className={cn(
+        isCheckedInHere && "border-mark bg-mark/5 ring-2 ring-mark",
+      )}
       aria-current={isCheckedInHere ? "true" : undefined}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <h3 className="font-bold leading-snug text-[var(--ink)]">
+          <h3 className="text-card-title">
             {beach.whatsappUrl ? (
               <a
                 href={beach.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--mark)] underline underline-offset-2"
+                className="text-mark underline underline-offset-2"
               >
                 {beach.name}
               </a>
@@ -191,28 +187,24 @@ export function BeachHubCard({
             )}
           </h3>
           {!beach.whatsappUrl ? (
-            <p className="mt-1 text-sm italic text-[var(--mute)]">
+            <Badge quiet className="mt-1 block">
               WhatsApp link soon
-            </p>
+            </Badge>
           ) : null}
-          <p className="mt-1 text-sm font-bold text-[var(--ink)]">
+          <p className="mt-2 text-sm font-bold text-ink">
             <span aria-hidden="true">{count > 0 ? "🟢 " : ""}</span>
             {volunteerCountLabel(count)}
           </p>
-          {named ? (
-            <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
-              {named}
-            </p>
-          ) : null}
+          {named ? <p className="mt-1 text-meta">{named}</p> : null}
           {collectionPoint ? (
-            <p className="mt-1 text-sm leading-snug text-[var(--ink)]">
+            <p className="mt-2 text-sm leading-snug text-ink">
               Council nurdle collection point:{" "}
               {collectionPointLabel(collectionPoint)}{" "}
               <a
                 href={collectionPoint.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-[var(--mark)] underline underline-offset-2"
+                className="font-bold text-mark underline underline-offset-2"
               >
                 Google Maps
               </a>
@@ -220,7 +212,7 @@ export function BeachHubCard({
           ) : null}
         </div>
         {isCheckedInHere ? (
-          <p className="shrink-0 rounded-md bg-[var(--mark)] px-2 py-1 text-xs font-bold text-white">
+          <p className="shrink-0 rounded-control bg-mark px-2 py-1 text-xs font-bold text-white">
             You’re here
           </p>
         ) : null}
@@ -233,52 +225,51 @@ export function BeachHubCard({
       {isCheckedInHere ? (
         <div className="mt-3 flex flex-col gap-2">
           <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
+            <Button
               disabled={busy || cleanupDisabled}
               onClick={onLogCleanup}
-              className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
+              className="px-2"
             >
               Log your clean-up
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="secondary"
               disabled={busy}
               onClick={onExtend}
-              className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+              className="border-ink px-2"
             >
               Extend check-in
-            </button>
+            </Button>
           </div>
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            fullWidth
             disabled={busy}
             onClick={onCheckOut}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-3 py-2.5 text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+            className="border-ink"
           >
             I’ve finished — check me out
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="mt-3 grid grid-cols-2 gap-2">
-          <button
-            type="button"
+          <Button
+            variant="secondary"
             disabled={busy || cleanupDisabled}
             onClick={onLogCleanup}
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--mark)] px-2 py-2.5 text-center text-sm font-bold text-white disabled:opacity-60"
+            className="border-ink px-2"
           >
             Log your clean-up
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
             disabled={busy || checkInDisabled}
             onClick={onCheckIn}
-            className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--ink)] bg-white px-2 py-2.5 text-center text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+            className="px-2"
           >
             Check in
-          </button>
+          </Button>
         </div>
       )}
-    </article>
+    </Card>
   );
 }

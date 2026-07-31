@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function PressReleasePage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-10 pt-2">
+    <div className="mx-auto max-w-[44rem] px-4 pb-10 pt-2">
       <PressReleaseArticle />
     </div>
   );

@@ -1,6 +1,6 @@
 export function SiteFooter() {
   return (
-    <footer className="mx-auto max-w-lg border-t border-[var(--line)] px-4 py-3 text-xs leading-snug text-[var(--mute)]">
+    <footer className="mx-auto max-w-lg border-t border-line px-4 py-4 text-meta">
       <p>Community-created information hub for North Tyneside volunteers.</p>
       <p className="mt-2">
         This website is maintained by{" "}
@@ -8,7 +8,7 @@ export function SiteFooter() {
           href="https://amyash.co.uk"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2"
+          className="font-bold text-mark underline underline-offset-2"
         >
           Amy
         </a>
@@ -18,7 +18,7 @@ export function SiteFooter() {
           href="https://wa.me/447745720319"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2"
+          className="font-bold text-mark underline underline-offset-2"
         >
           WhatsApp
         </a>
@@ -27,7 +27,7 @@ export function SiteFooter() {
           href="https://github.com/amyash/nurdle"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-2"
+          className="font-bold text-mark underline underline-offset-2"
         >
           GitHub
         </a>

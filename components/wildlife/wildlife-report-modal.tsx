@@ -16,6 +16,15 @@ import {
   isValidAnimalType,
   isValidCondition,
 } from "@/lib/wildlife/format";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
+import {
+  FieldError,
+  FormField,
+  Input,
+  Select,
+  Textarea,
+} from "@/components/ui/form-field";
 
 export function WildlifeReportModal({
   open,
@@ -43,8 +52,6 @@ export function WildlifeReportModal({
     consentPublic: boolean;
   }) => void;
 }) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const titleId = useId();
   const beachId = useId();
@@ -61,167 +68,135 @@ export function WildlifeReportModal({
   const evidenceHelpId = useId();
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
-  const [maxDate, setMaxDate] = useState(() => todayDateStringLondon());
+  const maxDate = todayDateStringLondon();
+
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) setLocalError(null);
+  }
 
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      const today = todayDateStringLondon();
-      setMaxDate(today);
-      setLocalError(null);
-      formRef.current?.reset();
-      const dateInput = formRef.current?.elements.namedItem(
-        "dateObserved",
-      ) as HTMLInputElement | null;
-      if (dateInput) {
-        dateInput.max = today;
-        dateInput.value = today;
-      }
-      const countInput = formRef.current?.elements.namedItem(
-        "count",
-      ) as HTMLInputElement | null;
-      if (countInput) countInput.value = "1";
-      dialog.showModal();
-      if (panelRef.current) panelRef.current.scrollTop = 0;
-      dialog.focus({ preventScroll: true });
-    } else if (!open && dialog.open) {
-      dialog.close();
+    if (!open) return;
+    const today = todayDateStringLondon();
+    formRef.current?.reset();
+    const dateInput = formRef.current?.elements.namedItem(
+      "dateObserved",
+    ) as HTMLInputElement | null;
+    if (dateInput) {
+      dateInput.max = today;
+      dateInput.value = today;
     }
+    const countInput = formRef.current?.elements.namedItem(
+      "count",
+    ) as HTMLInputElement | null;
+    if (countInput) countInput.value = "1";
+    formRef.current?.closest("dialog")?.scrollTo({ top: 0 });
   }, [open]);
 
   const displayError = localError ?? error;
 
   return (
-    <dialog
-      ref={dialogRef}
+    <Modal
+      open={open}
+      onClose={onClose}
+      busy={busy}
+      title="Report a wildlife sighting"
+      titleId={titleId}
+      showClose
+      size="md"
       tabIndex={-1}
-      className="fixed inset-0 z-50 m-0 hidden h-[100dvh] max-h-[100dvh] w-full max-w-none items-center justify-center overflow-hidden border-0 bg-transparent p-4 text-[var(--ink)] outline-none focus:outline-none focus-visible:outline-none open:flex open:backdrop:bg-black/40"
-      aria-labelledby={titleId}
-      onCancel={(event) => {
-        event.preventDefault();
-        if (!busy) onClose();
-      }}
-      onClick={(event) => {
-        if (event.target === dialogRef.current && !busy) onClose();
-      }}
     >
-      <div
-        ref={panelRef}
-        className="max-h-[90dvh] w-full min-w-0 max-w-sm overflow-x-hidden overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white shadow-lg"
-        onClick={(event) => event.stopPropagation()}
+      <form
+        ref={formRef}
+        className="min-w-0"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (busy) return;
+          setLocalError(null);
+          const data = new FormData(event.currentTarget);
+          const selectedBeach = String(data.get("beachId") ?? "");
+          const dateObserved = String(data.get("dateObserved") ?? "");
+          const timeObserved = String(data.get("timeObserved") ?? "").trim();
+          const animalType = String(data.get("animalType") ?? "");
+          const count = Number(data.get("count"));
+          const condition = String(data.get("condition") ?? "");
+          const description = String(data.get("description") ?? "");
+          const evidence = String(data.get("hasSupportingEvidence") ?? "");
+          const email = String(data.get("email") ?? "");
+          const consentPublic = data.get("consentPublic") === "on";
+
+          if (!selectedBeach) {
+            setLocalError("Choose a beach.");
+            return;
+          }
+          if (!dateObserved) {
+            setLocalError("Choose the date you observed this.");
+            return;
+          }
+          if (!isValidAnimalType(animalType)) {
+            setLocalError("Choose what type of animal you saw.");
+            return;
+          }
+          if (
+            !Number.isInteger(count) ||
+            count < WILDLIFE_COUNT_MIN ||
+            count > WILDLIFE_COUNT_MAX
+          ) {
+            setLocalError("Enter how many animals you observed (1–100).");
+            return;
+          }
+          if (!isValidCondition(condition)) {
+            setLocalError("Choose the animal’s condition.");
+            return;
+          }
+          if (!description.trim()) {
+            setLocalError("Please describe what you observed.");
+            return;
+          }
+          if (evidence !== "yes" && evidence !== "no") {
+            setLocalError("Tell us whether you have photos or video.");
+            return;
+          }
+          if (!email.trim()) {
+            setLocalError("Enter a valid email address.");
+            return;
+          }
+          if (!consentPublic) {
+            setLocalError(
+              "Please confirm you understand this report may be shown publicly in anonymised form.",
+            );
+            return;
+          }
+
+          onSubmit({
+            beachId: selectedBeach,
+            dateObserved,
+            timeObserved: timeObserved || null,
+            animalType,
+            species: String(data.get("species") ?? ""),
+            count,
+            condition,
+            description,
+            hasSupportingEvidence: evidence === "yes",
+            email,
+            reporterName: String(data.get("reporterName") ?? ""),
+            consentPublic: true,
+          });
+        }}
       >
-        <form
-          ref={formRef}
-          className="min-w-0 px-4 py-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (busy) return;
-            setLocalError(null);
-            const data = new FormData(event.currentTarget);
-            const selectedBeach = String(data.get("beachId") ?? "");
-            const dateObserved = String(data.get("dateObserved") ?? "");
-            const timeObserved = String(data.get("timeObserved") ?? "").trim();
-            const animalType = String(data.get("animalType") ?? "");
-            const count = Number(data.get("count"));
-            const condition = String(data.get("condition") ?? "");
-            const description = String(data.get("description") ?? "");
-            const evidence = String(data.get("hasSupportingEvidence") ?? "");
-            const email = String(data.get("email") ?? "");
-            const consentPublic = data.get("consentPublic") === "on";
+        <p className="text-sm leading-snug text-mute">
+          Reports appear on the map straight away. Your email is never shown
+          publicly.
+        </p>
 
-            if (!selectedBeach) {
-              setLocalError("Choose a beach.");
-              return;
-            }
-            if (!dateObserved) {
-              setLocalError("Choose the date you observed this.");
-              return;
-            }
-            if (!isValidAnimalType(animalType)) {
-              setLocalError("Choose what type of animal you saw.");
-              return;
-            }
-            if (
-              !Number.isInteger(count) ||
-              count < WILDLIFE_COUNT_MIN ||
-              count > WILDLIFE_COUNT_MAX
-            ) {
-              setLocalError("Enter how many animals you observed (1–100).");
-              return;
-            }
-            if (!isValidCondition(condition)) {
-              setLocalError("Choose the animal’s condition.");
-              return;
-            }
-            if (!description.trim()) {
-              setLocalError("Please describe what you observed.");
-              return;
-            }
-            if (evidence !== "yes" && evidence !== "no") {
-              setLocalError("Tell us whether you have photos or video.");
-              return;
-            }
-            if (!email.trim()) {
-              setLocalError("Enter a valid email address.");
-              return;
-            }
-            if (!consentPublic) {
-              setLocalError(
-                "Please confirm you understand this report may be shown publicly in anonymised form.",
-              );
-              return;
-            }
-
-            onSubmit({
-              beachId: selectedBeach,
-              dateObserved,
-              timeObserved: timeObserved || null,
-              animalType,
-              species: String(data.get("species") ?? ""),
-              count,
-              condition,
-              description,
-              hasSupportingEvidence: evidence === "yes",
-              email,
-              reporterName: String(data.get("reporterName") ?? ""),
-              consentPublic: true,
-            });
-          }}
-        >
-          <div className="flex items-start justify-between gap-3">
-            <h2
-              id={titleId}
-              className="min-w-0 flex-1 text-lg font-bold leading-snug"
-            >
-              Report a wildlife sighting
-            </h2>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={onClose}
-              aria-label="Close"
-              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-2xl font-bold leading-none text-[var(--ink)] disabled:opacity-60"
-            >
-              ×
-            </button>
-          </div>
-
-          <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
-            Reports appear on the map straight away. Your email is never shown
-            publicly.
-          </p>
-
-          <label htmlFor={beachId} className="mt-4 block text-sm font-bold">
-            Beach
-          </label>
-          <select
+        <FormField label="Beach" htmlFor={beachId} className="mt-4">
+          <Select
             id={beachId}
             name="beachId"
             required
             disabled={busy}
             defaultValue=""
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
           >
             <option value="" disabled>
               Choose a beach
@@ -231,12 +206,11 @@ export function WildlifeReportModal({
                 {beach.name}
               </option>
             ))}
-          </select>
+          </Select>
+        </FormField>
 
-          <label htmlFor={dateId} className="mt-4 block text-sm font-bold">
-            Date observed
-          </label>
-          <input
+        <FormField label="Date observed" htmlFor={dateId} className="mt-4">
+          <Input
             id={dateId}
             key={maxDate}
             name="dateObserved"
@@ -246,31 +220,32 @@ export function WildlifeReportModal({
             min={WILDLIFE_MIN_DATE}
             max={maxDate}
             defaultValue={maxDate}
-            className="mt-1 box-border w-full min-w-0 max-w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
+            className="box-border min-w-0 max-w-full"
           />
+        </FormField>
 
-          <label htmlFor={timeId} className="mt-4 block text-sm font-bold">
-            Approximate time{" "}
-            <span className="font-normal text-[var(--mute)]">(optional)</span>
-          </label>
-          <input
+        <FormField
+          label="Approximate time"
+          htmlFor={timeId}
+          optional
+          className="mt-4"
+        >
+          <Input
             id={timeId}
             name="timeObserved"
             type="time"
             disabled={busy}
-            className="mt-1 box-border w-full min-w-0 max-w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
+            className="box-border min-w-0 max-w-full"
           />
+        </FormField>
 
-          <label htmlFor={animalId} className="mt-4 block text-sm font-bold">
-            Animal
-          </label>
-          <select
+        <FormField label="Animal" htmlFor={animalId} className="mt-4">
+          <Select
             id={animalId}
             name="animalType"
             required
             disabled={busy}
             defaultValue=""
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
           >
             <option value="" disabled>
               Choose animal type
@@ -280,28 +255,33 @@ export function WildlifeReportModal({
                 {item.label}
               </option>
             ))}
-          </select>
+          </Select>
+        </FormField>
 
-          <label htmlFor={speciesId} className="mt-4 block text-sm font-bold">
-            Species{" "}
-            <span className="font-normal text-[var(--mute)]">
-              (optional, if known)
-            </span>
-          </label>
-          <input
+        <FormField
+          label={
+            <>
+              Species{" "}
+              <span className="font-normal text-mute">
+                (optional, if known)
+              </span>
+            </>
+          }
+          htmlFor={speciesId}
+          className="mt-4"
+        >
+          <Input
             id={speciesId}
             name="species"
             type="text"
             maxLength={WILDLIFE_SPECIES_MAX}
             disabled={busy}
-            className="mt-1 w-full rounded-md border border-[var(--line)] px-3 py-2.5 text-base"
             placeholder="e.g. Herring gull"
           />
+        </FormField>
 
-          <label htmlFor={countId} className="mt-4 block text-sm font-bold">
-            Number observed
-          </label>
-          <input
+        <FormField label="Number observed" htmlFor={countId} className="mt-4">
+          <Input
             id={countId}
             name="count"
             type="number"
@@ -311,94 +291,98 @@ export function WildlifeReportModal({
             defaultValue={1}
             required
             disabled={busy}
-            className="mt-1 w-full rounded-md border border-[var(--line)] px-3 py-2.5 text-base"
           />
+        </FormField>
 
-          <fieldset className="mt-4" disabled={busy}>
-            <legend className="text-sm font-bold">Condition</legend>
-            <div className="mt-2 space-y-1">
-              {WILDLIFE_CONDITIONS.map((item) => (
-                <label
-                  key={item.id}
-                  className="flex min-h-10 items-center gap-2 text-sm"
-                >
-                  <input
-                    type="radio"
-                    name="condition"
-                    value={item.id}
-                    required
-                    className="h-4 w-4"
-                  />
-                  {item.label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
+        <fieldset className="mt-4" disabled={busy}>
+          <legend className="text-sm font-bold">Condition</legend>
+          <div className="mt-2 space-y-1">
+            {WILDLIFE_CONDITIONS.map((item) => (
+              <label
+                key={item.id}
+                className="flex min-h-10 items-center gap-2 text-sm"
+              >
+                <input
+                  type="radio"
+                  name="condition"
+                  value={item.id}
+                  required
+                  className="h-4 w-4"
+                />
+                {item.label}
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
-          <label
-            htmlFor={descriptionId}
-            className="mt-4 block text-sm font-bold"
-          >
-            Description
-          </label>
-          <textarea
+        <FormField label="Description" htmlFor={descriptionId} className="mt-4">
+          <Textarea
             id={descriptionId}
             name="description"
             rows={4}
             required
             maxLength={WILDLIFE_DESCRIPTION_MAX}
             disabled={busy}
-            className="mt-1 w-full rounded-md border border-[var(--line)] px-3 py-2.5 text-base"
             placeholder="Describe what you observed, including any visible nurdles or contamination."
           />
+        </FormField>
 
-          <fieldset
-            className="mt-4"
-            disabled={busy}
-            aria-describedby={evidenceHelpId}
+        <fieldset
+          className="mt-4"
+          disabled={busy}
+          aria-describedby={evidenceHelpId}
+        >
+          <legend className="text-sm font-bold">
+            Do you have photos or video?
+          </legend>
+          <div className="mt-2 space-y-1">
+            <label className="flex min-h-10 items-center gap-2 text-sm">
+              <input
+                type="radio"
+                name="hasSupportingEvidence"
+                value="yes"
+                required
+                className="h-4 w-4"
+              />
+              Yes
+            </label>
+            <label className="flex min-h-10 items-center gap-2 text-sm">
+              <input
+                type="radio"
+                name="hasSupportingEvidence"
+                value="no"
+                required
+                className="h-4 w-4"
+              />
+              No
+            </label>
+          </div>
+          <p
+            id={evidenceHelpId}
+            className="mt-2 text-xs leading-snug text-mute"
           >
-            <legend className="text-sm font-bold">
-              Do you have photos or video?
-            </legend>
-            <div className="mt-2 space-y-1">
-              <label className="flex min-h-10 items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  name="hasSupportingEvidence"
-                  value="yes"
-                  required
-                  className="h-4 w-4"
-                />
-                Yes
-              </label>
-              <label className="flex min-h-10 items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  name="hasSupportingEvidence"
-                  value="no"
-                  required
-                  className="h-4 w-4"
-                />
-                No
-              </label>
-            </div>
-            <p
-              id={evidenceHelpId}
-              className="mt-2 text-xs leading-snug text-[var(--mute)]"
-            >
-              Please keep any photos or videos as evidence.
-              <br />
-              <br />
-              We cannot accept uploads through this website, but we may contact
-              you by email to request them if they could support reporting or
-              investigation.
-            </p>
-          </fieldset>
+            Please keep any photos or videos as evidence.
+            <br />
+            <br />
+            We cannot accept uploads through this website, but we may contact
+            you by email to request them if they could support reporting or
+            investigation.
+          </p>
+        </fieldset>
 
-          <label htmlFor={emailId} className="mt-4 block text-sm font-bold">
-            Email address
-          </label>
-          <input
+        <FormField
+          label="Email address"
+          htmlFor={emailId}
+          className="mt-4"
+          description={
+            <span id={emailHelpId}>
+              Your email address will never be displayed publicly. We will only
+              use it if we need to contact you regarding this report or to
+              request supporting evidence.
+            </span>
+          }
+        >
+          <Input
             id={emailId}
             name="email"
             type="email"
@@ -407,62 +391,46 @@ export function WildlifeReportModal({
             disabled={busy}
             autoComplete="email"
             aria-describedby={emailHelpId}
-            className="mt-1 w-full rounded-md border border-[var(--line)] px-3 py-2.5 text-base"
           />
-          <p id={emailHelpId} className="mt-1 text-xs leading-snug text-[var(--mute)]">
-            Your email address will never be displayed publicly. We will only
-            use it if we need to contact you regarding this report or to request
-            supporting evidence.
-          </p>
+        </FormField>
 
-          <label htmlFor={nameId} className="mt-4 block text-sm font-bold">
-            Your name{" "}
-            <span className="font-normal text-[var(--mute)]">(optional)</span>
-          </label>
-          <input
+        <FormField
+          label="Your name"
+          htmlFor={nameId}
+          optional
+          className="mt-4"
+        >
+          <Input
             id={nameId}
             name="reporterName"
             type="text"
             maxLength={WILDLIFE_NAME_MAX}
             disabled={busy}
             autoComplete="name"
-            className="mt-1 w-full rounded-md border border-[var(--line)] px-3 py-2.5 text-base"
           />
+        </FormField>
 
-          <label className="mt-4 flex items-start gap-2 text-sm leading-snug">
-            <input
-              id={consentId}
-              name="consentPublic"
-              type="checkbox"
-              required
-              disabled={busy}
-              className="mt-1 h-4 w-4 shrink-0"
-            />
-            <span>
-              I understand this report may be displayed publicly in an
-              anonymised form.
-            </span>
-          </label>
-
-          {displayError ? (
-            <p
-              id={errorId}
-              role="alert"
-              className="mt-3 text-sm leading-snug text-red-800"
-            >
-              {displayError}
-            </p>
-          ) : null}
-
-          <button
-            type="submit"
+        <label className="mt-4 flex items-start gap-2 text-sm leading-snug">
+          <input
+            id={consentId}
+            name="consentPublic"
+            type="checkbox"
+            required
             disabled={busy}
-            className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-          >
-            {busy ? "Submitting…" : "Submit report"}
-          </button>
-        </form>
-      </div>
-    </dialog>
+            className="mt-1 h-4 w-4 shrink-0"
+          />
+          <span>
+            I understand this report may be displayed publicly in an
+            anonymised form.
+          </span>
+        </label>
+
+        <FieldError id={errorId}>{displayError}</FieldError>
+
+        <Button type="submit" fullWidth disabled={busy} className="mt-4">
+          {busy ? "Submitting…" : "Submit report"}
+        </Button>
+      </form>
+    </Modal>
   );
 }

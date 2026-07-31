@@ -182,7 +182,7 @@ export function WildlifeImpactMap({
 
   if (mapError) {
     return (
-      <p role="status" className="text-sm leading-snug text-[var(--mute)]">
+      <p role="status" className="text-meta">
         {mapError}
       </p>
     );
@@ -192,7 +192,7 @@ export function WildlifeImpactMap({
     <div
       id={`wildlife-map-${mapId}`}
       ref={containerRef}
-      className="h-72 w-full overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--board)] sm:h-80"
+      className="h-72 w-full overflow-hidden rounded-card border border-line bg-board sm:h-80"
       role="region"
       aria-label="Map of verified wildlife reports"
     />

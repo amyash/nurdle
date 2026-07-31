@@ -1,6 +1,8 @@
 "use client";
 
 import type { WildlifeReportPublic } from "@/types/wildlife";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   conditionLabel,
   displaySpecies,
@@ -17,36 +19,33 @@ export function WildlifeReportCard({
   removeDisabled?: boolean;
 }) {
   return (
-    <article className="rounded-lg border border-[var(--line)] bg-white px-3 py-3">
+    <Card padding="sm">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h3 className="font-bold leading-snug text-[var(--ink)]">
-          {displaySpecies(report.animalType, report.species)}
-        </h3>
-        <button
+        <h3 className="text-card-title">{displaySpecies(report.animalType, report.species)}</h3>
+        <Button
           type="button"
+          variant="quiet"
           disabled={removeDisabled}
           onClick={() => onRemove(report)}
-          className="shrink-0 rounded-md px-2 py-1 text-sm font-bold text-[var(--mute)] underline underline-offset-2 hover:text-[var(--ink)] disabled:opacity-60"
+          className="min-h-0 shrink-0 px-2 py-1 text-mute"
         >
           Remove
-        </button>
+        </Button>
       </div>
-      <p className="mt-1 text-sm font-bold text-[var(--ink)]">
+      <p className="mt-1 text-sm font-bold text-ink">
         {conditionLabel(report.condition)}
       </p>
-      <p className="mt-1 text-sm leading-snug text-[var(--mute)]">
+      <p className="mt-1 text-meta">
         {report.beachName} · {formatObservedDate(report.dateObserved)}
         {report.timeObserved ? ` · ${report.timeObserved}` : ""}
         {report.count > 1 ? ` · ${report.count} observed` : ""}
       </p>
-      <p className="mt-2 text-sm leading-snug text-[var(--ink)]">
-        {report.description}
-      </p>
+      <p className="mt-2 text-sm leading-snug text-ink">{report.description}</p>
       {report.hasSupportingEvidence ? (
-        <p className="mt-2 text-sm font-bold leading-snug text-[var(--ink)]">
+        <p className="mt-2 text-sm font-bold leading-snug text-ink">
           📷 Photo evidence available
         </p>
       ) : null}
-    </article>
+    </Card>
   );
 }

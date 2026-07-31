@@ -12,7 +12,7 @@ export default function WildlifeImpactPage() {
   return (
     <PageShell title="Wildlife impact">
       <noscript>
-        <p className="mb-4 text-sm leading-snug text-[var(--mute)]">
+        <p className="mb-4 text-meta">
           The interactive map needs JavaScript. You can still read the
           introduction and submit a report once JavaScript is available.
         </p>

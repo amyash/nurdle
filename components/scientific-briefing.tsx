@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 import type { ScientificBriefing } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export function ScientificBriefingPanel({
   briefing,
@@ -35,18 +37,15 @@ export function ScientificBriefingPanel({
       className="scroll-mt-20"
       aria-labelledby="scientific-briefing-heading"
     >
-      <h3
-        id="scientific-briefing-heading"
-        className="text-lg font-bold uppercase tracking-wide text-[var(--ink)]"
-      >
+      <h3 id="scientific-briefing-heading" className="text-section">
         {briefing.title}
       </h3>
 
-      <div className="mt-4 space-y-5 text-sm leading-snug text-[var(--ink)]">
+      <div className="mt-4 space-y-5 text-body">
         {briefing.sections.map((section, index) => (
           <div key={`${section.heading}-${index}`} className="space-y-2">
             {section.heading ? (
-              <h4 className="font-bold text-[var(--ink)]">{section.heading}</h4>
+              <h4 className="text-card-title">{section.heading}</h4>
             ) : null}
             {section.paragraphs?.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -63,13 +62,14 @@ export function ScientificBriefingPanel({
 
         {briefing.fullBriefingHref ? (
           <p>
-            <button
+            <Button
               type="button"
+              variant="quiet"
               onClick={() => setOpen(true)}
-              className="font-bold text-[var(--mark)] underline underline-offset-2"
+              className="min-h-0 px-0 py-0 font-bold text-mark underline underline-offset-2"
             >
               Read the full scientific briefing
-            </button>
+            </Button>
           </p>
         ) : null}
       </div>
@@ -89,14 +89,14 @@ export function ScientificBriefingPanel({
           <button
             type="button"
             onClick={close}
-            className="absolute right-3 top-3 rounded-md bg-white/15 px-3 py-2 text-sm font-bold text-white"
+            className="absolute right-3 top-3 rounded-control bg-white/15 px-3 py-2 text-sm font-bold text-white"
             aria-label="Close briefing"
           >
             Close
           </button>
 
-          <div
-            className="flex h-[90dvh] w-full max-w-4xl flex-col overflow-hidden rounded-lg bg-white"
+          <Card
+            className="flex h-[90dvh] w-full max-w-4xl flex-col overflow-hidden !p-0"
             onClick={(event) => event.stopPropagation()}
           >
             <iframe
@@ -104,17 +104,17 @@ export function ScientificBriefingPanel({
               title="Full scientific briefing"
               className="h-full w-full flex-1 border-0"
             />
-            <p className="border-t border-[var(--line)] px-3 py-2 text-center text-xs text-[var(--mute)]">
+            <p className="border-t border-line px-3 py-2 text-center text-meta">
               <a
                 href={briefing.fullBriefingHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-[var(--mark)] underline underline-offset-2"
+                className="font-bold text-mark underline underline-offset-2"
               >
                 Open PDF in a new tab
               </a>
             </p>
-          </div>
+          </Card>
         </div>
       ) : null}
     </section>

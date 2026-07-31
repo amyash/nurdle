@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/cn";
 import { whatsappCommunity } from "@/data/content";
 
 type NavItem =
@@ -23,13 +24,32 @@ const nav: NavItem[] = [
   { href: "/press-release", label: "Press release" },
 ];
 
+function ExternalLinkIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      className="h-3.5 w-3.5 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6.5 3.5H3.5A1 1 0 0 0 2.5 4.5v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-3" />
+      <path d="M9.5 2.5h4v4" />
+      <path d="M7.5 8.5 13.5 2.5" />
+    </svg>
+  );
+}
+
 export function SiteNav() {
   const pathname = usePathname();
   const beachesActive = pathname.startsWith("/beaches");
 
   return (
     <nav aria-label="Site" className="mt-4 py-2">
-      <ul className="flex flex-wrap gap-2 text-sm font-semibold">
+      <ul className="flex flex-wrap gap-2 text-sm font-bold">
         {nav.map((item) => {
           const active =
             !item.external &&
@@ -37,11 +57,12 @@ export function SiteNav() {
               ? pathname === "/"
               : pathname.startsWith(item.href));
 
-          const className = `inline-block rounded-md border px-3 py-1.5 ${
+          const className = cn(
+            "inline-flex min-h-9 items-center gap-1.5 rounded-control border px-3 py-1.5",
             active
-              ? "border-[var(--ink)] bg-[var(--ink)] text-white"
-              : "border-[var(--line)] bg-white text-[var(--ink)]"
-          }`;
+              ? "border-ink bg-ink text-white"
+              : "border-line bg-white text-ink",
+          );
 
           return (
             <li key={item.href + item.label}>
@@ -53,6 +74,8 @@ export function SiteNav() {
                   className={className}
                 >
                   {item.label}
+                  <ExternalLinkIcon />
+                  <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               ) : (
                 <Link
@@ -70,7 +93,9 @@ export function SiteNav() {
 
       <Link
         href="/beaches"
-        className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-center text-sm font-bold text-white sm:text-base"
+        className={cn(
+          "mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-control bg-mark px-3 py-2.5 text-center text-sm font-bold text-white sm:text-base",
+        )}
         aria-current={beachesActive ? "page" : undefined}
       >
         Join a beach clean

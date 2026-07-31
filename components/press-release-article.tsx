@@ -1,25 +1,20 @@
 import Link from "next/link";
 
-const linkClass =
-  "font-bold text-[#1155cc] underline underline-offset-2";
+const linkClass = "font-bold text-mark underline underline-offset-2";
 
 export function PressReleaseArticle() {
   return (
-    <article className="text-[var(--ink)]">
-      <p className="text-base leading-snug text-[#666666] sm:text-lg">
-        PRESS RELEASE
-      </p>
+    <article className="mx-auto max-w-prose text-ink sm:max-w-[44rem]">
+      <p className="text-eyebrow text-mute">PRESS RELEASE</p>
 
-      <h1 className="mt-4 text-2xl font-bold leading-tight tracking-tight sm:text-[1.65rem] sm:leading-snug md:text-[1.75rem]">
+      <h1 className="mt-4 text-page-title">
         A race against the tide: residents defy officials and launch cleanup of
         a billion &lsquo;nurdles&rsquo; along North East beaches
       </h1>
 
-      <p className="mt-4 text-sm font-bold leading-snug sm:text-base">
-        North East coast – 28 July 2026
-      </p>
+      <p className="mt-4 text-meta font-bold">North East coast – 28 July 2026</p>
 
-      <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-relaxed sm:text-base">
+      <ul className="mt-5 list-disc space-y-2 pl-5 text-body">
         <li>
           Around 1,000 volunteers have begun cleaning nurdles from 11 North East
           beaches, defying official advice, saying the next few days are
@@ -46,7 +41,7 @@ export function PressReleaseArticle() {
         </li>
       </ul>
 
-      <div className="mt-6 space-y-4 text-sm leading-relaxed sm:text-base">
+      <div className="mt-6 space-y-4 text-body">
         <p>
           Around 1,000 residents across the North East coast of England have
           gone against official advice and begun a large-scale emergency effort
@@ -233,14 +228,11 @@ export function PressReleaseArticle() {
       </div>
 
       <section className="mt-10" aria-labelledby="media-contacts">
-        <h2
-          id="media-contacts"
-          className="text-xl font-bold leading-snug sm:text-2xl"
-        >
+        <h2 id="media-contacts" className="text-section">
           Media Contacts
         </h2>
 
-        <div className="mt-4 space-y-5 text-sm leading-relaxed sm:text-base">
+        <div className="mt-4 space-y-5 text-body">
           <p>
             <span className="font-bold">
               Leah Pattem (Volunteer press coordinator)
@@ -276,21 +268,15 @@ export function PressReleaseArticle() {
       </section>
 
       <section className="mt-10" aria-labelledby="notes-to-editors">
-        <h2
-          id="notes-to-editors"
-          className="text-xl font-bold leading-snug sm:text-2xl"
-        >
+        <h2 id="notes-to-editors" className="text-section">
           Notes to Editors
         </h2>
 
-        <h3
-          id="sources-available"
-          className="mt-5 text-base font-bold leading-snug text-[#434343] sm:text-lg"
-        >
+        <h3 id="sources-available" className="mt-5 text-card-title text-mute">
           Sources available for Interview:
         </h3>
 
-        <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed sm:text-base">
+        <ul className="mt-3 list-disc space-y-1.5 pl-5 text-body">
           <li>
             Alice Laverty, local business owner, Keelrow Books, Whitley Bay
           </li>
@@ -305,7 +291,7 @@ export function PressReleaseArticle() {
           <li>Councilors and other officials available upon request</li>
         </ul>
 
-        <div className="mt-5 space-y-3 text-sm leading-relaxed sm:text-base">
+        <div className="mt-5 space-y-3 text-body">
           <p>
             <span className="font-bold">High-quality images: </span>
             <a
@@ -324,9 +310,7 @@ export function PressReleaseArticle() {
             request
           </p>
 
-          <p className="font-bold">
-            New filming and interview opportunities:
-          </p>
+          <p className="font-bold">New filming and interview opportunities:</p>
 
           <p>Community Nurdle cleaning timings and meeting points:</p>
 

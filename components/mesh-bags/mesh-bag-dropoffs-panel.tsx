@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { MeshBagDropoffModal } from "@/components/mesh-bags/mesh-bag-dropoff-modal";
 import { MeshBagDropoffSuccessModal } from "@/components/mesh-bags/mesh-bag-dropoff-success-modal";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   createMeshBagDropoff,
   fetchRecentMeshBagDropoffs,
@@ -184,21 +186,15 @@ export function MeshBagDropoffsPanel() {
 
   return (
     <>
-      <section
-        className="mb-6 rounded-lg border border-[var(--line)] bg-white p-4"
-        aria-labelledby={titleId}
-      >
+      <Card className="mb-6" aria-labelledby={titleId}>
         <div className="relative flex items-start justify-between gap-3">
-          <h2
-            id={titleId}
-            className="text-lg font-bold leading-snug text-[var(--ink)]"
-          >
+          <h2 id={titleId} className="text-card-title">
             Mesh filter bags
           </h2>
           <button
             ref={menuButtonRef}
             type="button"
-            className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-md text-lg font-bold text-[var(--mute)] hover:bg-[var(--board)]"
+            className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-control text-lg font-bold text-mute hover:bg-board"
             aria-label="Mesh filter bags menu"
             aria-haspopup="menu"
             aria-expanded={menuOpen}
@@ -220,12 +216,12 @@ export function MeshBagDropoffsPanel() {
               id={menuId}
               role="menu"
               aria-label="Mesh filter bags actions"
-              className="absolute right-0 top-11 z-10 min-w-[12rem] rounded-md border border-[var(--line)] bg-white py-1 shadow-lg"
+              className="absolute right-0 top-11 z-10 min-w-[12rem] rounded-control border border-line bg-white py-1 shadow-lg"
             >
               <button
                 type="button"
                 role="menuitem"
-                className="flex min-h-11 w-full items-center px-3 text-left text-sm font-bold text-[var(--ink)] hover:bg-[var(--board)]"
+                className="flex min-h-11 w-full items-center px-3 text-left text-sm font-bold text-ink hover:bg-board"
                 onClick={openLogForm}
               >
                 Log a bag drop-off
@@ -234,16 +230,14 @@ export function MeshBagDropoffsPanel() {
           ) : null}
         </div>
 
-        <h3 className="mt-3 text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
-          Bags dropped off
-        </h3>
+        <h3 className="mt-3 text-eyebrow text-mute">Bags dropped off</h3>
 
         {!configured ? (
-          <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
+          <p className="mt-2 text-meta">
             Bag drop-offs aren’t connected for this environment yet.
           </p>
         ) : loading ? (
-          <p className="mt-2 text-sm leading-snug text-[var(--mute)]" role="status">
+          <p className="mt-2 text-meta" role="status">
             Loading recent drop-offs…
           </p>
         ) : loadError ? (
@@ -251,7 +245,7 @@ export function MeshBagDropoffsPanel() {
             {loadError}
           </p>
         ) : dropoffs.length === 0 ? (
-          <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
+          <p className="mt-2 text-meta">
             No bag drop-offs have been logged yet.
           </p>
         ) : (
@@ -267,18 +261,19 @@ export function MeshBagDropoffsPanel() {
               return (
                 <li
                   key={dropoff.id}
-                  className="flex items-start justify-between gap-3 text-base leading-snug text-[var(--ink)]"
+                  className="flex items-start justify-between gap-3 text-body"
                 >
                   <span className="min-w-0 flex-1">{label}</span>
-                  <button
+                  <Button
                     type="button"
+                    variant="quiet"
                     disabled={busy || removingId != null}
                     onClick={() => void handleRemove(dropoff)}
-                    className="shrink-0 rounded-md px-2 py-1 text-sm font-bold text-[var(--mute)] underline underline-offset-2 hover:text-[var(--ink)] disabled:opacity-60"
+                    className="min-h-0 shrink-0 px-2 py-1 text-mute"
                     aria-label={`Remove drop-off: ${label}`}
                   >
                     {isRemoving ? "Removing…" : "Remove"}
-                  </button>
+                  </Button>
                 </li>
               );
             })}
@@ -291,11 +286,11 @@ export function MeshBagDropoffsPanel() {
           </p>
         ) : null}
 
-        <p className="mt-3 text-xs leading-snug text-[var(--mute)]">
+        <p className="mt-3 text-xs leading-snug text-mute">
           Availability may change quickly. Drop-offs are automatically removed
           after 24 hours. Use Remove when bags have been collected.
         </p>
-      </section>
+      </Card>
 
       <MeshBagDropoffModal
         open={formOpen}

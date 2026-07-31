@@ -11,6 +11,14 @@ import {
   estimatedKgForVolume,
   parseDurationMinutes,
 } from "@/lib/cleanup-logs/format";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
+import {
+  FieldError,
+  FormField,
+  Input,
+  Textarea,
+} from "@/components/ui/form-field";
 
 export function CleanupLogModal({
   beachId,
@@ -36,8 +44,6 @@ export function CleanupLogModal({
     confirmedEstimate: boolean;
   }) => void;
 }) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const titleId = useId();
   const dateId = useId();
@@ -52,75 +58,59 @@ export function CleanupLogModal({
   const communityId = useId();
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
-  const [maxDate, setMaxDate] = useState(() => todayDateStringLondon());
-
+  const maxDate = todayDateStringLondon();
   const beachName = checkinBeachById[beachId]?.name ?? "this beach";
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      const today = todayDateStringLondon();
-      setMaxDate(today);
-      setLocalError(null);
-      formRef.current?.reset();
-      const dateInput = formRef.current?.elements.namedItem(
-        "cleanupDate",
-      ) as HTMLInputElement | null;
-      if (dateInput) {
-        dateInput.max = today;
-        dateInput.value = today;
-      }
-      const volunteers = formRef.current?.elements.namedItem(
-        "volunteerCount",
-      ) as HTMLInputElement | null;
-      if (volunteers) volunteers.value = "1";
-      const hours = formRef.current?.elements.namedItem(
-        "hours",
-      ) as HTMLInputElement | null;
-      if (hours) hours.value = "1";
-      const minutes = formRef.current?.elements.namedItem(
-        "minutes",
-      ) as HTMLInputElement | null;
-      if (minutes) minutes.value = "0";
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) setLocalError(null);
+  }
 
-      dialog.showModal();
-      if (panelRef.current) panelRef.current.scrollTop = 0;
-      // Focus the dialog itself (not the title/inputs) so nothing gets a
-      // focus ring and native date pickers don't open on show.
-      dialog.focus({ preventScroll: true });
-    } else if (!open && dialog.open) {
-      dialog.close();
+  useEffect(() => {
+    if (!open) return;
+    const today = todayDateStringLondon();
+    formRef.current?.reset();
+    const dateInput = formRef.current?.elements.namedItem(
+      "cleanupDate",
+    ) as HTMLInputElement | null;
+    if (dateInput) {
+      dateInput.max = today;
+      dateInput.value = today;
     }
+    const volunteers = formRef.current?.elements.namedItem(
+      "volunteerCount",
+    ) as HTMLInputElement | null;
+    if (volunteers) volunteers.value = "1";
+    const hours = formRef.current?.elements.namedItem(
+      "hours",
+    ) as HTMLInputElement | null;
+    if (hours) hours.value = "1";
+    const minutes = formRef.current?.elements.namedItem(
+      "minutes",
+    ) as HTMLInputElement | null;
+    if (minutes) minutes.value = "0";
+    formRef.current?.closest("dialog")?.scrollTo({ top: 0 });
   }, [open, beachId]);
 
   const displayError = localError ?? error;
 
   return (
-    <dialog
-      ref={dialogRef}
+    <Modal
+      open={open}
+      onClose={onClose}
+      busy={busy}
+      title={`Log your clean-up at ${beachName}`}
+      titleId={titleId}
+      showClose
       tabIndex={-1}
-      className="fixed inset-0 z-50 m-0 hidden h-[100dvh] max-h-[100dvh] w-full max-w-none items-center justify-center overflow-hidden border-0 bg-transparent p-4 text-[var(--ink)] outline-none focus:outline-none focus-visible:outline-none open:flex open:backdrop:bg-black/40"
-      aria-labelledby={titleId}
-      onCancel={(event) => {
-        event.preventDefault();
-        if (!busy) onClose();
-      }}
-      onClick={(event) => {
-        if (event.target === dialogRef.current && !busy) onClose();
-      }}
     >
-      <div
-        ref={panelRef}
-        className="max-h-[90dvh] w-full min-w-0 max-w-sm overflow-x-hidden overflow-y-auto overscroll-contain rounded-lg border border-[var(--line)] bg-white shadow-lg"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <form
-          ref={formRef}
-          className="min-w-0 px-4 py-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (busy) return;
+      <form
+        ref={formRef}
+        className="min-w-0"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (busy) return;
           setLocalError(null);
           const data = new FormData(event.currentTarget);
           const cleanupDate = String(data.get("cleanupDate") ?? "");
@@ -171,55 +161,37 @@ export function CleanupLogModal({
           });
         }}
       >
-          <div className="flex items-start justify-between gap-3">
-            <h2 id={titleId} className="min-w-0 flex-1 text-lg font-bold leading-snug">
-              Log your clean-up at {beachName}
-            </h2>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={onClose}
-              aria-label="Close"
-              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-2xl font-bold leading-none text-[var(--ink)] disabled:opacity-60"
-            >
-              ×
-            </button>
-          </div>
-
-          <div className="mt-4 min-w-0">
-            <label htmlFor={dateId} className="block text-sm font-bold">
-              Date of clean-up
-            </label>
-            <input
-              id={dateId}
-              key={maxDate}
-              name="cleanupDate"
-              type="date"
-              required
-              disabled={busy}
-              min={CLEANUP_LOG_MIN_DATE}
-              max={maxDate}
-              defaultValue={maxDate}
-              onInvalid={(event) => {
-                const input = event.currentTarget;
-                if (input.validity.rangeOverflow) {
-                  input.setCustomValidity("Logged time is in the future");
-                } else if (input.validity.rangeUnderflow) {
-                  input.setCustomValidity(
-                    "Please log time after nurdle spill",
-                  );
-                } else if (input.validity.valueMissing) {
-                  input.setCustomValidity("Choose a clean-up date.");
-                } else {
-                  input.setCustomValidity("");
-                }
-              }}
-              onInput={(event) => {
-                event.currentTarget.setCustomValidity("");
-              }}
-              className="mt-1 box-border w-full min-w-0 max-w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base text-[var(--ink)]"
-            />
-          </div>
+        <FormField label="Date of clean-up" htmlFor={dateId} className="min-w-0">
+          <Input
+            id={dateId}
+            key={maxDate}
+            name="cleanupDate"
+            type="date"
+            required
+            disabled={busy}
+            min={CLEANUP_LOG_MIN_DATE}
+            max={maxDate}
+            defaultValue={maxDate}
+            onInvalid={(event) => {
+              const input = event.currentTarget;
+              if (input.validity.rangeOverflow) {
+                input.setCustomValidity("Logged time is in the future");
+              } else if (input.validity.rangeUnderflow) {
+                input.setCustomValidity(
+                  "Please log time after nurdle spill",
+                );
+              } else if (input.validity.valueMissing) {
+                input.setCustomValidity("Choose a clean-up date.");
+              } else {
+                input.setCustomValidity("");
+              }
+            }}
+            onInput={(event) => {
+              event.currentTarget.setCustomValidity("");
+            }}
+            className="box-border min-w-0 max-w-full"
+          />
+        </FormField>
 
         <fieldset className="mt-4" disabled={busy}>
           <legend className="text-sm font-bold">Time spent cleaning</legend>
@@ -228,7 +200,7 @@ export function CleanupLogModal({
               <label htmlFor={hoursId} className="block text-xs font-bold">
                 Hours
               </label>
-              <input
+              <Input
                 id={hoursId}
                 name="hours"
                 type="number"
@@ -237,14 +209,13 @@ export function CleanupLogModal({
                 max={12}
                 defaultValue={1}
                 required
-                className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
               />
             </div>
             <div>
               <label htmlFor={minutesId} className="block text-xs font-bold">
                 Minutes
               </label>
-              <input
+              <Input
                 id={minutesId}
                 name="minutes"
                 type="number"
@@ -254,17 +225,17 @@ export function CleanupLogModal({
                 step={5}
                 defaultValue={0}
                 required
-                className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
               />
             </div>
           </div>
         </fieldset>
 
-        <div className="mt-4">
-          <label htmlFor={volunteersId} className="block text-sm font-bold">
-            How many people did this clean-up include?
-          </label>
-          <input
+        <FormField
+          label="How many people did this clean-up include?"
+          htmlFor={volunteersId}
+          className="mt-4"
+        >
+          <Input
             id={volunteersId}
             name="volunteerCount"
             type="number"
@@ -274,9 +245,8 @@ export function CleanupLogModal({
             defaultValue={1}
             required
             disabled={busy}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
           />
-        </div>
+        </FormField>
 
         <fieldset
           className="mt-4"
@@ -301,46 +271,48 @@ export function CleanupLogModal({
               </label>
             ))}
           </div>
-            <p id={volumeHelpId} className="mt-2 text-sm text-[var(--mute)]">
-              Estimated using 1 litre ≈ 550&nbsp;g of nurdles.
-            </p>
+          <p id={volumeHelpId} className="mt-2 text-sm text-mute">
+            Estimated using 1 litre ≈ 550&nbsp;g of nurdles.
+          </p>
         </fieldset>
 
-        <div className="mt-4">
-          <label htmlFor={nameId} className="block text-sm font-bold">
-            Your name{" "}
-            <span className="font-normal text-[var(--mute)]">(optional)</span>
-          </label>
-          <input
+        <FormField
+          label="Your name"
+          htmlFor={nameId}
+          optional
+          className="mt-4"
+          description={
+            <span id={nameHelpId}>
+              Optional. This will not be shown publicly.
+            </span>
+          }
+        >
+          <Input
             id={nameId}
             name="volunteerName"
             type="text"
             maxLength={CLEANUP_NAME_MAX}
             disabled={busy}
             aria-describedby={nameHelpId}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
           />
-          <p id={nameHelpId} className="mt-1 text-sm text-[var(--mute)]">
-            Optional. This will not be shown publicly.
-          </p>
-        </div>
+        </FormField>
 
-        <div className="mt-4">
-          <label htmlFor={notesId} className="block text-sm font-bold">
-            Anything else to add?{" "}
-            <span className="font-normal text-[var(--mute)]">(optional)</span>
-          </label>
-          <textarea
+        <FormField
+          label="Anything else to add?"
+          htmlFor={notesId}
+          optional
+          className="mt-4"
+        >
+          <Textarea
             id={notesId}
             name="notes"
             rows={3}
             maxLength={CLEANUP_NOTES_MAX}
             disabled={busy}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base"
           />
-        </div>
+        </FormField>
 
-        <p id={communityId} className="mt-4 text-sm leading-snug text-[var(--mute)]">
+        <p id={communityId} className="mt-4 text-sm leading-snug text-mute">
           These figures are community contributed and rely on volunteers
           providing their best estimate. They are intended to show the scale of
           the collective response.
@@ -358,35 +330,23 @@ export function CleanupLogModal({
           <span>I confirm that these figures are my best estimate.</span>
         </label>
 
-        {displayError ? (
-          <p
-            id={errorId}
-            role="alert"
-            className="mt-3 text-sm font-bold text-red-800"
-          >
-            {displayError}
-          </p>
-        ) : null}
+        <FieldError id={errorId}>{displayError}</FieldError>
 
         <div className="mt-4 flex flex-col gap-2">
-          <button
-            type="submit"
-            disabled={busy}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-          >
+          <Button type="submit" fullWidth disabled={busy}>
             {busy ? "Saving…" : "Submit clean-up"}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="secondary"
+            fullWidth
             disabled={busy}
             onClick={onClose}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-sm font-bold text-[var(--ink)] disabled:opacity-60"
           >
             Cancel
-          </button>
+          </Button>
         </div>
-        </form>
-      </div>
-    </dialog>
+      </form>
+    </Modal>
   );
 }

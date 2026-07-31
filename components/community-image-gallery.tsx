@@ -88,7 +88,7 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
                 <button
                   type="button"
                   onClick={() => setActiveIndex(index)}
-                  className="block w-full overflow-hidden rounded-lg border border-[var(--line)] bg-white text-left transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--tide)]"
+                  className="block w-full overflow-hidden rounded-card border border-line bg-white text-left transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mark"
                   aria-label={`Open photo: ${image.alt}`}
                 >
                   <Image
@@ -121,7 +121,7 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
           <button
             type="button"
             onClick={close}
-            className="absolute right-3 top-3 rounded-md bg-white/15 px-3 py-2 text-sm font-bold text-white"
+            className="absolute right-3 top-3 rounded-control bg-white/15 px-3 py-2 text-sm font-bold text-white"
             aria-label="Close photo"
           >
             Close
@@ -133,7 +133,7 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
               event.stopPropagation();
               showPrev();
             }}
-            className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md bg-white/15 px-3 py-4 text-xl font-bold text-white sm:left-4"
+            className="absolute left-2 top-1/2 -translate-y-1/2 rounded-control bg-white/15 px-3 py-4 text-xl font-bold text-white sm:left-4"
             aria-label="Previous photo"
           >
             ‹
@@ -148,7 +148,7 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
               alt={active.alt}
               width={1600}
               height={2000}
-              className="max-h-[82dvh] w-auto max-w-full object-contain"
+              className="max-h-[82dvh] w-auto max-w-full rounded-card object-contain"
               sizes="100vw"
               priority
             />
@@ -171,7 +171,7 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
               event.stopPropagation();
               showNext();
             }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md bg-white/15 px-3 py-4 text-xl font-bold text-white sm:right-4"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-control bg-white/15 px-3 py-4 text-xl font-bold text-white sm:right-4"
             aria-label="Next photo"
           >
             ›

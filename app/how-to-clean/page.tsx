@@ -4,6 +4,11 @@ import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
 import { YoutubeEmbed } from "@/components/youtube-embed";
+import { ButtonLink } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Callout } from "@/components/ui/callout";
+import { Disclosure } from "@/components/ui/disclosure";
+import { Step } from "@/components/ui/step";
 import Image from "next/image";
 import {
   faqs,
@@ -42,10 +47,8 @@ export default function HowToCleanPage() {
   return (
     <PageShell className="!pb-0">
       <Section id="bring" title="What to bring" showDivider={false}>
-        <p className="mb-3 text-base font-bold leading-snug text-[var(--ink)]">
-          {whatToBringIntro}
-        </p>
-        <ul className="list-disc space-y-1.5 pl-5 text-base leading-snug">
+        <p className="mb-3 text-body font-bold">{whatToBringIntro}</p>
+        <ul className="list-disc space-y-1.5 pl-5 text-body">
           {whatToBring.map((item) => (
             <li key={item.id}>{item.item}</li>
           ))}
@@ -53,65 +56,48 @@ export default function HowToCleanPage() {
       </Section>
 
       <Section id="collect" title="How to collect">
-        <p className="mb-3 text-base font-bold leading-snug text-[var(--ink)]">
-          {howToCollectIntro}
-        </p>
-        <p className="mb-3 text-sm text-[var(--mute)]">
+        <p className="mb-3 text-body font-bold">{howToCollectIntro}</p>
+        <p className="mb-3 text-meta">
           From community organiser guidance — methods are also discussed on the
           WhatsApp group.
         </p>
-        <ol className="space-y-2">
+        <ol className="space-y-4">
           {howToCollect.map((step) => (
-            <li key={step.step} className="flex gap-3 text-base leading-snug">
-              <span
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-bold text-white"
-                aria-hidden="true"
-              >
-                {step.step}
-              </span>
-              <div className="min-w-0">
-                <span className="sr-only">Step {step.step}. </span>
-                {step.title ? (
-                  <p className="font-bold text-[var(--ink)]">{step.title}</p>
-                ) : null}
-                <p className={step.title ? "mt-1" : undefined}>
-                  {typeof step.text === "string" ? (
-                    step.text
-                  ) : (
-                    <>
-                      {step.text.beforeLink}
-                      <a
-                        href={step.text.href}
-                        {...(step.text.href.startsWith("http")
-                          ? {
-                              target: "_blank" as const,
-                              rel: "noopener noreferrer",
-                            }
-                          : {})}
-                        className="font-bold text-[var(--mark)] underline underline-offset-2"
-                      >
-                        {step.text.linkLabel}
-                      </a>
-                      {step.text.afterLink}
-                    </>
-                  )}
-                </p>
-                {step.cta ? (
-                  <a
+            <Step key={step.step} number={step.step} title={step.title}>
+              <p>
+                {typeof step.text === "string" ? (
+                  step.text
+                ) : (
+                  <>
+                    {step.text.beforeLink}
+                    <a
+                      href={step.text.href}
+                      {...(step.text.href.startsWith("http")
+                        ? {
+                            target: "_blank" as const,
+                            rel: "noopener noreferrer",
+                          }
+                        : {})}
+                      className="font-bold text-mark underline underline-offset-2"
+                    >
+                      {step.text.linkLabel}
+                    </a>
+                    {step.text.afterLink}
+                  </>
+                )}
+              </p>
+              {step.cta ? (
+                <p className="mt-2">
+                  <ButtonLink
                     href={step.cta.href}
-                    {...(step.cta.href.startsWith("http")
-                      ? {
-                          target: "_blank" as const,
-                          rel: "noopener noreferrer",
-                        }
-                      : {})}
-                    className="mt-2 inline-flex rounded-md bg-[var(--mark)] px-3 py-2 text-sm font-bold text-white"
+                    variant="primary"
+                    external={step.cta.href.startsWith("http")}
                   >
                     {step.cta.label}
-                  </a>
-                ) : null}
-              </div>
-            </li>
+                  </ButtonLink>
+                </p>
+              ) : null}
+            </Step>
           ))}
         </ol>
 
@@ -121,50 +107,49 @@ export default function HowToCleanPage() {
               const video = videoById[item.id];
               if (!video) return null;
               return (
-                <li
-                  key={video.id}
-                  className="rounded-lg border border-[var(--line)] bg-white p-3"
-                >
-                  <p className="font-bold">{video.title}</p>
-                  {video.sideImage ? (
-                    <div className="mt-2 grid grid-cols-[1fr_5.75rem] items-stretch gap-2 sm:grid-cols-[1fr_7rem]">
-                      <figure className="min-w-0 overflow-hidden rounded-lg">
-                        <Image
-                          src={video.sideImage.src}
-                          alt={video.sideImage.alt}
-                          width={800}
-                          height={1000}
-                          className="h-full max-h-[22rem] w-full object-cover"
+                <li key={video.id}>
+                  <Card padding="sm">
+                    <p className="text-card-title">{video.title}</p>
+                    {video.sideImage ? (
+                      <div className="mt-2 grid grid-cols-[1fr_5.75rem] items-stretch gap-2 sm:grid-cols-[1fr_7rem]">
+                        <figure className="min-w-0 overflow-hidden rounded-card">
+                          <Image
+                            src={video.sideImage.src}
+                            alt={video.sideImage.alt}
+                            width={800}
+                            height={1000}
+                            className="h-full max-h-[22rem] w-full object-cover"
+                          />
+                        </figure>
+                        <YoutubeEmbed
+                          url={video.url}
+                          title={video.title}
+                          aspect="short"
+                          className="mt-0 h-full max-h-[22rem] w-full"
                         />
-                      </figure>
+                      </div>
+                    ) : (
                       <YoutubeEmbed
                         url={video.url}
                         title={video.title}
-                        aspect="short"
-                        className="mt-0 h-full max-h-[22rem] w-full"
+                        className="mt-2"
                       />
-                    </div>
-                  ) : (
-                    <YoutubeEmbed
-                      url={video.url}
-                      title={video.title}
-                      className="mt-2"
-                    />
-                  )}
-                  {video.tip && (
-                    <figure className="mt-3 overflow-hidden rounded-lg">
-                      <Image
-                        src={video.tip.image.src}
-                        alt={video.tip.image.alt}
-                        width={800}
-                        height={1000}
-                        className="h-auto w-full object-cover"
-                      />
-                      <figcaption className="mt-2 text-sm leading-snug text-[var(--ink)]">
-                        {video.tip.text}
-                      </figcaption>
-                    </figure>
-                  )}
+                    )}
+                    {video.tip && (
+                      <figure className="mt-3 overflow-hidden rounded-card">
+                        <Image
+                          src={video.tip.image.src}
+                          alt={video.tip.image.alt}
+                          width={800}
+                          height={1000}
+                          className="h-auto w-full object-cover"
+                        />
+                        <figcaption className="mt-2 text-body">
+                          {video.tip.text}
+                        </figcaption>
+                      </figure>
+                    )}
+                  </Card>
                 </li>
               );
             }
@@ -172,143 +157,135 @@ export default function HowToCleanPage() {
             const guide = guideById[item.id];
             if (!guide) return null;
             return (
-              <li
-                key={guide.id}
-                className="rounded-lg border border-[var(--line)] bg-white p-3"
-              >
-                <p className="font-bold">{guide.title}</p>
-                {guide.description ? (
-                  <p className="mt-2 text-base leading-snug">{guide.description}</p>
-                ) : null}
-                {guide.steps.length > 0 && (
-                  <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-base leading-snug">
-                    {guide.steps.map((step) => (
-                      <li key={step}>{step}</li>
-                    ))}
-                  </ol>
-                )}
-                {guide.notes && guide.notes.length > 0 ? (
-                  <div className="mt-3 space-y-2 text-base leading-snug">
-                    {guide.notes.map((note) => (
-                      <p key={note}>{note}</p>
-                    ))}
-                  </div>
-                ) : null}                {guide.cta ? (
-                  <a
-                    href={guide.cta.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
-                  >
-                    {guide.cta.label}
-                  </a>
-                ) : null}
-                {guide.instagramUrl ? (
-                  <InstagramEmbed
-                    url={guide.instagramUrl}
-                    title={guide.title}
-                    className="mt-3"
-                  />
-                ) : null}
-                {guide.images && guide.images.length > 0 && (
-                  <div
-                    className={`mt-3 grid gap-3 ${
-                      guide.images.length > 1 ? "sm:grid-cols-2" : ""
-                    }`}
-                  >
-                    {guide.images.map((image) => (
-                      <figure
-                        key={image.src}
-                        className="overflow-hidden rounded-lg"
-                      >
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          width={800}
-                          height={1000}
-                          className="h-auto w-full object-cover"
+              <li key={guide.id}>
+                <Card padding="sm">
+                  <p className="text-card-title">{guide.title}</p>
+                  {guide.description ? (
+                    <p className="mt-2 text-body">{guide.description}</p>
+                  ) : null}
+                  {guide.steps.length > 0 && (
+                    <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-body">
+                      {guide.steps.map((step) => (
+                        <li key={step}>{step}</li>
+                      ))}
+                    </ol>
+                  )}
+                  {guide.notes && guide.notes.length > 0 ? (
+                    <div className="mt-3 space-y-2 text-body">
+                      {guide.notes.map((note) => (
+                        <p key={note}>{note}</p>
+                      ))}
+                    </div>
+                  ) : null}
+                  {guide.cta ? (
+                    <ButtonLink
+                      href={guide.cta.href}
+                      variant="whatsapp"
+                      fullWidth
+                      external
+                      className="mt-3"
+                    >
+                      {guide.cta.label}
+                    </ButtonLink>
+                  ) : null}
+                  {guide.instagramUrl ? (
+                    <InstagramEmbed
+                      url={guide.instagramUrl}
+                      title={guide.title}
+                      className="mt-3"
+                    />
+                  ) : null}
+                  {guide.images && guide.images.length > 0 && (
+                    <div
+                      className={`mt-3 grid gap-3 ${
+                        guide.images.length > 1 ? "sm:grid-cols-2" : ""
+                      }`}
+                    >
+                      {guide.images.map((image) => (
+                        <figure
+                          key={image.src}
+                          className="overflow-hidden rounded-card"
+                        >
+                          <Image
+                            src={image.src}
+                            alt={image.alt}
+                            width={800}
+                            height={1000}
+                            className="h-auto w-full object-cover"
+                          />
+                        </figure>
+                      ))}
+                    </div>
+                  )}
+                  {guide.videos && guide.videos.length > 0 && (
+                    <div
+                      className={`mt-3 grid gap-2 ${
+                        guide.videos.length === 3
+                          ? "grid-cols-3"
+                          : guide.videos.length === 2
+                            ? "grid-cols-2"
+                            : "grid-cols-1"
+                      }`}
+                    >
+                      {guide.videos.map((video) => (
+                        <YoutubeEmbed
+                          key={video.url}
+                          url={video.url}
+                          title={video.title}
+                          aspect="short"
+                          className="mt-0 w-full"
                         />
-                      </figure>
-                    ))}
-                  </div>
-                )}
-                {guide.videos && guide.videos.length > 0 && (
-                  <div
-                    className={`mt-3 grid gap-2 ${
-                      guide.videos.length === 3
-                        ? "grid-cols-3"
-                        : guide.videos.length === 2
-                          ? "grid-cols-2"
-                          : "grid-cols-1"
-                    }`}
-                  >
-                    {guide.videos.map((video) => (
-                      <YoutubeEmbed
-                        key={video.url}
-                        url={video.url}
-                        title={video.title}
-                        aspect="short"
-                        className="mt-0 w-full"
-                      />
-                    ))}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
+                </Card>
               </li>
             );
           })}
         </ul>
 
-        <div className="mt-6 space-y-3">
-          <h3 className="text-base font-bold leading-snug text-[var(--ink)]">
-            {ecosystemProtection.title}
-          </h3>
+        <Callout tone="mark" className="mt-6 space-y-3">
+          <h3 className="text-card-title">{ecosystemProtection.title}</h3>
           {ecosystemProtection.blocks.map((block) => (
             <div key={block.heading}>
-              <p className="text-base font-bold leading-snug text-[var(--ink)]">
-                {block.heading}
-              </p>
-              <p className="mt-1 text-base leading-snug text-[var(--ink)]">
-                {block.text}
-              </p>
+              <p className="text-body font-bold">{block.heading}</p>
+              <p className="mt-1 text-body">{block.text}</p>
             </div>
           ))}
-        </div>
+        </Callout>
       </Section>
 
-      <div className="mt-6 border-t border-[var(--line)] pb-8" aria-hidden="true" />
+      <div className="mt-6 border-t border-line pb-8" aria-hidden="true" />
 
       <section id="faq" className="scroll-mt-16">
-        <h2 className="text-lg font-bold uppercase tracking-wide text-[var(--ink)]">
-          FAQs
-        </h2>
+        <h2 className="text-section">FAQs</h2>
         <div className="mt-3 space-y-2">
           {faqs.map((item) => (
-            <details
-              key={item.id}
-              className="rounded-lg border border-[var(--line)] bg-white px-3 py-2"
-            >
-              <summary className="cursor-pointer font-bold">
-                {item.question}
-              </summary>
-              <p className="mt-2 pb-1 text-sm leading-snug text-[var(--mute)]">
-                {item.highlight && item.answer.includes(item.highlight) ? (
-                  <>
-                    {item.answer.split(item.highlight)[0]}
-                    <strong className="font-bold text-[var(--ink)]">
-                      {item.highlight}
-                    </strong>
-                    {item.answer.split(item.highlight)[1]}
-                  </>
-                ) : (
-                  item.answer
-                )}
-              </p>
-            </details>
+            <Card key={item.id} padding="sm">
+              <Disclosure
+                summary={item.question}
+                summaryClassName="font-bold text-ink"
+              >
+                <p className="text-meta">
+                  {item.highlight && item.answer.includes(item.highlight) ? (
+                    <>
+                      {item.answer.split(item.highlight)[0]}
+                      <strong className="font-bold text-ink">
+                        {item.highlight}
+                      </strong>
+                      {item.answer.split(item.highlight)[1]}
+                    </>
+                  ) : (
+                    item.answer
+                  )}
+                </p>
+              </Disclosure>
+            </Card>
           ))}
         </div>
       </section>
 
-      <div className="mt-6 border-t border-[var(--line)] pt-6 pb-8">
+      <div className="mt-6 border-t border-line pt-6 pb-8">
         <TideTimesPanel />
       </div>
     </PageShell>

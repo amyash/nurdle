@@ -10,7 +10,7 @@ export default function HomePage() {
     <PageShell>
       <div className="space-y-4">
         <HomepageCleanupCallout />
-        <div className="border-t border-[var(--line)]" aria-hidden="true" />
+        <div className="border-t border-line" aria-hidden="true" />
         <OrganiserMessagePanel message={organiserMessage} />
       </div>
     </PageShell>

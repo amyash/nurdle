@@ -7,13 +7,13 @@ export function TideTimesPanel() {
   return (
     <div>
       <TideTimesWidget scriptSrc={tide.widgetSrc} cssHref={tide.widgetCss} />
-      <p className="mt-2 text-xs text-[var(--mute)]">
+      <p className="mt-2 text-xs text-mute">
         Live tide times from{" "}
         <a
           href={tide.sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold text-[var(--tide)] underline underline-offset-2"
+          className="font-bold text-mark underline underline-offset-2"
         >
           tidetimes.co.uk
         </a>

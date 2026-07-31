@@ -3,6 +3,8 @@
 import { useEffect, useId, useState } from "react";
 import { AdminTimeLogModal } from "@/components/admin-time/admin-time-log-modal";
 import { AdminTimeSuccessModal } from "@/components/admin-time/admin-time-success-modal";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   createAdminTimeLog,
   fetchAdminTimeStats,
@@ -96,22 +98,16 @@ export function AdminTimePanel() {
 
   return (
     <>
-      <section
-        className="rounded-lg border border-[var(--line)] bg-white px-3 py-3"
-        aria-labelledby={titleId}
-      >
-        <h3
-          id={titleId}
-          className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]"
-        >
+      <Card padding="sm" aria-labelledby={titleId}>
+        <h3 id={titleId} className="text-eyebrow text-mute">
           Organising &amp; admin time
         </h3>
-        <p className="mt-2 text-sm leading-snug text-[var(--mute)]">
+        <p className="mt-2 text-meta">
           Log non-beach volunteer hours — website work, coordination,
           communications, sewing supplies, and other organising.
         </p>
 
-        <p className="mt-2 text-sm font-bold text-[var(--ink)]" role="status">
+        <p className="mt-2 text-sm font-bold text-ink" role="status">
           {loading
             ? "Loading admin totals…"
             : formatAdminHours(stats?.totalDurationMinutes ?? 0)}
@@ -123,15 +119,17 @@ export function AdminTimePanel() {
           </p>
         ) : null}
 
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          fullWidth
           disabled={busy}
           onClick={openForm}
-          className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--ink)] bg-white px-3 py-2.5 text-sm font-bold text-[var(--ink)] disabled:opacity-60"
+          className="mt-3 border-ink"
         >
           Log admin time
-        </button>
-      </section>
+        </Button>
+      </Card>
 
       <AdminTimeLogModal
         open={formOpen}

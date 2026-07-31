@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button";
+import { Callout } from "@/components/ui/callout";
+import { Disclosure } from "@/components/ui/disclosure";
 import { formatWhen } from "@/lib/dates";
 import type { Announcement, AnnouncementTextPart } from "@/types";
 
 function AnnouncementHeadline({ announcement }: { announcement: Announcement }) {
-  const className =
-    "mt-2 text-lg font-bold leading-snug text-[var(--alert-ink)]";
+  const className = "mt-2 text-card-title text-alert-ink";
 
   if (announcement.headlineHref) {
     const isExternal = /^https?:\/\//.test(announcement.headlineHref);
@@ -56,10 +58,10 @@ function RichText({ parts }: { parts: AnnouncementTextPart[] }) {
 function AnnouncementMeta({ announcement }: { announcement: Announcement }) {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-2">
-      <p className="text-xs font-bold uppercase tracking-wide text-[var(--alert-ink)]">
+      <p className="text-eyebrow text-alert-ink">
         {announcement.sourceName ?? "Announcement"}
       </p>
-      <p className="text-sm font-bold text-[var(--alert-ink)]">
+      <p className="text-sm font-bold text-alert-ink">
         <time dateTime={announcement.datetime}>
           {formatWhen(announcement.datetime)}
         </time>
@@ -72,7 +74,7 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
   return (
     <>
       {announcement.body && announcement.body.length > 0 && (
-        <div className="mt-2 space-y-2 text-base leading-snug text-[var(--alert-ink)]">
+        <div className="mt-2 space-y-2 text-body text-alert-ink">
           {announcement.body.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -80,7 +82,7 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
       )}
 
       {announcement.blocks && announcement.blocks.length > 0 && (
-        <div className="mt-3 space-y-3 text-[var(--alert-ink)]">
+        <div className="mt-3 space-y-3 text-alert-ink">
           {announcement.blocks.map((block, index) => {
             if (block.type === "lg") {
               return (
@@ -91,19 +93,12 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
             }
             if (block.type === "md") {
               return (
-                <p key={index} className="text-base font-medium leading-snug">
+                <p key={index} className="text-body">
                   <RichText parts={block.parts} />
                 </p>
               );
             }
-            if (block.type === "sm") {
-              return (
-                <p key={index} className="text-sm leading-snug">
-                  <RichText parts={block.parts} />
-                </p>
-              );
-            }
-            if (block.type === "p") {
+            if (block.type === "sm" || block.type === "p") {
               return (
                 <p key={index} className="text-sm leading-snug">
                   <RichText parts={block.parts} />
@@ -114,7 +109,7 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
               return (
                 <hr
                   key={index}
-                  className="border-0 border-t border-[var(--alert-ink)]/30"
+                  className="border-0 border-t border-alert-ink/30"
                 />
               );
             }
@@ -156,7 +151,7 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
           {announcement.times.map((time) => (
             <li
               key={time}
-              className="rounded-md border border-[var(--alert-ink)]/40 bg-white/50 px-3 py-1.5 text-sm font-bold text-[var(--alert-ink)]"
+              className="rounded-control border border-alert-ink/40 bg-white/50 px-3 py-1.5 text-sm font-bold text-alert-ink"
             >
               {time}
             </li>
@@ -166,18 +161,18 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
       {announcement.link && (
         <p className="mt-4">
           {/^https?:\/\//.test(announcement.link.href) ? (
-            <a
+            <ButtonLink
               href={announcement.link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center rounded-md bg-[#25D366] px-3 py-2.5 text-center text-sm font-bold text-white"
+              variant="whatsapp"
+              fullWidth
+              external
             >
               {announcement.link.label}
-            </a>
+            </ButtonLink>
           ) : (
             <Link
               href={announcement.link.href}
-              className="inline-flex w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-center text-sm font-bold text-white"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-control bg-mark px-3 py-2.5 text-center text-sm font-bold text-white"
             >
               {announcement.link.label}
             </Link>
@@ -195,36 +190,34 @@ export function AnnouncementCard({
 }) {
   if (announcement.expandable) {
     return (
-      <details className="group rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] open:shadow-sm">
-        <summary className="cursor-pointer list-none px-4 py-4 marker:content-none [&::-webkit-details-marker]:hidden">
-          <span className="flex items-start justify-between gap-3">
-            <span className="min-w-0 flex-1">
+      <Callout tone="alert" padded={false} className="open:shadow-sm">
+        <Disclosure
+          summaryClassName="px-4 text-alert-ink"
+          summary={
+            <>
               <AnnouncementMeta announcement={announcement} />
               <AnnouncementHeadline announcement={announcement} />
-              <span className="mt-1 block text-xs font-bold uppercase tracking-wide text-[var(--alert-ink)]/70">
-                Tap to expand
+              <span className="mt-1 block text-eyebrow text-alert-ink/70">
+                Show full update
               </span>
-            </span>
-            <span
-              className="mt-1 shrink-0 text-xl font-bold text-[var(--alert-ink)] transition group-open:rotate-45"
-              aria-hidden="true"
-            >
-              +
-            </span>
-          </span>
-        </summary>
-        <div className="border-t border-[var(--alert-ink)]/20 px-4 pb-4">
-          <AnnouncementBody announcement={announcement} />
-        </div>
-      </details>
+            </>
+          }
+        >
+          <div className="border-t border-alert-ink/20 px-4 pb-4">
+            <AnnouncementBody announcement={announcement} />
+          </div>
+        </Disclosure>
+      </Callout>
     );
   }
 
   return (
-    <article className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] p-4">
-      <AnnouncementMeta announcement={announcement} />
-      <AnnouncementHeadline announcement={announcement} />
-      <AnnouncementBody announcement={announcement} />
+    <article>
+      <Callout tone="alert">
+        <AnnouncementMeta announcement={announcement} />
+        <AnnouncementHeadline announcement={announcement} />
+        <AnnouncementBody announcement={announcement} />
+      </Callout>
     </article>
   );
 }

@@ -206,7 +206,7 @@ export function BeachCheckinMap({
     return (
       <div
         role="status"
-        className="rounded-lg border border-[var(--line)] bg-white px-3 py-4 text-sm leading-snug text-[var(--mute)]"
+        className="rounded-card border border-line bg-white px-3 py-4 text-meta"
       >
         {mapError}
       </div>
@@ -214,20 +214,20 @@ export function BeachCheckinMap({
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border border-[var(--line)] bg-white">
+    <div className="overflow-hidden rounded-card border border-line bg-white">
       {!mapReady ? (
-        <p className="px-3 py-3 text-sm text-[var(--mute)]" role="status">
+        <p className="px-3 py-3 text-meta" role="status">
           Loading map…
         </p>
       ) : null}
       <div
         id={`checkin-map-${mapId}`}
         ref={containerRef}
-        className="h-64 w-full min-h-[16rem] sm:h-72"
+        className="h-64 w-full min-h-64 sm:h-72"
         role="img"
         aria-label="Map of North Tyneside beaches used for volunteer check-in. Full details are listed below."
       />
-      <p className="border-t border-[var(--line)] px-3 py-2 text-xs leading-snug text-[var(--mute)] sm:hidden">
+      <p className="border-t border-line px-3 py-2 text-xs leading-snug text-mute sm:hidden">
         Use two fingers to move the map. One finger scrolls the page.
       </p>
     </div>

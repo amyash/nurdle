@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function CopyableEmailTemplate({
   label,
@@ -30,20 +31,18 @@ export function CopyableEmailTemplate({
   return (
     <div className="mt-3">
       {label ? (
-        <p
-          className={`text-sm font-bold ${dark ? "text-white" : "text-[var(--ink)]"}`}
-        >
+        <p className={`text-sm font-bold ${dark ? "text-white" : "text-ink"}`}>
           {label}
         </p>
       ) : null}
 
       <div
-        className={`max-h-56 overflow-y-auto rounded-md border p-3 ${
+        className={`max-h-56 overflow-y-auto rounded-control border p-3 ${
           label ? "mt-2" : ""
         } ${
           dark
-            ? "border-white/20 bg-white text-[var(--ink)]"
-            : "border-[var(--line)] bg-[var(--board)] text-[var(--ink)]"
+            ? "border-white/20 bg-white text-ink"
+            : "border-line bg-board text-ink"
         }`}
       >
         <p className="text-xs font-bold">Subject</p>
@@ -53,13 +52,9 @@ export function CopyableEmailTemplate({
         </pre>
       </div>
 
-      <button
-        type="button"
-        onClick={copyTemplate}
-        className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white"
-      >
+      <Button type="button" onClick={copyTemplate} fullWidth className="mt-3">
         {copied ? "Copied to clipboard" : "Copy email template"}
-      </button>
+      </Button>
     </div>
   );
 }

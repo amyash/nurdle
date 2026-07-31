@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 export function Section({
   id,
@@ -14,12 +15,13 @@ export function Section({
   return (
     <section
       id={id}
-      className={`scroll-mt-16 py-6${showDivider ? " border-t border-[var(--line)]" : ""}`}
+      className={cn(
+        "scroll-mt-16 py-8",
+        showDivider && "border-t border-line",
+      )}
     >
-      <h2 className="text-lg font-bold uppercase tracking-wide text-[var(--ink)]">
-        {title}
-      </h2>
-      <div className="mt-3">{children}</div>
+      <h2 className="text-section">{title}</h2>
+      <div className="mt-4">{children}</div>
     </section>
   );
 }

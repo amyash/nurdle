@@ -2,6 +2,9 @@
 
 import { useEffect, useId, useRef } from "react";
 import { FIRST_NAME_MAX_LENGTH } from "@/lib/check-in/format";
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
+import { FieldError, FormField, Input } from "@/components/ui/form-field";
 
 export function CheckInModal({
   beachName,
@@ -18,7 +21,6 @@ export function CheckInModal({
   onClose: () => void;
   onConfirm: (firstName: string) => void;
 }) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const nameId = useId();
   const privacyId = useId();
@@ -26,33 +28,20 @@ export function CheckInModal({
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (open && !dialog.open) {
-      dialog.showModal();
-      formRef.current?.reset();
-    } else if (!open && dialog.open) {
-      dialog.close();
-    }
+    if (!open) return;
+    formRef.current?.reset();
   }, [open]);
 
   return (
-    <dialog
-      ref={dialogRef}
-      className="fixed left-1/2 top-1/2 z-50 m-0 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-lg border border-[var(--line)] bg-white p-0 text-[var(--ink)] shadow-lg open:backdrop:bg-black/40"
-      aria-labelledby={titleId}
-      onCancel={(event) => {
-        event.preventDefault();
-        if (!busy) onClose();
-      }}
-      onClick={(event) => {
-        if (event.target === dialogRef.current && !busy) onClose();
-      }}
+    <Modal
+      open={open}
+      onClose={onClose}
+      busy={busy}
+      title={`Check in at ${beachName}`}
+      titleId={titleId}
     >
       <form
         ref={formRef}
-        className="px-4 py-4"
         onSubmit={(event) => {
           event.preventDefault();
           if (busy) return;
@@ -61,16 +50,12 @@ export function CheckInModal({
           onConfirm(firstName);
         }}
       >
-        <h2 id={titleId} className="text-lg font-bold leading-snug">
-          Check in at {beachName}
-        </h2>
-
-        <div className="mt-4">
-          <label htmlFor={nameId} className="block text-sm font-bold">
-            First name{" "}
-            <span className="font-normal text-[var(--mute)]">(optional)</span>
-          </label>
-          <input
+        <FormField
+          label="First name"
+          htmlFor={nameId}
+          optional
+        >
+          <Input
             id={nameId}
             name="firstName"
             type="text"
@@ -78,44 +63,32 @@ export function CheckInModal({
             maxLength={FIRST_NAME_MAX_LENGTH}
             disabled={busy}
             aria-describedby={`${privacyId}${error ? ` ${errorId}` : ""}`}
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-base text-[var(--ink)]"
           />
-        </div>
+        </FormField>
 
-        <p id={privacyId} className="mt-3 text-sm leading-snug text-[var(--mute)]">
+        <p id={privacyId} className="mt-3 text-sm leading-snug text-mute">
           Your name is optional. We only use this check-in to calculate
           approximate volunteer numbers, and it will automatically expire after
           two hours.
         </p>
 
-        {error ? (
-          <p
-            id={errorId}
-            role="alert"
-            className="mt-3 text-sm font-bold text-red-800"
-          >
-            {error}
-          </p>
-        ) : null}
+        <FieldError id={errorId}>{error}</FieldError>
 
         <div className="mt-4 flex flex-col gap-2">
-          <button
-            type="submit"
-            disabled={busy}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--mark)] px-3 py-2.5 text-sm font-bold text-white disabled:opacity-60"
-          >
+          <Button type="submit" fullWidth disabled={busy}>
             {busy ? "Checking in…" : "Confirm check-in"}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="secondary"
+            fullWidth
             disabled={busy}
             onClick={onClose}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[var(--line)] bg-white px-3 py-2.5 text-sm font-bold text-[var(--ink)] disabled:opacity-60"
           >
             Cancel
-          </button>
+          </Button>
         </div>
       </form>
-    </dialog>
+    </Modal>
   );
 }

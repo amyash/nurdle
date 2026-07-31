@@ -3,6 +3,7 @@ import {
   formatVolunteerHours,
   formatVolunteerSessions,
 } from "@/lib/cleanup-logs/format";
+import { Callout } from "@/components/ui/callout";
 import type { CleanupStatsResponse } from "@/types/cleanup-log";
 
 export function CleanupOverallCallout({
@@ -17,7 +18,7 @@ export function CleanupOverallCallout({
   if (loading) {
     return (
       <div
-        className="min-h-[7rem] rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4"
+        className="min-h-28 rounded-card border-2 border-alert-ink bg-alert px-4 py-4"
         aria-hidden="true"
       />
     );
@@ -25,36 +26,35 @@ export function CleanupOverallCallout({
 
   if (!stats || stats.overall.submissionCount === 0) {
     return (
-      <aside className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4">
-        <h2 className="text-xl font-bold tracking-tight text-[var(--alert-ink)]">
+      <Callout tone="alert">
+        <h2 className="text-page-title text-alert-ink">
           Community effort since the spill
         </h2>
-        <p className="mt-2 text-sm leading-snug text-[var(--alert-ink)]">
+        <p className="mt-2 text-sm leading-snug text-alert-ink">
           No clean-ups logged yet. Use <strong>Log your clean-up</strong> on a
           beach card to add time after you’ve finished.
         </p>
-      </aside>
+      </Callout>
     );
   }
 
   const { overall } = stats;
-  const beaches =
-    stats.beachCountWithActivity || activeBeachCount;
+  const beaches = stats.beachCountWithActivity || activeBeachCount;
 
   return (
-    <aside className="rounded-lg border-2 border-[var(--alert-ink)] bg-[var(--alert)] px-4 py-4">
-      <h2 className="text-xl font-bold tracking-tight text-[var(--alert-ink)]">
+    <Callout tone="alert">
+      <h2 className="text-page-title text-alert-ink">
         Community effort since the spill
       </h2>
-      <ul className="mt-2 space-y-1 text-base font-bold leading-snug text-[var(--alert-ink)]">
+      <ul className="mt-3 space-y-1 text-base font-bold leading-snug text-alert-ink">
         <li>{formatVolunteerHours(overall.totalVolunteerHours)}</li>
         <li>{formatVolunteerSessions(overall.totalVolunteerSessions)}</li>
         <li>{formatEstimatedWeight(overall.totalEstimatedWeightKg)}</li>
       </ul>
-      <p className="mt-2 text-sm text-[var(--alert-ink)]/80">
+      <p className="mt-2 text-meta text-alert-ink/80">
         Across {beaches.toLocaleString("en-GB")} beach
         {beaches === 1 ? "" : "es"}
       </p>
-    </aside>
+    </Callout>
   );
 }

@@ -6,9 +6,9 @@ import { openLetter } from "@/data/open-letter";
 export function SiteHeader() {
   return (
     <header>
-      <div className="bg-[#111827] text-white">
+      <div className="bg-ink text-white">
         <div className="mx-auto max-w-lg px-4 pb-4 pt-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-[#5eead4]">
+          <p className="text-eyebrow text-accent-mint">
             North Tyneside · Community volunteers
           </p>
           <Link
@@ -18,14 +18,14 @@ export function SiteHeader() {
             Nurdle spill — volunteer board
           </Link>
 
-          <p className="mt-2 text-[10px] leading-tight text-white/70">
+          <p className="mt-2 text-xs leading-snug text-white/70">
             {siteDisclaimer}
           </p>
 
           <div className="mt-3">
             <Link
               href="/open-letter"
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[#5eead4] px-3 py-2.5 text-center text-sm font-bold leading-tight text-[#111827] sm:text-base"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-control bg-accent-mint px-3 py-2.5 text-center text-sm font-bold leading-tight text-ink sm:text-base"
             >
               {openLetter.headerCtaLabel}
             </Link>
@@ -34,12 +34,12 @@ export function SiteHeader() {
       </div>
 
       <div className="mx-auto max-w-lg px-4">
-        <div className="border-t border-[var(--line)]" aria-hidden="true" />
+        <div className="border-t border-line" aria-hidden="true" />
 
         <SiteNav />
 
         <div
-          className="mt-5 border-t border-[var(--line)] pt-5"
+          className="mt-5 border-t border-line pt-5"
           aria-hidden="true"
         />
       </div>

@@ -8,6 +8,8 @@ import { CheckInModal } from "@/components/check-in/check-in-modal";
 import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
 import { CleanupLogSuccessModal } from "@/components/cleanup-logs/cleanup-log-success-modal";
 import { CleanupOverallCallout } from "@/components/cleanup-logs/cleanup-overall-callout";
+import { ButtonLink } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   checkinBeaches,
   otherBeachWhatsappGroups,
@@ -43,7 +45,7 @@ const BeachCheckinMap = dynamic(
     loading: () => (
       <div
         role="status"
-        className="rounded-lg border border-[var(--line)] bg-white px-3 py-4 text-sm text-[var(--mute)]"
+        className="rounded-card border border-line bg-white px-3 py-4 text-meta"
       >
         Loading map…
       </div>
@@ -278,7 +280,7 @@ export function BeachGroupsHubPanel() {
 
   return (
     <div className="space-y-4">
-      <p className="text-base leading-snug text-[var(--ink)]">
+      <p className="text-body">
         Find where volunteers are cleaning, join the beach WhatsApp group, check
         in when you arrive, and log your clean-up. Cards also show council
         nurdle collection points where available. Check-ins expire after two
@@ -291,10 +293,7 @@ export function BeachGroupsHubPanel() {
         activeBeachCount={checkinBeaches.length}
       />
 
-      <p
-        className="text-sm font-bold leading-snug text-[var(--ink)]"
-        aria-live="polite"
-      >
+      <p className="text-sm font-bold leading-snug text-ink" aria-live="polite">
         {loading ? "Loading beach updates…" : summaryLabel(stats)}
       </p>
 
@@ -311,14 +310,11 @@ export function BeachGroupsHubPanel() {
       ) : null}
 
       {!configured ? (
-        <aside
-          className="rounded-lg border border-amber-800/40 bg-amber-50 p-3 text-sm leading-snug text-amber-950"
-          role="note"
-        >
+        <Card variant="warning" padding="sm" role="note">
           Live check-in and clean-up logging isn’t configured for this
           environment yet. You can still browse the beaches below. An organiser
           needs to add Supabase credentials before live features work.
-        </aside>
+        </Card>
       ) : null}
 
       <BeachCheckinMap
@@ -349,41 +345,33 @@ export function BeachGroupsHubPanel() {
         ))}
       </ul>
 
-      <section className="rounded-lg border border-[var(--line)] bg-white px-3 py-3">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-[var(--mute)]">
-          Other WhatsApp groups
-        </h3>
+      <Card padding="sm">
+        <h3 className="text-eyebrow text-mute">Other WhatsApp groups</h3>
         <ul className="mt-2 space-y-2">
           {otherBeachWhatsappGroups.map((group) => (
             <li key={group.id} className="flex flex-wrap items-center gap-2">
-              <p className="text-sm font-bold text-[var(--ink)]">{group.name}</p>
+              <p className="text-sm font-bold text-ink">{group.name}</p>
               {group.whatsappUrl ? (
-                <a
+                <ButtonLink
                   href={group.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex rounded-md bg-[#25D366] px-3 py-2 text-sm font-bold text-white"
+                  variant="whatsapp"
+                  external
                 >
                   Join WhatsApp
-                </a>
+                </ButtonLink>
               ) : (
-                <p className="text-sm italic text-[var(--mute)]">
-                  Link not yet added
-                </p>
+                <p className="text-sm italic text-mute">Link not yet added</p>
               )}
             </li>
           ))}
         </ul>
-      </section>
+      </Card>
 
-      <div
-        className="my-6 border-t border-[var(--line)] pt-6"
-        aria-hidden="true"
-      />
+      <div className="my-6 border-t border-line pt-6" aria-hidden="true" />
 
       <AdminTimePanel />
 
-      <p className="text-xs leading-snug text-[var(--mute)]">
+      <p className="text-xs leading-snug text-mute">
         Check-ins are approximate, automatically expire after two hours and are
         only intended to help volunteers understand where people are currently
         helping. Mesh filter bags are listed on the How to clean page.
