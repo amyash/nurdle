@@ -2,9 +2,8 @@ export const OPEN_LETTER_NAME_MAX = 80;
 export const OPEN_LETTER_NAME_MIN = 2;
 export const OPEN_LETTER_TOWN_MAX = 80;
 export const OPEN_LETTER_TOWN_MIN = 2;
-export const OPEN_LETTER_ADDRESS_MAX = 300;
-export const OPEN_LETTER_ADDRESS_MIN = 5;
-export const OPEN_LETTER_EMAIL_MAX = 120;
+export const OPEN_LETTER_POSTCODE_MAX = 12;
+export const OPEN_LETTER_POSTCODE_MIN = 5;
 
 export function sanitiseOpenLetterName(raw: string | null | undefined):
   | { ok: true; value: string }
@@ -42,48 +41,31 @@ export function sanitiseOpenLetterTown(raw: string | null | undefined):
   return { ok: true, value: trimmed };
 }
 
-export function sanitiseOpenLetterAddress(raw: string | null | undefined):
+/** Normalise a UK postcode; allows common spacing (e.g. NE30 4NT). */
+export function sanitiseOpenLetterPostcode(raw: string | null | undefined):
   | { ok: true; value: string }
   | { ok: false; reason: "required" | "too_short" | "too_long" | "invalid" } {
   if (raw == null) return { ok: false, reason: "required" };
-  const normalised = raw
-    .replace(/\r\n/g, "\n")
-    .replace(/[ \t]+/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-  if (!normalised) return { ok: false, reason: "required" };
-  if (normalised.length < OPEN_LETTER_ADDRESS_MIN) {
+  const compact = raw.trim().toUpperCase().replace(/\s+/g, "");
+  if (!compact) return { ok: false, reason: "required" };
+  if (compact.length < OPEN_LETTER_POSTCODE_MIN) {
     return { ok: false, reason: "too_short" };
   }
-  if (normalised.length > OPEN_LETTER_ADDRESS_MAX) {
+  if (compact.length > OPEN_LETTER_POSTCODE_MAX) {
     return { ok: false, reason: "too_long" };
   }
-  if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(normalised)) {
+  if (!/^[A-Z]{1,2}\d[A-Z\d]?\d[A-Z]{2}$/.test(compact)) {
     return { ok: false, reason: "invalid" };
   }
-  return { ok: true, value: normalised };
+  const outward = compact.slice(0, compact.length - 3);
+  const inward = compact.slice(-3);
+  return { ok: true, value: `${outward} ${inward}` };
 }
 
-export function sanitiseOpenLetterEmail(raw: string | null | undefined):
-  | { ok: true; value: string | null }
-  | { ok: false; reason: "invalid" | "too_long" } {
-  if (raw == null) return { ok: true, value: null };
-  const trimmed = raw.trim().toLowerCase();
-  if (!trimmed) return { ok: true, value: null };
-  if (trimmed.length > OPEN_LETTER_EMAIL_MAX) {
-    return { ok: false, reason: "too_long" };
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-    return { ok: false, reason: "invalid" };
-  }
-  return { ok: true, value: trimmed };
-}
-
-export function formatSignatureCount(count: number): string {
-  if (count === 1) return "1 signature";
-  return `${count.toLocaleString("en-GB")} signatures`;
-}
-
-export function formatSignatureCountHeadline(count: number): string {
+export function formatSupportTotal(count: number): string {
   return count.toLocaleString("en-GB");
+}
+
+export function formatSignedByLabel(count: number): string {
+  return `Signed by ${formatSupportTotal(count)} members of the voluntary effort to respond to the Port of Tyne Nurdle Catastrophe`;
 }

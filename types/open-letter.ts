@@ -6,30 +6,32 @@ export interface OpenLetterSignaturePublic {
 }
 
 export interface OpenLetterSignatureStats {
-  signatureCount: number;
+  /** Signatures that count toward the displayed total (not already in WhatsApp). */
+  additiveCount: number;
 }
 
 export type OpenLetterErrorCode =
   | "not_configured"
   | "invalid_name"
   | "invalid_town"
-  | "invalid_address"
-  | "invalid_email"
-  | "consent_required"
+  | "invalid_postcode"
   | "duplicate"
   | "network"
   | "unknown";
 
 export type OpenLetterMutationResult =
-  | { ok: true; id: string; signature: OpenLetterSignaturePublic | null }
+  | {
+      ok: true;
+      id: string;
+      countsTowardTotal: boolean;
+      additiveCount: number;
+    }
   | { ok: false; error: OpenLetterErrorCode; message: string };
 
 export interface CreateOpenLetterSignatureInput {
   fullName: string;
   town: string;
-  address: string;
-  email?: string | null;
-  /** When true, name and town appear on the public signatories list. */
-  publishPublicly: boolean;
-  consentHeld: boolean;
+  postcode: string;
+  /** True if they already joined the WhatsApp group in the stated window. */
+  joinedWhatsapp: boolean;
 }

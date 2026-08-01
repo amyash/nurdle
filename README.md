@@ -95,15 +95,18 @@ Fill in:
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
 
-# Optional — Google Sheet intake (clean-up logs + bag drop-offs)
+# Optional — Google Sheet intake (clean-up logs + wildlife + admin)
 GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/XXXX/exec
+
+# Optional — open letter signatures (separate spreadsheet + script)
+GOOGLE_SHEETS_OPEN_LETTER_WEBHOOK_URL=https://script.google.com/macros/s/YYYY/exec
 ```
 
-`GOOGLE_SHEETS_WEBHOOK_URL` is **server-only**. Never prefix it with `NEXT_PUBLIC_`.
+`GOOGLE_SHEETS_*_WEBHOOK_URL` values are **server-only**. Never prefix with `NEXT_PUBLIC_`.
 
 Restart `npm run dev`.
 
-### 4. Google Sheet setup (bag drop-offs + clean-up logs)
+### 4. Google Sheet setup (clean-up logs)
 
 The website (Supabase) is the source of truth. Sheets are a shared inbox (no sync back).
 
@@ -120,9 +123,14 @@ The website (Supabase) is the source of truth. Sheets are a shared inbox (no syn
 
 `doGet` returns `{ version: "private-v3-..." }` so you can confirm the live webhook is the new script.
 
-Bag drop-offs are written to a **Bag Drop-offs** tab:
+Bag drop-offs (deprecated) are written to a **Bag Drop-offs** tab if still used.
 
-`ID | Submitted At | Quantity | Location ID | Location Label | Location Other | Dropped At | Maker Name`
+**Open letter signatures** use a separate spreadsheet + script:
+
+1. Open [the open letter spreadsheet](https://docs.google.com/spreadsheets/d/1fQJXLQJHRPYhO78XrDNiikCb2ci_rlU_upVocCwlqJo/edit)
+2. **Extensions → Apps Script** — paste [`scripts/google-apps-script/open-letter-signatures.gs`](scripts/google-apps-script/open-letter-signatures.gs)
+3. **Deploy → New deployment → Web app** (Execute as: Me, Who has access: Anyone)
+4. Put the `/exec` URL in `GOOGLE_SHEETS_OPEN_LETTER_WEBHOOK_URL` (local + Vercel)
 
 ### 5. Local testing checklist
 
@@ -142,6 +150,7 @@ In the Vercel project → **Settings → Environment Variables**, add:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `GOOGLE_SHEETS_WEBHOOK_URL` (optional)
+- `GOOGLE_SHEETS_OPEN_LETTER_WEBHOOK_URL` (optional — open letter sheet)
 
 Redeploy after saving env vars. No paid map API key is required (OpenStreetMap + Leaflet).
 

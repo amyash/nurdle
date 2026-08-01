@@ -1,6 +1,7 @@
 /**
  * Open letter content — edit here, not in the page component.
- * Signature count reflects WhatsApp community membership, not individual form sign-ups.
+ * Displayed total = whatsappMemberCount + additive form signatures
+ * (people who did not already join WhatsApp in the stated window).
  */
 export const openLetter = {
   headerCtaLabel: "An Open Letter to Matt Beeton",

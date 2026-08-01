@@ -1,18 +1,7 @@
-import {
-  getSupabaseBrowserClient,
-  isSupabaseConfigured,
-} from "@/lib/supabase/client";
-import {
-  mapOpenLetterSignatureRow,
-  mapOpenLetterStatsRow,
-  type RpcOpenLetterSignatureRow,
-  type RpcOpenLetterStatsRow,
-} from "@/lib/open-letter/map";
 import type {
   CreateOpenLetterSignatureInput,
   OpenLetterErrorCode,
   OpenLetterMutationResult,
-  OpenLetterSignaturePublic,
   OpenLetterSignatureStats,
 } from "@/types/open-letter";
 
@@ -23,53 +12,27 @@ function fail(
   return { ok: false, error: code, message };
 }
 
-export async function fetchOpenLetterData(): Promise<
-  | {
-      ok: true;
-      signatures: OpenLetterSignaturePublic[];
-      stats: OpenLetterSignatureStats;
-    }
+export async function fetchOpenLetterAdditiveCount(): Promise<
+  | { ok: true; stats: OpenLetterSignatureStats }
   | { ok: false; error: OpenLetterErrorCode; message: string }
 > {
-  if (!isSupabaseConfigured()) {
-    return {
-      ok: false,
-      error: "not_configured",
-      message: "Open letter signing isn’t connected yet.",
-    };
-  }
-
   try {
-    const supabase = getSupabaseBrowserClient();
-    const [listResult, statsResult] = await Promise.all([
-      supabase.rpc("list_public_open_letter_signatories"),
-      supabase.rpc("get_open_letter_signature_stats"),
-    ]);
-
-    if (listResult.error || statsResult.error) {
-      return {
-        ok: false,
-        error: "network",
-        message: "We couldn’t load signatures right now.",
-      };
-    }
-
-    const signatures = ((listResult.data ?? []) as RpcOpenLetterSignatureRow[])
-      .map(mapOpenLetterSignatureRow)
-      .filter((item): item is OpenLetterSignaturePublic => item != null);
-
-    const statsRows = (statsResult.data ?? []) as RpcOpenLetterStatsRow[];
-
+    const response = await fetch("/api/open-letter-signatures", {
+      method: "GET",
+      cache: "no-store",
+    });
+    const payload = (await response.json().catch(() => null)) as {
+      additiveCount?: number;
+    } | null;
     return {
       ok: true,
-      signatures,
-      stats: mapOpenLetterStatsRow(statsRows[0]),
+      stats: { additiveCount: Number(payload?.additiveCount) || 0 },
     };
   } catch {
     return {
       ok: false,
       error: "network",
-      message: "We couldn’t load signatures right now.",
+      message: "We couldn’t load the signature total right now.",
     };
   }
 }
@@ -77,13 +40,6 @@ export async function fetchOpenLetterData(): Promise<
 export async function createOpenLetterSignature(
   input: CreateOpenLetterSignatureInput,
 ): Promise<OpenLetterMutationResult> {
-  if (!isSupabaseConfigured()) {
-    return fail(
-      "not_configured",
-      "Open letter signing isn’t connected yet. Please try again later.",
-    );
-  }
-
   try {
     const response = await fetch("/api/open-letter-signatures", {
       method: "POST",
@@ -91,21 +47,18 @@ export async function createOpenLetterSignature(
       body: JSON.stringify({
         fullName: input.fullName,
         town: input.town,
-        address: input.address,
-        email: input.email ?? null,
-        publishPublicly: input.publishPublicly,
-        consentHeld: input.consentHeld,
+        postcode: input.postcode,
+        joinedWhatsapp: input.joinedWhatsapp,
       }),
     });
 
-    const payload = (await response.json().catch(() => null)) as
-      | {
-          id?: string;
-          signature?: OpenLetterSignaturePublic | null;
-          error?: string;
-          message?: string;
-        }
-      | null;
+    const payload = (await response.json().catch(() => null)) as {
+      id?: string;
+      countsTowardTotal?: boolean;
+      additiveCount?: number;
+      error?: string;
+      message?: string;
+    } | null;
 
     if (!response.ok || !payload?.id) {
       return fail(
@@ -120,7 +73,8 @@ export async function createOpenLetterSignature(
     return {
       ok: true,
       id: payload.id,
-      signature: payload.signature ?? null,
+      countsTowardTotal: payload.countsTowardTotal === true,
+      additiveCount: Number(payload.additiveCount) || 0,
     };
   } catch {
     return fail(

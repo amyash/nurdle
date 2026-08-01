@@ -9,9 +9,12 @@
  *
  * Optional: set DROPOFFS_SPREADSHEET_ID to a public mesh-bag spreadsheet ID
  * so drop-off rows go to a separate public file.
+ *
+ * Open letter signatures use a separate script:
+ * scripts/google-apps-script/open-letter-signatures.gs
  */
 
-var SCRIPT_VERSION = "private-v6-2026-07-30";
+var SCRIPT_VERSION = "private-v8-2026-08-01";
 
 /** Optional public mesh-bag drop-offs spreadsheet ID (from /d/<ID>/edit). Leave blank to use active. */
 var DROPOFFS_SPREADSHEET_ID = "";
@@ -70,16 +73,6 @@ var WILDLIFE_HEADERS = [
   "Has Supporting Evidence",
   "Email",
   "Reporter Name",
-];
-
-var OPEN_LETTER_HEADERS = [
-  "ID",
-  "Signed At",
-  "Full Name",
-  "Town",
-  "Address",
-  "Email",
-  "Public",
 ];
 
 function jsonResponse_(payload) {
@@ -143,18 +136,6 @@ function getWildlifeSheet_() {
   }
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(WILDLIFE_HEADERS);
-  }
-  return sheet;
-}
-
-function getOpenLetterSheet_() {
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = spreadsheet.getSheetByName("Open Letter Signatures");
-  if (!sheet) {
-    sheet = spreadsheet.insertSheet("Open Letter Signatures");
-  }
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(OPEN_LETTER_HEADERS);
   }
   return sheet;
 }
@@ -272,24 +253,6 @@ function doPost(e) {
       return jsonResponse_({
         ok: true,
         target: "wildlife-reports",
-        version: SCRIPT_VERSION,
-      });
-    }
-
-    if (data.type === "open-letter-signature") {
-      var openLetterSheet = getOpenLetterSheet_();
-      openLetterSheet.appendRow([
-        data.id || "",
-        data.signedAt || "",
-        data.fullName || "",
-        data.town || "",
-        data.address || "",
-        data.email || "",
-        data.isPublic || "",
-      ]);
-      return jsonResponse_({
-        ok: true,
-        target: "open-letter-signatures",
         version: SCRIPT_VERSION,
       });
     }
