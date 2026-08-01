@@ -23,13 +23,13 @@ export function Disclosure({
     >
       <summary
         className={cn(
-          "flex min-h-11 cursor-pointer list-none items-start justify-between gap-3 py-2 marker:content-none [&::-webkit-details-marker]:hidden",
+          "flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-2 marker:content-none [&::-webkit-details-marker]:hidden",
           summaryClassName,
         )}
       >
         <span className="min-w-0 flex-1 text-left">{summary}</span>
         <span
-          className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center text-lg font-bold leading-none transition group-open:rotate-45"
+          className="inline-flex shrink-0 items-center justify-center text-lg font-bold leading-none transition group-open:rotate-45"
           aria-hidden="true"
         >
           +
