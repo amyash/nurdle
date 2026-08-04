@@ -11,6 +11,9 @@ import { CleanupOverallCallout } from "@/components/cleanup-logs/cleanup-overall
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
+  beachRegionLabels,
+  beachRegionOrder,
+  beachesInRegion,
   checkinBeaches,
   otherBeachWhatsappGroups,
 } from "@/data/checkin-beaches";
@@ -286,20 +289,33 @@ export function BeachGroupsHubPanel() {
         onCheckInRequest={openCheckIn}
       />
 
-      <ul className="space-y-3">
-        {checkinBeaches.map((beach) => (
-          <li key={beach.id}>
-            <BeachHubCard
-              beach={beach}
-              cleanupStats={cleanupStats?.byBeach[beach.id]}
-              cleanupStatsLoading={cleanupStatsLoading}
-              cleanupDisabled={!configured}
-              busy={busy}
-              onLogCleanup={() => openCleanupLog(beach.id)}
-            />
-          </li>
-        ))}
-      </ul>
+      <div className="space-y-8">
+        {beachRegionOrder.map((region) => {
+          const beaches = beachesInRegion(region);
+          if (beaches.length === 0) return null;
+          return (
+            <section key={region} aria-label={beachRegionLabels[region]}>
+              <h2 className="text-eyebrow text-mute">
+                {beachRegionLabels[region]}
+              </h2>
+              <ul className="mt-3 space-y-3">
+                {beaches.map((beach) => (
+                  <li key={beach.id}>
+                    <BeachHubCard
+                      beach={beach}
+                      cleanupStats={cleanupStats?.byBeach[beach.id]}
+                      cleanupStatsLoading={cleanupStatsLoading}
+                      cleanupDisabled={!configured}
+                      busy={busy}
+                      onLogCleanup={() => openCleanupLog(beach.id)}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
+      </div>
 
       {otherBeachWhatsappGroups.length > 0 ? (
         <Card padding="sm">
