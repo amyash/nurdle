@@ -805,6 +805,25 @@ export const techniqueGuides: TechniqueGuide[] = [
       href: "https://chat.whatsapp.com/Cegcib5ZtWoAopGYGSTjuk",
     },
   },
+  {
+    id: "removing-nurdles-from-seaweed",
+    title: "Removing nurdles from seaweed",
+    steps: [],
+    videos: [
+      {
+        title: "Part 1",
+        url: "https://youtube.com/shorts/KD2v23qkGXk",
+      },
+      {
+        title: "Part 2",
+        url: "https://youtube.com/shorts/2pWfBVlE1aI",
+      },
+      {
+        title: "Part 3",
+        url: "https://youtube.com/shorts/zDBkq7Q3hQM",
+      },
+    ],
+  },
 ];
 
 export const faqs: FaqItem[] = [

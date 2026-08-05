@@ -41,6 +41,7 @@ const collectContentOrder = [
   { kind: "video" as const, id: "video-2" },
   { kind: "guide" as const, id: "keep-work-manageable" },
   { kind: "guide" as const, id: "mesh-bag-tutorial" },
+  { kind: "guide" as const, id: "removing-nurdles-from-seaweed" },
 ];
 
 export default function HowToCleanPage() {
@@ -53,6 +54,16 @@ export default function HowToCleanPage() {
             <li key={item.id}>{item.item}</li>
           ))}
         </ul>
+
+        <Callout tone="mark" className="mt-6 space-y-3">
+          <h3 className="text-card-title">{ecosystemProtection.title}</h3>
+          {ecosystemProtection.blocks.map((block) => (
+            <div key={block.heading}>
+              <p className="text-body font-bold">{block.heading}</p>
+              <p className="mt-1 text-body">{block.text}</p>
+            </div>
+          ))}
+        </Callout>
       </Section>
 
       <Section id="collect" title="How to collect">
@@ -218,23 +229,20 @@ export default function HowToCleanPage() {
                     </div>
                   )}
                   {guide.videos && guide.videos.length > 0 && (
-                    <div
-                      className={`mt-3 grid gap-2 ${
-                        guide.videos.length === 3
-                          ? "grid-cols-3"
-                          : guide.videos.length === 2
-                            ? "grid-cols-2"
-                            : "grid-cols-1"
-                      }`}
-                    >
+                    <div className="mt-3 space-y-1">
                       {guide.videos.map((video) => (
-                        <YoutubeEmbed
+                        <Disclosure
                           key={video.url}
-                          url={video.url}
-                          title={video.title}
-                          aspect="short"
-                          className="mt-0 w-full"
-                        />
+                          summary={video.title}
+                          summaryClassName="text-sm font-bold leading-snug text-ink"
+                        >
+                          <YoutubeEmbed
+                            url={video.url}
+                            title={video.title}
+                            aspect="short"
+                            className="mt-0 w-full"
+                          />
+                        </Disclosure>
                       ))}
                     </div>
                   )}
@@ -243,16 +251,6 @@ export default function HowToCleanPage() {
             );
           })}
         </ul>
-
-        <Callout tone="mark" className="mt-6 space-y-3">
-          <h3 className="text-card-title">{ecosystemProtection.title}</h3>
-          {ecosystemProtection.blocks.map((block) => (
-            <div key={block.heading}>
-              <p className="text-body font-bold">{block.heading}</p>
-              <p className="mt-1 text-body">{block.text}</p>
-            </div>
-          ))}
-        </Callout>
       </Section>
 
       <div className="mt-6 border-t border-line pb-8" aria-hidden="true" />
