@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { InstagramEmbed } from "@/components/instagram-embed";
+import { GuideVideoAccordion } from "@/components/guide-video-accordion";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
@@ -228,24 +229,9 @@ export default function HowToCleanPage() {
                       ))}
                     </div>
                   )}
-                  {guide.videos && guide.videos.length > 0 && (
-                    <div className="mt-3 space-y-1">
-                      {guide.videos.map((video) => (
-                        <Disclosure
-                          key={video.url}
-                          summary={video.title}
-                          summaryClassName="text-sm font-bold leading-snug text-ink"
-                        >
-                          <YoutubeEmbed
-                            url={video.url}
-                            title={video.title}
-                            aspect="short"
-                            className="mt-0 w-full"
-                          />
-                        </Disclosure>
-                      ))}
-                    </div>
-                  )}
+                  {guide.videos && guide.videos.length > 0 ? (
+                    <GuideVideoAccordion videos={guide.videos} />
+                  ) : null}
                 </Card>
               </li>
             );

@@ -8,6 +8,7 @@ export function Disclosure({
   summaryClassName,
   defaultOpen,
   openClassName,
+  name,
 }: {
   summary: ReactNode;
   children: ReactNode;
@@ -15,10 +16,13 @@ export function Disclosure({
   summaryClassName?: string;
   defaultOpen?: boolean;
   openClassName?: string;
+  /** Shared name makes sibling disclosures behave as an accordion. */
+  name?: string;
 }) {
   return (
     <details
       className={cn("group", className, openClassName)}
+      name={name}
       {...(defaultOpen ? { defaultOpen: true } : {})}
     >
       <summary
