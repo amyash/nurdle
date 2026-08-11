@@ -61,7 +61,16 @@ const WHITLEY_BAY_WHATSAPP =
   "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE";
 
 const LONGSANDS_NEST: BeachNest = {
-  mapsUrl: "https://maps.app.goo.gl/FoDtaM8pL6ooUK8d7",
+  locationLinks: [
+    {
+      label: "what3words",
+      url: "https://w3w.co/physical.captions.branded",
+    },
+    {
+      label: "Google Maps",
+      url: "https://maps.app.goo.gl/NSEKW1VCppfncJ7b8",
+    },
+  ],
   paragraphs: [
     "The Longsands NEST is a community equipment station located at the ramp close to Crusoe's.",
     "The equipment box is stored overnight at the back of Crusoe's, near the brooms, and is usually put out each morning by volunteers.",
@@ -257,6 +266,33 @@ export const checkinBeaches: CheckinBeach[] = [
     displayOrder: 13,
     region: "north-tyneside",
     whatsappUrl: null,
+    nest: {
+      locationLinks: [
+        {
+          label: "what3words",
+          url: "https://what3words.com/rugs.tigers.rare",
+        },
+      ],
+      paragraphs: [
+        "The Seaton Sluice NEST can be found at the Seaton Sluice Boating Association which is to the right of the Kings Arm's pub. You can find the supplies just inside the gate and they are accessible during opening hours, typically between 9am and 6/7pm.",
+        "If you have any questions, the WhatsApp group for this beach may be able to help or get in touch with Jennifer Stobbs at [07746 099109] or jenstobbs@hotmail.co.uk.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items.",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
   },
   {
     id: "cambois",
@@ -289,11 +325,11 @@ export const checkinBeaches: CheckinBeach[] = [
         },
       ],
       paragraphs: [
-        "The Fish Quay NEST is based at The Kiln Studios, around a two-minute walk from Fish Quay Beach. It serves as an equipment collection and drop-off point for volunteers.",
-        "Equipment can be collected and returned during The Kiln Studios' opening hours. The NEST is located just inside the studio entrance and is clearly signposted. Equipment is stored securely inside when the studio is closed.",
-        "Thanks to Ron, who has kindly offered space at The Kiln Studios to support the community response.",
-        "Note: Throughout the day you might also find volunteer equipment at the painted blue buoys.",
-        "Outside the regular opening times, volunteers can ask in the beach WhatsApp group, where a local PSC keyholder may be able to help.",
+        "The Fish Quay NEST is based at The Kiln Studios (The Kiln Studios, Northumberland Street, NE30 1DS), around a two-minute walk from Fish Quay Beach. It serves as an equipment collection and drop-off point for volunteers.",
+        "Inside the studio: Thursday 11:30–7, Friday 11:30–9, Saturday 10:30–7, Sunday 10:30–5, Monday 12–5.",
+        "Behind the grey shutter outside of these hours — the shutter is left unlocked so equipment is accessible when no one is at the studio.",
+        "Returning equipment: ideally, the last person to use the equipment should return it to the drop-off/pick-up point at the end of the day.",
+        "As the equipment is accessible at any time, anyone can collect or return it, even when no one is at the studio.",
       ],
       equipmentIntro:
         "Most NESTs are stocked with a selection of the following items.",

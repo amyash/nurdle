@@ -4,7 +4,7 @@ import { PressReleaseArticle } from "@/components/press-release-article";
 export const metadata: Metadata = {
   title: "Press release",
   description:
-    "A race against the tide: residents defy officials and launch cleanup of a billion nurdles along North East beaches.",
+    "Volunteers log 3000 hours cleaning up nurdles as community campaign escalates with open letter to Port of Tyne.",
 };
 
 export default function PressReleasePage() {

@@ -64,8 +64,21 @@ function BeachNestSection({ beach }: { beach: CheckinBeach }) {
   return (
     <div className="mt-3">
       <Disclosure
+        className="rounded-control border border-line bg-board px-3 open:bg-white"
         summaryClassName="text-sm font-bold leading-snug text-ink"
-        summary="Nurdle Equipment Stations (NESTs) information:"
+        summary={
+          <>
+            <span className="block">
+              Nurdle Equipment Stations (NESTs) information
+            </span>
+            <span className="mt-0.5 block text-xs font-bold text-mark group-open:hidden">
+              Tap to show location &amp; equipment
+            </span>
+            <span className="mt-0.5 hidden text-xs font-bold text-mute group-open:block">
+              Tap to hide
+            </span>
+          </>
+        }
       >
         <div className="space-y-3 text-sm leading-snug text-ink">
           {locationLinks.length > 0 ? (
@@ -174,16 +187,19 @@ export function BeachHubCard({
         </p>
       ) : null}
 
-      <BeachCleanupStats stats={cleanupStats} loading={cleanupStatsLoading} />
-
-      <Button
-        fullWidth
-        className="mt-3"
-        disabled={busy || cleanupDisabled}
-        onClick={onLogCleanup}
-      >
-        Log your clean-up
-      </Button>
+      <BeachCleanupStats
+        stats={cleanupStats}
+        loading={cleanupStatsLoading}
+        action={
+          <Button
+            fullWidth
+            disabled={busy || cleanupDisabled}
+            onClick={onLogCleanup}
+          >
+            Log your clean-up
+          </Button>
+        }
+      />
     </Card>
   );
 }
