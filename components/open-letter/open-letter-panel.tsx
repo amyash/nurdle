@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { openLetter } from "@/data/open-letter";
-import { Callout } from "@/components/ui/callout";
 import { Button } from "@/components/ui/button";
 import {
   OpenLetterSignModal,
@@ -49,7 +48,6 @@ export function OpenLetterPanel() {
       return;
     }
 
-    // WhatsApp members are stored but must not change the displayed total.
     if (!input.joinedWhatsapp) {
       setAdditiveCount(result.additiveCount);
     }
@@ -60,55 +58,55 @@ export function OpenLetterPanel() {
   const supportTotal = openLetter.whatsappMemberCount + additiveCount;
   const signedByLabel = formatSignedByLabel(supportTotal);
 
+  function openSign() {
+    setFormError(null);
+    setFormOpen(true);
+  }
+
   return (
-    <div className="space-y-6">
-      <Callout tone="mark" aria-label="Open letter support">
-        <p className="text-eyebrow text-mute">Community support</p>
-        <p className="mt-2 text-4xl font-bold tabular-nums text-mark">
+    <div>
+      <header className="border-b border-line pb-8">
+        <p className="text-eyebrow text-mark">Open letter</p>
+        <p className="mt-4 text-5xl font-bold tabular-nums tracking-tight text-ink sm:text-6xl">
           {formatSupportTotal(supportTotal)}
         </p>
-        <p className="mt-2 text-body font-bold">{signedByLabel}</p>
-        <Button
-          type="button"
-          fullWidth
-          className="mt-4"
-          onClick={() => {
-            setFormError(null);
-            setFormOpen(true);
-          }}
-        >
-          Sign
+        <p className="mt-2 text-body text-mute">{signedByLabel}</p>
+        <Button type="button" className="mt-6 min-h-12" onClick={openSign}>
+          Sign the open letter
         </Button>
-      </Callout>
+      </header>
 
-      <article aria-labelledby="open-letter-addressee">
-        <h2 id="open-letter-addressee" className="text-section">
+      <article
+        aria-labelledby="open-letter-addressee"
+        className="mx-auto mt-10 max-w-measure"
+      >
+        <h1 id="open-letter-addressee" className="text-page-title">
           {openLetter.addressee}
-        </h2>
-        <p className="mt-3 text-body font-bold">{openLetter.title}</p>
+        </h1>
+        <p className="mt-4 text-body font-bold">{openLetter.title}</p>
 
-        <div className="mt-4 space-y-3 text-body">
+        <div className="mt-8 space-y-5 text-body text-mute [&_strong]:text-ink">
           {openLetter.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
 
-        <h3 className="mt-5 text-card-title">{openLetter.concernsHeading}</h3>
-        <ol className="mt-3 space-y-3">
+        <h2 className="mt-10 text-section">{openLetter.concernsHeading}</h2>
+        <ol className="mt-5 space-y-5">
           {openLetter.concerns.map((concern, index) => {
             const title = "title" in concern ? concern.title : null;
             return (
-              <li key={title ?? concern.text} className="text-body">
+              <li key={title ?? concern.text} className="text-body text-mute">
                 {title ? (
                   <>
-                    <span className="font-bold">
+                    <span className="font-bold text-ink">
                       {index + 1}. {title}:
                     </span>{" "}
                     {concern.text}
                   </>
                 ) : (
                   <>
-                    <span className="font-bold">{index + 1}.</span>{" "}
+                    <span className="font-bold text-ink">{index + 1}.</span>{" "}
                     {concern.text}
                   </>
                 )}
@@ -117,25 +115,22 @@ export function OpenLetterPanel() {
           })}
         </ol>
 
-        <p className="mt-5 text-body">{openLetter.impact}</p>
-
-        <p className="mt-5 text-body">{openLetter.demand}</p>
-
-        <p className="mt-6 text-body">{openLetter.closing}</p>
-        <p className="mt-3 text-body font-bold">{signedByLabel}</p>
-
-        <Button
-          type="button"
-          fullWidth
-          className="mt-6"
-          onClick={() => {
-            setFormError(null);
-            setFormOpen(true);
-          }}
-        >
-          Sign
-        </Button>
+        <p className="mt-8 text-body text-mute">{openLetter.impact}</p>
+        <p className="mt-5 text-body text-mute">{openLetter.demand}</p>
+        <p className="mt-8 text-body text-mute">{openLetter.closing}</p>
+        <p className="mt-4 text-body font-bold text-ink">{signedByLabel}</p>
       </article>
+
+      <div className="sticky bottom-0 z-20 -mx-[var(--gutter)] mt-10 border-t border-line bg-board/95 px-[var(--gutter)] py-3 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-measure items-center justify-between gap-3">
+          <p className="text-sm font-bold text-ink">
+            {formatSupportTotal(supportTotal)} signatures
+          </p>
+          <Button type="button" onClick={openSign}>
+            Sign
+          </Button>
+        </div>
+      </div>
 
       <OpenLetterSignModal
         open={formOpen}

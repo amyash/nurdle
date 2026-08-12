@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PressReleaseArticle } from "@/components/press-release-article";
+import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
   title: "Press release",
@@ -9,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function PressReleasePage() {
   return (
-    <div className="mx-auto max-w-[44rem] px-4 pb-10 pt-2">
+    <PageShell narrow className="max-w-[44rem]">
       <PressReleaseArticle />
-    </div>
+    </PageShell>
   );
 }

@@ -3,14 +3,17 @@ import { BeachGroupsHubPanel } from "@/components/beach-groups/beach-groups-hub-
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
-  title: "Beach cleans",
+  title: "Beaches",
   description:
-    "Check in at North Tyneside beaches, join WhatsApp groups, log clean-ups, and record organising time.",
+    "Find where volunteers are cleaning, equipment locations and collection points across North and South Tyneside.",
 };
 
 export default function BeachesPage() {
   return (
-    <PageShell title="Beach cleans">
+    <PageShell
+      title="Beaches"
+      lead="Find where volunteers are cleaning, equipment locations and collection points."
+    >
       <BeachGroupsHubPanel />
     </PageShell>
   );

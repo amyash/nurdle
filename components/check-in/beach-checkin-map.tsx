@@ -201,7 +201,7 @@ export function BeachCheckinMap({
     return (
       <div
         role="status"
-        className="rounded-card border border-line bg-white px-3 py-4 text-meta"
+        className="border border-line bg-surface px-3 py-4 text-meta"
       >
         {mapError}
       </div>
@@ -209,7 +209,7 @@ export function BeachCheckinMap({
   }
 
   return (
-    <div className="overflow-hidden rounded-card border border-line bg-white">
+    <div className="overflow-hidden border border-line bg-paper">
       {!mapReady ? (
         <p className="px-3 py-3 text-meta" role="status">
           Loading map…

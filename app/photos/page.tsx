@@ -9,25 +9,26 @@ import {
 
 export const metadata: Metadata = {
   title: "Photos",
+  description:
+    "Documentary photographs from volunteers documenting the Port of Tyne nurdle spill.",
 };
 
 export default function PhotosPage() {
   return (
-    <PageShell title="Photos">
-      <div className="max-w-prose">
-        <p className="text-body font-bold">{communityImagesIntro.heading}</p>
-        <div className="mt-2 space-y-2 text-meta text-ink">
+    <PageShell
+      title="Photos"
+      lead={
+        <>
+          <p className="font-bold text-ink">{communityImagesIntro.heading}</p>
           {communityImagesIntro.paragraphs.map((paragraph, index) => (
-            <p key={index}>
+            <p key={index} className="mt-3">
               <RichTextParts parts={paragraph.parts} />
             </p>
           ))}
-        </div>
-      </div>
-
-      <div className="my-5 border-t border-line" aria-hidden="true" />
-
-      <p className="mb-4 text-meta">{communityImagesIntro.galleryCaption}</p>
+        </>
+      }
+    >
+      <p className="mb-6 text-meta">{communityImagesIntro.galleryCaption}</p>
       <CommunityImageGallery images={communityImages} />
     </PageShell>
   );

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
 import {
   formatEstimatedWeight,
   formatVolunteerHours,
@@ -9,29 +9,44 @@ import type { CleanupAggregate } from "@/types/cleanup-log";
 export function BeachCleanupStats({
   stats,
   loading,
-  action,
+  className,
 }: {
   stats: CleanupAggregate | undefined;
   loading: boolean;
-  action?: ReactNode;
+  className?: string;
+  action?: React.ReactNode;
 }) {
+  if (loading) {
+    return (
+      <div
+        className={cn("min-h-6", className ?? "mt-4")}
+        aria-hidden="true"
+      />
+    );
+  }
+
+  if (!stats || stats.submissionCount === 0) {
+    return (
+      <p className={cn("text-meta", className ?? "mt-4")}>
+        No clean-ups logged yet
+      </p>
+    );
+  }
+
   return (
-    <div className="mt-3 rounded-control border border-line bg-board px-2.5 py-2.5">
-      <p className="text-eyebrow text-mute">Community effort since the spill</p>
-
-      {loading ? (
-        <div className="mt-1 min-h-14" aria-hidden="true" />
-      ) : !stats || stats.submissionCount === 0 ? (
-        <p className="mt-1 text-meta">No clean-ups logged yet</p>
-      ) : (
-        <ul className="mt-1 space-y-0.5 text-sm font-bold leading-snug text-ink">
-          <li>{formatVolunteerHours(stats.totalVolunteerHours)}</li>
-          <li>{formatVolunteerSessions(stats.totalVolunteerSessions)}</li>
-          <li>{formatEstimatedWeight(stats.totalEstimatedWeightKg)}</li>
-        </ul>
+    <ul
+      className={cn(
+        "flex flex-wrap gap-x-5 gap-y-1 text-sm text-mute",
+        className ?? "mt-4",
       )}
-
-      {action ? <div className="mt-2.5">{action}</div> : null}
-    </div>
+    >
+      <li>
+        <span className="font-bold text-ink">
+          {formatVolunteerHours(stats.totalVolunteerHours)}
+        </span>
+      </li>
+      <li>{formatVolunteerSessions(stats.totalVolunteerSessions)}</li>
+      <li>{formatEstimatedWeight(stats.totalEstimatedWeightKg)}</li>
+    </ul>
   );
 }

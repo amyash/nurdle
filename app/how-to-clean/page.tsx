@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { InstagramEmbed } from "@/components/instagram-embed";
-import { GuideVideoAccordion } from "@/components/guide-video-accordion";
+import Image from "next/image";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
@@ -9,11 +8,10 @@ import {
   ContentLinkButton,
   InlineContentLink,
 } from "@/components/whatsapp/content-link";
-import { Card } from "@/components/ui/card";
 import { Callout } from "@/components/ui/callout";
 import { Disclosure } from "@/components/ui/disclosure";
 import { Step } from "@/components/ui/step";
-import Image from "next/image";
+import { Technique } from "@/components/ui/technique";
 import {
   faqs,
   howToCollect,
@@ -27,6 +25,8 @@ import {
 
 export const metadata: Metadata = {
   title: "How to clean",
+  description:
+    "What to bring, safe collection methods, and practical technique guides for cleaning nurdles.",
 };
 
 const videoById = Object.fromEntries(
@@ -37,7 +37,6 @@ const guideById = Object.fromEntries(
   techniqueGuides.map((guide) => [guide.id, guide]),
 );
 
-/** Display order under How to collect bullets. */
 const collectContentOrder = [
   { kind: "guide" as const, id: "scrape-wet" },
   { kind: "guide" as const, id: "spade-mesh" },
@@ -50,33 +49,46 @@ const collectContentOrder = [
 
 export default function HowToCleanPage() {
   return (
-    <PageShell className="!pb-0">
+    <PageShell
+      title="How to clean nurdles"
+      lead="Practical community guidance for collecting plastic pellets safely and effectively."
+    >
+      <Callout tone="warning" className="mb-2">
+        <p className="text-eyebrow">Important safety / current guidance</p>
+        <p className="mt-2 text-body">
+          Guidance can change quickly. Check the{" "}
+          <a href="/news" className="font-bold underline underline-offset-2">
+            latest updates
+          </a>{" "}
+          before heading to the beach, and avoid treading nurdles deeper into
+          the sand.
+        </p>
+      </Callout>
+
       <Section id="bring" title="What to bring" showDivider={false}>
-        <p className="mb-3 text-body font-bold">{whatToBringIntro}</p>
-        <ul className="list-disc space-y-1.5 pl-5 text-body">
-          {whatToBring.map((item) => (
-            <li key={item.id}>{item.item}</li>
+        <p className="mb-5 text-body font-bold text-ink">{whatToBringIntro}</p>
+        <ul className="grid gap-0 sm:grid-cols-2">
+          {whatToBring.map((item, index) => (
+            <li
+              key={item.id}
+              className="flex gap-3 border-t border-line py-3 text-body"
+            >
+              <span className="text-eyebrow text-mark w-8 shrink-0 pt-1">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>{item.item}</span>
+            </li>
           ))}
         </ul>
-
-        <Callout tone="mark" className="mt-6 space-y-3">
-          <h3 className="text-card-title">{ecosystemProtection.title}</h3>
-          {ecosystemProtection.blocks.map((block) => (
-            <div key={block.heading}>
-              <p className="text-body font-bold">{block.heading}</p>
-              <p className="mt-1 text-body">{block.text}</p>
-            </div>
-          ))}
-        </Callout>
       </Section>
 
-      <Section id="collect" title="How to collect">
-        <p className="mb-3 text-body font-bold">{howToCollectIntro}</p>
-        <p className="mb-3 text-meta">
+      <Section id="collect" title="How to collect" showDivider>
+        <p className="mb-2 text-body font-bold text-ink">{howToCollectIntro}</p>
+        <p className="mb-8 text-meta">
           From community organiser guidance — methods are also discussed on the
           WhatsApp group.
         </p>
-        <ol className="space-y-4">
+        <ol className="space-y-8">
           {howToCollect.map((step) => (
             <Step key={step.step} number={step.step} title={step.title}>
               <p>
@@ -87,7 +99,7 @@ export default function HowToCleanPage() {
                 )}
               </p>
               {step.cta ? (
-                <p className="mt-2">
+                <p className="mt-3">
                   <ContentLinkButton
                     link={step.cta}
                     variant={
@@ -99,163 +111,116 @@ export default function HowToCleanPage() {
             </Step>
           ))}
         </ol>
+      </Section>
 
-        <ul className="mt-4 space-y-4">
+      <Section
+        id="techniques"
+        title="Collection methods"
+        lead="Reusable techniques with photos and video where available."
+        showDivider
+      >
+        <div>
           {collectContentOrder.map((item) => {
             if (item.kind === "video") {
               const video = videoById[item.id];
               if (!video) return null;
               return (
-                <li key={video.id}>
-                  <Card padding="sm">
-                    <p className="text-card-title">{video.title}</p>
-                    {video.sideImage ? (
-                      <div className="mt-2 grid grid-cols-[1fr_5.75rem] items-stretch gap-2 sm:grid-cols-[1fr_7rem]">
-                        <figure className="min-w-0 overflow-hidden rounded-card">
-                          <Image
-                            src={video.sideImage.src}
-                            alt={video.sideImage.alt}
-                            width={800}
-                            height={1000}
-                            className="h-full max-h-[22rem] w-full object-cover"
-                          />
-                        </figure>
-                        <YoutubeEmbed
-                          url={video.url}
-                          title={video.title}
-                          aspect="short"
-                          className="mt-0 h-full max-h-[22rem] w-full"
+                <article
+                  key={video.id}
+                  className="border-t border-line py-8 sm:py-10"
+                >
+                  <h3 className="text-body font-bold text-ink">{video.title}</h3>
+                  {video.sideImage ? (
+                    <div className="mt-5 grid grid-cols-[1fr_5.75rem] items-stretch gap-3 sm:grid-cols-[1fr_8rem]">
+                      <figure className="min-w-0 overflow-hidden bg-surface">
+                        <Image
+                          src={video.sideImage.src}
+                          alt={video.sideImage.alt}
+                          width={800}
+                          height={1000}
+                          className="h-full max-h-[22rem] w-full object-cover"
                         />
-                      </div>
-                    ) : (
+                      </figure>
                       <YoutubeEmbed
                         url={video.url}
                         title={video.title}
-                        className="mt-2"
+                        aspect="short"
+                        className="mt-0 h-full max-h-[22rem] w-full"
                       />
-                    )}
-                    {video.tip && (
-                      <figure className="mt-3 overflow-hidden rounded-card">
-                        <Image
-                          src={video.tip.image.src}
-                          alt={video.tip.image.alt}
-                          width={800}
-                          height={1000}
-                          className="h-auto w-full object-cover"
-                        />
-                        <figcaption className="mt-2 text-body">
-                          {video.tip.text}
-                        </figcaption>
-                      </figure>
-                    )}
-                  </Card>
-                </li>
+                    </div>
+                  ) : (
+                    <YoutubeEmbed
+                      url={video.url}
+                      title={video.title}
+                      className="mt-5 max-w-2xl"
+                    />
+                  )}
+                  {video.tip ? (
+                    <figure className="mt-5 max-w-xl overflow-hidden bg-surface">
+                      <Image
+                        src={video.tip.image.src}
+                        alt={video.tip.image.alt}
+                        width={800}
+                        height={1000}
+                        className="h-auto w-full object-cover"
+                      />
+                      <figcaption className="mt-3 text-body text-mute">
+                        {video.tip.text}
+                      </figcaption>
+                    </figure>
+                  ) : null}
+                </article>
               );
             }
 
             const guide = guideById[item.id];
             if (!guide) return null;
-            return (
-              <li key={guide.id}>
-                <Card padding="sm">
-                  <p className="text-card-title">{guide.title}</p>
-                  {guide.description ? (
-                    <p className="mt-2 text-body">{guide.description}</p>
-                  ) : null}
-                  {guide.steps.length > 0 && (
-                    <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-body">
-                      {guide.steps.map((step) => (
-                        <li key={step}>{step}</li>
-                      ))}
-                    </ol>
-                  )}
-                  {guide.notes && guide.notes.length > 0 ? (
-                    <div className="mt-3 space-y-2 text-body">
-                      {guide.notes.map((note) => (
-                        <p key={note}>{note}</p>
-                      ))}
-                    </div>
-                  ) : null}
-                  {guide.cta ? (
-                    <ContentLinkButton
-                      link={guide.cta}
-                      variant="whatsapp"
-                      fullWidth
-                      className="mt-3"
-                    />
-                  ) : null}
-                  {guide.instagramUrl ? (
-                    <InstagramEmbed
-                      url={guide.instagramUrl}
-                      title={guide.title}
-                      className="mt-3"
-                    />
-                  ) : null}
-                  {guide.images && guide.images.length > 0 && (
-                    <div
-                      className={`mt-3 grid gap-3 ${
-                        guide.images.length > 1 ? "sm:grid-cols-2" : ""
-                      }`}
-                    >
-                      {guide.images.map((image) => (
-                        <figure
-                          key={image.src}
-                          className="overflow-hidden rounded-card"
-                        >
-                          <Image
-                            src={image.src}
-                            alt={image.alt}
-                            width={800}
-                            height={1000}
-                            className="h-auto w-full object-cover"
-                          />
-                        </figure>
-                      ))}
-                    </div>
-                  )}
-                  {guide.videos && guide.videos.length > 0 ? (
-                    <GuideVideoAccordion videos={guide.videos} />
-                  ) : null}
-                </Card>
-              </li>
-            );
+            return <Technique key={guide.id} guide={guide} />;
           })}
-        </ul>
+        </div>
       </Section>
 
-      <div className="mt-6 border-t border-line pb-8" aria-hidden="true" />
-
-      <section id="faq" className="scroll-mt-16">
-        <h2 className="text-section">FAQs</h2>
-        <div className="mt-3 space-y-2">
-          {faqs.map((item) => (
-            <Card key={item.id} padding="sm">
-              <Disclosure
-                summary={item.question}
-                summaryClassName="font-bold text-ink"
-              >
-                <p className="text-meta">
-                  {item.highlight && item.answer.includes(item.highlight) ? (
-                    <>
-                      {item.answer.split(item.highlight)[0]}
-                      <strong className="font-bold text-ink">
-                        {item.highlight}
-                      </strong>
-                      {item.answer.split(item.highlight)[1]}
-                    </>
-                  ) : (
-                    item.answer
-                  )}
-                </p>
-              </Disclosure>
-            </Card>
+      <Section id="ecosystem" title={ecosystemProtection.title} showDivider>
+        <div className="space-y-6 reading-measure">
+          {ecosystemProtection.blocks.map((block) => (
+            <div key={block.heading}>
+              <h3 className="text-card-title">{block.heading}</h3>
+              <p className="mt-2 text-body text-mute">{block.text}</p>
+            </div>
           ))}
         </div>
-      </section>
+      </Section>
 
-      <div className="mt-6 border-t border-line pt-6 pb-8">
+      <Section id="faq" title="FAQs" showDivider>
+        <div className="divide-y divide-line border-y border-line">
+          {faqs.map((item) => (
+            <Disclosure
+              key={item.id}
+              summary={item.question}
+              summaryClassName="py-4 font-bold text-ink"
+              name="how-to-faq"
+            >
+              <p className="pb-4 reading-measure text-body text-mute">
+                {item.highlight && item.answer.includes(item.highlight) ? (
+                  <>
+                    {item.answer.split(item.highlight)[0]}
+                    <strong className="font-bold text-ink">
+                      {item.highlight}
+                    </strong>
+                    {item.answer.split(item.highlight)[1]}
+                  </>
+                ) : (
+                  item.answer
+                )}
+              </p>
+            </Disclosure>
+          ))}
+        </div>
+      </Section>
+
+      <Section id="tides" title="Tide times" showDivider>
         <TideTimesPanel />
-      </div>
+      </Section>
     </PageShell>
   );
 }

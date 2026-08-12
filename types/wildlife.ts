@@ -86,4 +86,6 @@ export interface CreateWildlifeReportInput {
   email: string;
   reporterName?: string | null;
   consentPublic: boolean;
+  formOpenedAt: number;
+  company?: string;
 }

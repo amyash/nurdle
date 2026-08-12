@@ -109,6 +109,8 @@ export async function createWildlifeReport(
         email: input.email,
         reporterName: input.reporterName ?? null,
         consentPublic: input.consentPublic,
+        formOpenedAt: input.formOpenedAt,
+        company: input.company ?? "",
       }),
     });
 

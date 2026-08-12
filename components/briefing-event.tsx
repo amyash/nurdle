@@ -1,45 +1,39 @@
 import type { BriefingEvent } from "@/types";
 import { ButtonLink } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 export function BriefingEventPanel({ event }: { event: BriefingEvent }) {
   return (
-    <Card
-      id="briefing"
-      variant="ink"
-      className="scroll-mt-20 !p-0"
-    >
-      <div className="px-4 py-3">
-        <p className="text-eyebrow text-mute">Upcoming event</p>
-        <h3 className="mt-1 text-card-title">{event.title}</h3>
-        <p className="mt-1 text-meta">{event.summary}</p>
-      </div>
+    <section id="briefing" className="scroll-mt-24">
+      <p className="text-eyebrow text-mark">Upcoming event</p>
+      <h2 className="mt-2 text-section">{event.title}</h2>
+      <p className="mt-3 reading-measure text-body text-mute">{event.summary}</p>
 
-      <div className="space-y-4 border-t border-line px-4 py-4 text-sm leading-snug text-ink">
-        <ButtonLink href={event.url} variant="ink" fullWidth external>
+      <div className="mt-6 max-w-sm">
+        <ButtonLink href={event.url} variant="primary" fullWidth external>
           Sign up on Eventbrite
         </ButtonLink>
+      </div>
 
+      <div className="mt-8 grid gap-8 sm:grid-cols-2">
         <div>
-          <p className="font-bold">What this is</p>
-          <ul className="mt-1 list-disc space-y-1.5 pl-5">
+          <h3 className="text-card-title">What this is</h3>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-body text-mute">
             {event.whatThisIs.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </div>
-
         <div>
-          <p className="font-bold">What this is not</p>
-          <ul className="mt-1 list-disc space-y-1.5 pl-5">
+          <h3 className="text-card-title">What this is not</h3>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-body text-mute">
             {event.whatThisIsNot.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </div>
-
-        <p>{event.signupNote}</p>
       </div>
-    </Card>
+
+      <p className="mt-6 reading-measure text-meta">{event.signupNote}</p>
+    </section>
   );
 }

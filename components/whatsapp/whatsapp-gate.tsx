@@ -308,27 +308,43 @@ export function WhatsAppCommunityAccessButton({
   className,
   iconClassName = "h-5 w-5 fill-current",
   ariaLabel = "Join WhatsApp",
+  label,
+  onNavigate,
+  iconPosition = "start",
 }: {
   className?: string;
   iconClassName?: string;
   ariaLabel?: string;
+  label?: string;
+  onNavigate?: () => void;
+  iconPosition?: "start" | "end";
 }) {
   const { openGate } = useWhatsAppGate();
+  const icon = <WhatsAppIcon className={iconClassName} />;
 
   return (
     <button
       type="button"
       aria-label={ariaLabel}
       className={className}
-      onClick={() =>
+      onClick={() => {
+        onNavigate?.();
         openGate({
           linkKey: "__community__",
           beachId: "",
           label: "community",
-        })
-      }
+        });
+      }}
     >
-      <WhatsAppIcon className={iconClassName} />
+      {label ? (
+        <>
+          {iconPosition === "start" ? icon : null}
+          <span>{label}</span>
+          {iconPosition === "end" ? icon : null}
+        </>
+      ) : (
+        icon
+      )}
     </button>
   );
 }

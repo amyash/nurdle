@@ -314,10 +314,6 @@ export function BeachGroupsHubPanel() {
                       cleanupDisabled={!configured}
                       busy={busy}
                       onLogCleanup={() => openCleanupLog(beach.id)}
-                      onCheckIn={() => openCheckIn(beach.id)}
-                      checkinStats={statsById[beach.id]}
-                      isCheckedInHere={myCheckin?.beachId === beach.id}
-                      checkInDisabled={!configured}
                     />
                   </li>
                 ))}
@@ -356,15 +352,9 @@ export function BeachGroupsHubPanel() {
         </div>
       ) : null}
 
-      <div className="mt-12 border-t border-line pt-10">
+      <div className="mt-12 pt-2">
         <AdminTimePanel />
       </div>
-
-      <p className="mt-8 text-sm leading-snug text-mute-soft">
-        Check-ins are approximate, automatically expire after two hours and are
-        only intended to help volunteers understand where people are currently
-        helping. Mesh filter bags are listed on the How to clean page.
-      </p>
 
       <CheckInModal
         beachName={modalBeach?.name ?? "this beach"}

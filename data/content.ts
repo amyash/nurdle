@@ -106,16 +106,23 @@ export const organiserMessage: OrganiserMessage = {
           href: "/how-to-clean",
         },
       ],
+    },
+    {
+      id: "sign-open-letter",
+      title: "2. Sign the open letter",
+      body: [
+        "Call on the Port of Tyne to authorise trained volunteers to help recover nurdles at the source.",
+      ],
       links: [
         {
-          label: "Open WhatsApp community link",
-          whatsappKey: "__community__",
+          label: "Sign the open letter",
+          href: "/open-letter",
         },
       ],
     },
     {
       id: "write-reps",
-      title: "2. Write to your MP, councillor and the Mayor",
+      title: "3. Write to your MP, councillor and the Mayor",
       body: [
         "Contact all three. Ask for a large-scale effort at the right tide times to collect nurdles. People are needed specifically Monday and Tuesday for a large-scale cleanup — and the council should respond with numbers and the right gear.",
         "Always include your name and address at the top.",
@@ -184,7 +191,7 @@ Yours sincerely,
     },
     {
       id: "sign-petition",
-      title: "3. Sign zero plastic pellet loss petition",
+      title: "4. Sign zero plastic pellet loss petition",
       body: [
         "Help keep this issue on the national agenda by signing the official UK Parliament petition.",
       ],

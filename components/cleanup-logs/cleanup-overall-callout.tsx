@@ -4,8 +4,17 @@ import {
   formatVolunteerSessions,
 } from "@/lib/cleanup-logs/format";
 import { formatAdminEffortHours } from "@/lib/admin-time/format";
-import { Callout } from "@/components/ui/callout";
+import { Stat } from "@/components/ui/stat";
 import type { CleanupStatsResponse } from "@/types/cleanup-log";
+
+function formatHoursNumber(hours: number): string {
+  const rounded = Math.round(hours * 10) / 10;
+  const display =
+    Number.isInteger(rounded) || Math.abs(rounded - Math.round(rounded)) < 0.05
+      ? String(Math.round(rounded))
+      : rounded.toFixed(1);
+  return Number(display).toLocaleString("en-GB");
+}
 
 export function CleanupOverallCallout({
   stats,
@@ -21,7 +30,7 @@ export function CleanupOverallCallout({
   if (loading) {
     return (
       <div
-        className="min-h-28 rounded-card border-2 border-alert-ink bg-alert px-4 py-4"
+        className="min-h-28 border-t border-line bg-surface/40"
         aria-hidden="true"
       />
     );
@@ -32,46 +41,71 @@ export function CleanupOverallCallout({
 
   if (!hasCleanup && !hasAdmin) {
     return (
-      <Callout tone="alert">
-        <h2 className="text-base font-bold uppercase tracking-wide text-alert-ink sm:text-lg">
-          Community effort since the spill
-        </h2>
-        <p className="mt-2 text-sm leading-snug text-alert-ink">
-          No clean-ups logged yet. Use <strong>Log your clean-up</strong> on a
-          beach card to add time after you’ve finished.
+      <div>
+        <p className="reading-measure text-body text-mute">
+          No clean-ups logged yet. Use{" "}
+          <strong className="text-ink">Log your clean-up</strong> on a beach to
+          add time after you&apos;ve finished.
         </p>
-      </Callout>
+      </div>
     );
   }
 
   const overall = stats?.overall;
   const beaches = stats?.beachCountWithActivity || activeBeachCount;
+  const adminHours = adminTotalMinutes / 60;
 
   return (
-    <Callout tone="alert">
-      <h2 className="text-base font-bold uppercase tracking-wide text-alert-ink sm:text-lg">
-        Community effort since the spill
-      </h2>
-      <ul className="mt-3 space-y-1 text-base font-bold leading-snug text-alert-ink">
+    <div>
+      <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {overall && hasCleanup ? (
-          <>
-            <li>{formatVolunteerHours(overall.totalVolunteerHours)}</li>
-            <li>{formatVolunteerSessions(overall.totalVolunteerSessions)}</li>
-          </>
+          <div>
+            <Stat
+              label="Clean-up hours"
+              value={formatHoursNumber(overall.totalVolunteerHours)}
+            />
+            <p className="sr-only">
+              {formatVolunteerHours(overall.totalVolunteerHours)}
+            </p>
+          </div>
+        ) : null}
+        {overall && hasCleanup ? (
+          <div>
+            <Stat
+              label="Volunteer sessions"
+              value={overall.totalVolunteerSessions.toLocaleString("en-GB")}
+            />
+            <p className="sr-only">
+              {formatVolunteerSessions(overall.totalVolunteerSessions)}
+            </p>
+          </div>
         ) : null}
         {hasAdmin ? (
-          <li>{formatAdminEffortHours(adminTotalMinutes)}</li>
+          <div>
+            <Stat
+              label="Organising hours"
+              value={formatHoursNumber(adminHours)}
+            />
+            <p className="sr-only">
+              {formatAdminEffortHours(adminTotalMinutes)}
+            </p>
+          </div>
         ) : null}
         {overall && hasCleanup ? (
-          <li>{formatEstimatedWeight(overall.totalEstimatedWeightKg)}</li>
+          <Stat
+            label="Collected (est.)"
+            value={formatEstimatedWeight(overall.totalEstimatedWeightKg)
+              .replace(" collected", "")
+              .replace(/^~/, "~")}
+          />
         ) : null}
-      </ul>
+      </dl>
       {hasCleanup ? (
-        <p className="mt-2 text-meta text-alert-ink/80">
+        <p className="mt-6 text-meta">
           Across {beaches.toLocaleString("en-GB")} beach
-          {beaches === 1 ? "" : "es"}
+          {beaches === 1 ? "" : "es"} with logged activity
         </p>
       ) : null}
-    </Callout>
+    </div>
   );
 }

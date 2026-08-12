@@ -2,8 +2,8 @@ const linkClass = "font-bold text-mark underline underline-offset-2";
 
 export function PressReleaseArticle() {
   return (
-    <article className="mx-auto max-w-prose text-ink sm:max-w-[44rem]">
-      <p className="text-eyebrow text-mute">PRESS RELEASE</p>
+    <article className="text-ink">
+      <p className="text-eyebrow text-mark">Press release</p>
 
       <h1 className="mt-4 text-page-title">
         Volunteers log 3000 hours cleaning up nurdles as community campaign

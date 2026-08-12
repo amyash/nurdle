@@ -2,22 +2,25 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 const variants = {
-  default: "rounded-card border border-line bg-white",
+  default: "rounded-card border border-line bg-paper",
   interactive:
-    "rounded-card border border-line bg-white transition-shadow hover:shadow-sm",
-  callout: "rounded-card border-2 border-alert-ink bg-alert",
-  mark: "rounded-card border-2 border-mark bg-white",
-  ink: "rounded-card border-2 border-ink bg-white",
-  stat: "rounded-card border border-line bg-white",
-  warning: "rounded-card border border-amber-800/40 bg-amber-50 text-amber-950",
+    "rounded-card border border-line bg-paper transition-colors hover:border-line-strong",
+  callout: "rounded-card border border-urgent/40 bg-urgent-soft",
+  mark: "rounded-card border border-mark/30 bg-paper",
+  ink: "rounded-card border border-ink/20 bg-paper",
+  stat: "border-0 bg-transparent p-0",
+  warning: "rounded-card border border-urgent/35 bg-urgent-soft text-urgent-ink",
+  ghost: "rounded-none border-0 bg-transparent",
+  rule: "rounded-none border-0 border-t border-line bg-transparent",
 } as const;
 
 export type CardVariant = keyof typeof variants;
 
 const paddings = {
+  none: "",
   sm: "p-3",
   md: "p-4",
-  lg: "px-4 py-5",
+  lg: "px-4 py-5 sm:px-5 sm:py-6",
 } as const;
 
 export function Card({

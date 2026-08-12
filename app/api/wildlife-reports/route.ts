@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { checkinBeachById } from "@/data/checkin-beaches";
 import { todayDateStringLondon } from "@/data/spill";
 import { postGoogleAppsScriptWebhook } from "@/lib/google-sheets-webhook";
+import { rejectFormGateBot } from "@/lib/form-gate/api";
 import {
   WILDLIFE_COUNT_MAX,
   WILDLIFE_COUNT_MIN,
@@ -93,6 +94,9 @@ export async function POST(request: Request) {
   }
 
   const record = body as Record<string, unknown>;
+  const gateRejected = rejectFormGateBot(request, record);
+  if (gateRejected) return gateRejected;
+
   const beachId = String(record.beachId ?? "");
   const dateObserved = String(record.dateObserved ?? "");
   const timeRaw = record.timeObserved == null ? null : String(record.timeObserved);

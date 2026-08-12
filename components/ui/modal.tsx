@@ -47,8 +47,8 @@ export function Modal({
     <dialog
       ref={dialogRef}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 m-0 max-h-[90dvh] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-card border border-line bg-white p-0 text-ink shadow-lg open:backdrop:bg-black/40",
-        size === "sm" ? "max-w-sm" : "max-w-md",
+        "fixed left-1/2 top-1/2 z-50 m-0 max-h-[90dvh] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-soft border border-line bg-paper p-0 text-ink open:backdrop:bg-ink/45",
+        size === "sm" ? "max-w-md" : "max-w-lg",
         className,
       )}
       aria-labelledby={titleId}

@@ -8,11 +8,18 @@ function useColumnCount() {
   const [columnCount, setColumnCount] = useState(2);
 
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 640px)");
-    const update = () => setColumnCount(media.matches ? 3 : 2);
+    const update = () => {
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        setColumnCount(4);
+      } else if (window.matchMedia("(min-width: 640px)").matches) {
+        setColumnCount(3);
+      } else {
+        setColumnCount(2);
+      }
+    };
     update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   return columnCount;
@@ -80,15 +87,15 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
         {columns.map((column, columnIndex) => (
-          <ul key={columnIndex} className="flex min-w-0 flex-col gap-3">
+          <ul key={columnIndex} className="flex min-w-0 flex-col gap-2 sm:gap-3">
             {column.map(({ image, index }) => (
               <li key={image.id}>
                 <button
                   type="button"
                   onClick={() => setActiveIndex(index)}
-                  className="block w-full overflow-hidden rounded-card border border-line bg-white text-left transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mark"
+                  className="block w-full overflow-hidden bg-surface text-left transition hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mark"
                   aria-label={`Open photo: ${image.alt}`}
                 >
                   <Image
@@ -97,7 +104,7 @@ export function CommunityImageGallery({ images }: { images: CommunityImage[] }) 
                     width={800}
                     height={1000}
                     className="h-auto w-full object-cover"
-                    sizes="(max-width: 640px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   />
                 </button>
               </li>

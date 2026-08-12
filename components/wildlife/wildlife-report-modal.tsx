@@ -25,6 +25,9 @@ import {
   Select,
   Textarea,
 } from "@/components/ui/form-field";
+import { FormGateHoneypotField } from "@/components/form-gate/honeypot-field";
+import { FORM_GATE_GENERIC_ERROR } from "@/lib/form-gate/constants";
+import { validateFormGate } from "@/lib/form-gate/validate";
 
 export function WildlifeReportModal({
   open,
@@ -50,9 +53,12 @@ export function WildlifeReportModal({
     email: string;
     reporterName: string;
     consentPublic: boolean;
+    formOpenedAt: number;
+    company: string;
   }) => void;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const openedAtRef = useRef<number>(0);
   const titleId = useId();
   const beachId = useId();
   const dateId = useId();
@@ -66,6 +72,7 @@ export function WildlifeReportModal({
   const nameId = useId();
   const consentId = useId();
   const evidenceHelpId = useId();
+  const honeypotId = useId();
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
   const maxDate = todayDateStringLondon();
@@ -78,6 +85,7 @@ export function WildlifeReportModal({
 
   useEffect(() => {
     if (!open) return;
+    openedAtRef.current = Date.now();
     const today = todayDateStringLondon();
     formRef.current?.reset();
     const dateInput = formRef.current?.elements.namedItem(
@@ -125,6 +133,7 @@ export function WildlifeReportModal({
           const evidence = String(data.get("hasSupportingEvidence") ?? "");
           const email = String(data.get("email") ?? "");
           const consentPublic = data.get("consentPublic") === "on";
+          const company = String(data.get("company") ?? "");
 
           if (!selectedBeach) {
             setLocalError("Choose a beach.");
@@ -168,6 +177,15 @@ export function WildlifeReportModal({
             );
             return;
           }
+          if (
+            !validateFormGate({
+              formOpenedAt: openedAtRef.current,
+              honeypot: company,
+            })
+          ) {
+            setLocalError(FORM_GATE_GENERIC_ERROR);
+            return;
+          }
 
           onSubmit({
             beachId: selectedBeach,
@@ -182,9 +200,13 @@ export function WildlifeReportModal({
             email,
             reporterName: String(data.get("reporterName") ?? ""),
             consentPublic: true,
+            formOpenedAt: openedAtRef.current,
+            company,
           });
         }}
       >
+        <FormGateHoneypotField id={honeypotId} />
+
         <p className="text-sm leading-snug text-mute">
           Reports appear on the map straight away. Your email is never shown
           publicly.

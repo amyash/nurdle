@@ -37,11 +37,11 @@ export function ScientificBriefingPanel({
       className="scroll-mt-20"
       aria-labelledby="scientific-briefing-heading"
     >
-      <h3 id="scientific-briefing-heading" className="text-section">
+      <h2 id="scientific-briefing-heading" className="text-section">
         {briefing.title}
-      </h3>
+      </h2>
 
-      <div className="mt-4 space-y-5 text-body">
+      <div className="mt-4 max-w-measure space-y-5 text-body text-mute">
         {briefing.sections.map((section, index) => (
           <div key={`${section.heading}-${index}`} className="space-y-2">
             {section.heading ? (

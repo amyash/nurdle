@@ -2,12 +2,13 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 const tones = {
-  alert: "rounded-card border-2 border-alert-ink bg-alert text-alert-ink",
-  mark: "rounded-card border-2 border-mark bg-white text-ink",
-  ink: "rounded-card border-2 border-ink bg-white text-ink",
+  alert:
+    "rounded-soft border-l-[3px] border-l-urgent border border-line bg-urgent-soft text-urgent-ink",
+  mark: "rounded-soft border-l-[3px] border-l-mark border border-line bg-surface-quiet text-ink",
+  ink: "rounded-soft border border-line bg-paper text-ink",
   warning:
-    "rounded-card border border-amber-800/40 bg-amber-50 text-amber-950",
-  muted: "rounded-card border border-line bg-white text-ink",
+    "rounded-soft border-l-[3px] border-l-urgent border border-line bg-urgent-soft text-urgent-ink",
+  muted: "rounded-soft border border-line bg-surface text-ink",
 } as const;
 
 export function Callout({
@@ -23,7 +24,7 @@ export function Callout({
 }) {
   return (
     <div
-      className={cn(tones[tone], padded && "px-4 py-4", className)}
+      className={cn(tones[tone], padded && "px-4 py-4 sm:px-5", className)}
       {...props}
     >
       {children}

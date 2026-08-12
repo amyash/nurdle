@@ -8,7 +8,6 @@ import {
 import { BeachCleanupStats } from "@/components/cleanup-logs/beach-cleanup-stats";
 import { WhatsAppAccessButton } from "@/components/whatsapp/whatsapp-gate";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Disclosure } from "@/components/ui/disclosure";
 import type { CleanupAggregate } from "@/types/cleanup-log";
 
@@ -62,70 +61,55 @@ function BeachNestSection({ beach }: { beach: CheckinBeach }) {
   if (!hasExpandableContent) return null;
 
   return (
-    <div className="mt-3">
-      <Disclosure
-        className="rounded-control border border-line bg-board px-3 open:bg-white"
-        summaryClassName="text-sm font-bold leading-snug text-ink"
-        summary={
-          <>
-            <span className="block">
-              Nurdle Equipment Stations (NESTs) information
-            </span>
-            <span className="mt-0.5 block text-xs font-bold text-mark group-open:hidden">
-              Tap to show location &amp; equipment
-            </span>
-            <span className="mt-0.5 hidden text-xs font-bold text-mute group-open:block">
-              Tap to hide
-            </span>
-          </>
-        }
-      >
-        <div className="space-y-3 text-sm leading-snug text-ink">
-          {locationLinks.length > 0 ? (
-            <ul className="space-y-1">
-              {locationLinks.map((link) => (
-                <li key={link.url}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold text-mark underline underline-offset-2"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+    <Disclosure
+      summaryClassName="text-sm font-bold text-mark"
+      summary="View NEST equipment details"
+    >
+      <div className="space-y-3 pb-1 text-sm leading-snug text-mute">
+        {locationLinks.length > 0 ? (
+          <ul className="space-y-1">
+            {locationLinks.map((link) => (
+              <li key={link.url}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-mark underline underline-offset-2"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : null}
 
-          {paragraphs.map((paragraph) => (
-            <p key={paragraph}>
-              <NestParagraphText text={paragraph} />
-            </p>
-          ))}
+        {paragraphs.map((paragraph) => (
+          <p key={paragraph}>
+            <NestParagraphText text={paragraph} />
+          </p>
+        ))}
 
-          {(equipmentIntro || equipment.length > 0) && (
-            <div>
-              <p className="font-bold">Equipment</p>
-              {equipmentIntro ? (
-                <p className="mt-1">{equipmentIntro}</p>
-              ) : null}
-              {equipment.length > 0 ? (
-                <ul className="mt-1.5 list-disc space-y-0.5 pl-5">
-                  {equipment.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              ) : null}
-            </div>
-          )}
+        {(equipmentIntro || equipment.length > 0) && (
+          <div>
+            <p className="font-bold text-ink">Equipment</p>
+            {equipmentIntro ? (
+              <p className="mt-1">{equipmentIntro}</p>
+            ) : null}
+            {equipment.length > 0 ? (
+              <ul className="mt-1.5 list-disc space-y-0.5 pl-5">
+                {equipment.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        )}
 
-          {notes.map((note) => (
-            <p key={note}>{note}</p>
-          ))}
-        </div>
-      </Disclosure>
-    </div>
+        {notes.map((note) => (
+          <p key={note}>{note}</p>
+        ))}
+      </div>
+    </Disclosure>
   );
 }
 
@@ -147,48 +131,55 @@ export function BeachHubCard({
   const collectionPoint = collectionPointForBeach(beach.id);
 
   return (
-    <Card padding="sm">
-      <div className="min-w-0">
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="min-w-0 text-card-title">{beach.name}</h3>
-          <WhatsAppAccessButton
-            beachId={beach.id}
-            label={beach.name}
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-control text-whatsapp hover:opacity-90"
-          />
+    <article className="border-b border-line py-5 sm:py-6">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            {beach.name}
+          </h3>
         </div>
+        <WhatsAppAccessButton
+          beachId={beach.id}
+          label={beach.name}
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-control border border-line text-whatsapp hover:bg-surface"
+        />
       </div>
 
-      <BeachNestSection beach={beach} />
+      <div className="mt-3 space-y-3">
+        <BeachCleanupStats
+          stats={cleanupStats}
+          loading={cleanupStatsLoading}
+          className="mt-0"
+        />
 
-      {collectionPoint ? (
-        <p className="mt-3 text-sm leading-snug text-ink">
-          Council nurdle collection point:{" "}
-          {collectionPointLabel(collectionPoint)}{" "}
-          <a
-            href={collectionPoint.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-mark underline underline-offset-2"
-          >
-            Google Maps
-          </a>
-        </p>
-      ) : null}
+        {collectionPoint ? (
+          <p className="text-sm text-ink">
+            Collection point{" "}
+            {collectionPointLabel(collectionPoint).replace(/^By /, "by ")}{" "}
+            <a
+              href={collectionPoint.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-mark underline underline-offset-2"
+            >
+              View map ↗
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
+        ) : null}
 
-      <BeachCleanupStats
-        stats={cleanupStats}
-        loading={cleanupStatsLoading}
-        action={
+        <BeachNestSection beach={beach} />
+
+        <div className="sm:max-w-xs">
           <Button
             fullWidth
             disabled={busy || cleanupDisabled}
             onClick={onLogCleanup}
           >
-            Log your clean-up
+            Log your clean
           </Button>
-        }
-      />
-    </Card>
+        </div>
+      </div>
+    </article>
   );
 }

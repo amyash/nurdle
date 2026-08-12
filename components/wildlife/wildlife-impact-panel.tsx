@@ -8,7 +8,6 @@ import { WildlifeReportModal } from "@/components/wildlife/wildlife-report-modal
 import { WildlifeSuccessModal } from "@/components/wildlife/wildlife-success-modal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { StatCard } from "@/components/ui/stat-card";
 import { cn } from "@/lib/cn";
 import {
   createWildlifeReport,
@@ -39,7 +38,7 @@ const WildlifeImpactMap = dynamic(
     loading: () => (
       <div
         role="status"
-        className="flex h-72 items-center justify-center rounded-card border border-line bg-white text-meta sm:h-80"
+        className="flex h-72 items-center justify-center border border-line bg-surface text-meta sm:h-80"
       >
         Loading map…
       </div>
@@ -138,6 +137,8 @@ export function WildlifeImpactPanel() {
     email: string;
     reporterName: string;
     consentPublic: boolean;
+    formOpenedAt: number;
+    company: string;
   }) {
     if (busy) return;
     if (!isValidAnimalType(raw.animalType) || !isValidCondition(raw.condition)) {
@@ -158,6 +159,8 @@ export function WildlifeImpactPanel() {
       email: raw.email,
       reporterName: raw.reporterName || null,
       consentPublic: raw.consentPublic,
+      formOpenedAt: raw.formOpenedAt,
+      company: raw.company,
     };
 
     setBusy(true);
@@ -240,59 +243,53 @@ export function WildlifeImpactPanel() {
   ];
 
   return (
-    <div className="space-y-6">
-      <p className="text-body">
-        Help document wildlife possibly affected by the nurdle spill. Community
-        reports build a shared picture of impact and let organisations follow up
-        for evidence when needed — without uploading photos to this site.
-      </p>
-
-      <Button type="button" onClick={openForm} fullWidth>
+    <div>
+      <Button type="button" onClick={openForm} className="min-h-12">
         Report a wildlife sighting
       </Button>
 
-      <section aria-label="Community statistics">
-        <h2 className="text-eyebrow text-mute">Community statistics</h2>
-        <ul className="mt-3 grid grid-cols-3 gap-2">
+      <section aria-label="Community statistics" className="mt-10">
+        <h2 className="text-eyebrow text-mark">Community statistics</h2>
+        <dl className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {statCards.map((card) => (
-            <li key={card.label}>
-              <StatCard
-                label={card.label}
-                value={loading ? "…" : card.value.toLocaleString("en-GB")}
-              />
-            </li>
+            <div key={card.label} className="border-t border-line pt-4">
+              <dt className="text-eyebrow text-mute">{card.label}</dt>
+              <dd className="mt-2 text-4xl font-bold tabular-nums tracking-tight text-ink sm:text-5xl">
+                {loading ? "…" : card.value.toLocaleString("en-GB")}
+              </dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       </section>
 
       {!configured ? (
-        <Card variant="warning" padding="sm" role="note">
+        <Card variant="warning" padding="sm" role="note" className="mt-8">
           Wildlife impact isn’t connected for this environment yet. Add Supabase
           credentials and run the wildlife SQL migrations to enable reporting.
         </Card>
       ) : null}
 
       {loadError ? (
-        <p role="alert" className="text-sm leading-snug text-red-800">
+        <p role="alert" className="mt-4 text-sm leading-snug text-red-800">
           {loadError}
         </p>
       ) : null}
 
-      <section aria-label="Wildlife reports map">
-        <h2 className="text-eyebrow text-mute">Map of reports</h2>
-        <p className="mt-1 text-meta">
+      <section aria-label="Wildlife reports map" className="mt-10">
+        <h2 className="text-section">Map</h2>
+        <p className="mt-2 text-meta reading-measure">
           Pins show beach-level locations only (not exact GPS). Reports at the
           same beach are grouped together.
         </p>
-        <div className="mt-3">
+        <div className="mt-4">
           <WildlifeImpactMap reports={filtered} />
         </div>
       </section>
 
-      <section aria-label="Filter reports">
+      <section aria-label="Filter reports" className="mt-10">
         <h2 className="text-eyebrow text-mute">Filter</h2>
         <div
-          className="mt-2 flex flex-wrap gap-2"
+          className="mt-3 flex flex-wrap gap-2"
           role="group"
           aria-label="Filter wildlife reports"
         >
@@ -307,7 +304,7 @@ export function WildlifeImpactPanel() {
                   "inline-flex min-h-11 items-center rounded-control border px-3 text-sm font-bold",
                   active
                     ? "border-ink bg-ink text-white"
-                    : "border-line bg-white text-ink",
+                    : "border-line bg-paper text-ink hover:bg-surface",
                 )}
                 aria-pressed={active}
               >
@@ -318,18 +315,18 @@ export function WildlifeImpactPanel() {
         </div>
       </section>
 
-      <section aria-label="Latest wildlife reports">
-        <h2 className="text-eyebrow text-mute">Latest reports</h2>
+      <section aria-label="Latest wildlife reports" className="mt-10">
+        <h2 className="text-section">Latest reports</h2>
         {loading ? (
-          <p className="mt-2 text-meta" role="status">
+          <p className="mt-3 text-meta" role="status">
             Loading reports…
           </p>
         ) : filtered.length === 0 ? (
-          <p className="mt-2 text-meta">No reports match this filter yet.</p>
+          <p className="mt-3 text-meta">No reports match this filter yet.</p>
         ) : (
-          <ul className="mt-3 space-y-3">
+          <ul className="mt-4 divide-y divide-line border-y border-line">
             {filtered.map((report) => (
-              <li key={report.id}>
+              <li key={report.id} className="py-4">
                 <WildlifeReportCard
                   report={report}
                   removeDisabled={removing}
