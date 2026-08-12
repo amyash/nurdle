@@ -15,7 +15,7 @@ import type {
 
 export const whatsappCommunity = {
   label: "Join the community WhatsApp group",
-  url: "https://chat.whatsapp.com/KXTZ6zO69si0vNqN0nrc1f",
+  whatsappKey: "__community__" as const,
 };
 
 /** Top of Beach cleanup — North Shields tide times for today. */
@@ -53,7 +53,7 @@ export const photosNote = {
     "Please take photos of the nurdles to document the damage. There will hopefully be legal action, an inquiry or investigation — the more evidence the better. There is a dedicated group called ",
   linkLabel: "PHOTOS ONLY",
   afterLink: " in the community WhatsApp.",
-  url: "https://chat.whatsapp.com/Bu3PVQzDvbF03k6f0NTvgK",
+  whatsappKey: "photos-only" as const,
   nurdleHunt: {
     beforeLink: "Submit your findings with ",
     linkLabel: "The Great Nurdle Hunt",
@@ -109,7 +109,7 @@ export const organiserMessage: OrganiserMessage = {
       links: [
         {
           label: "Open WhatsApp community link",
-          href: "https://chat.whatsapp.com/KXTZ6zO69si0vNqN0nrc1f",
+          whatsappKey: "__community__",
         },
       ],
     },
@@ -607,7 +607,7 @@ export const announcements: Announcement[] = [
     ],
     link: {
       label: "Open General WhatsApp to fill out the poll",
-      href: "https://chat.whatsapp.com/KXTZ6zO69si0vNqN0nrc1f",
+      whatsappKey: "__community__",
     },
   },
 ];
@@ -802,7 +802,7 @@ export const techniqueGuides: TechniqueGuide[] = [
     instagramUrl: "https://www.instagram.com/reels/DbQcPcBohWc/",
     cta: {
       label: "Mesh bag WhatsApp group",
-      href: "https://chat.whatsapp.com/Cegcib5ZtWoAopGYGSTjuk",
+      whatsappKey: "mesh-bags",
     },
   },
   {
@@ -885,9 +885,9 @@ export const communityImagesIntro = {
             " for exact location information. There is a dedicated group called ",
         },
         {
-          type: "link" as const,
+          type: "whatsapp" as const,
           label: "PHOTOS ONLY",
-          href: "https://chat.whatsapp.com/Bu3PVQzDvbF03k6f0NTvgK",
+          linkKey: "photos-only" as const,
         },
         {
           type: "text" as const,

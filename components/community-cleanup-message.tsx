@@ -1,6 +1,17 @@
+"use client";
+
 import type { CommunityCleanupMessage } from "@/types";
+import { InlineContentLink } from "@/components/whatsapp/content-link";
 import { Card } from "@/components/ui/card";
 import { Disclosure } from "@/components/ui/disclosure";
+
+function pointKey(point: CommunityCleanupMessage["points"][number]): string {
+  if (typeof point === "string") return point;
+  if ("whatsappKey" in point) {
+    return `${point.linkLabel}-${point.whatsappKey}`;
+  }
+  return `${point.linkLabel}-${point.href}`;
+}
 
 export function CommunityCleanupMessagePanel({
   message,
@@ -23,17 +34,8 @@ export function CommunityCleanupMessagePanel({
             typeof point === "string" ? (
               <li key={point}>{point}</li>
             ) : (
-              <li key={point.href}>
-                {point.beforeLink}
-                <a
-                  href={point.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-mark underline underline-offset-2"
-                >
-                  {point.linkLabel}
-                </a>
-                {point.afterLink}
+              <li key={pointKey(point)}>
+                <InlineContentLink segment={point} />
               </li>
             ),
           )}

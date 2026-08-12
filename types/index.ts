@@ -1,7 +1,36 @@
+import type { WhatsappLinkKey } from "@/lib/whatsapp-gate/links";
+
 export type SourceLabel =
   | "Official"
   | "Community"
   | "Awaiting confirmation";
+
+export type { WhatsappLinkKey };
+
+/** External page link or gated WhatsApp group invite. */
+export type ContentLink =
+  | { label: string; href: string }
+  | { label: string; whatsappKey: WhatsappLinkKey };
+
+/** Inline copy with a link mid-sentence. */
+export type InlineContentLink =
+  | {
+      beforeLink: string;
+      linkLabel: string;
+      afterLink?: string;
+      href: string;
+    }
+  | {
+      beforeLink: string;
+      linkLabel: string;
+      afterLink?: string;
+      whatsappKey: WhatsappLinkKey;
+    };
+
+export type RichTextPart =
+  | { type: "text"; value: string }
+  | { type: "link"; label: string; href: string }
+  | { type: "whatsapp"; label: string; linkKey: WhatsappLinkKey };
 
 export interface LatestUpdate {
   datetime: string;
@@ -34,7 +63,7 @@ export interface Announcement {
   body?: string[];
   blocks?: AnnouncementBlock[];
   times?: string[];
-  link?: { label: string; href: string };
+  link?: ContentLink;
   sourceName?: string;
   /** When true, card starts collapsed and expands on tap. */
   expandable?: boolean;
@@ -49,14 +78,7 @@ export interface BriefingEvent {
   signupNote: string;
 }
 
-export type OrganiserActionBody =
-  | string
-  | {
-      beforeLink: string;
-      linkLabel: string;
-      afterLink?: string;
-      href: string;
-    };
+export type OrganiserActionBody = string | InlineContentLink;
 
 export interface OrganiserMessage {
   datetime: string;
@@ -67,9 +89,9 @@ export interface OrganiserMessage {
     id: string;
     title: string;
     body: OrganiserActionBody[];
-    links?: { label: string; href: string }[];
+    links?: ContentLink[];
     /** Plain text hyperlinks shown under CTA buttons. */
-    textLinks?: { label: string; href: string }[];
+    textLinks?: ContentLink[];
     emailTemplate?: {
       label?: string;
       subject: string;
@@ -77,7 +99,7 @@ export interface OrganiserMessage {
     };
   }[];
   /** Links shown under a divider at the bottom of the Actions panel. */
-  actionFooterLinks?: { label: string; href: string }[];
+  actionFooterLinks?: ContentLink[];
   notes: string[];
 }
 
@@ -92,14 +114,7 @@ export interface ScientificBriefing {
   fullBriefingHref?: string | null;
 }
 
-export type CommunityCleanupPoint =
-  | string
-  | {
-      beforeLink: string;
-      linkLabel: string;
-      afterLink?: string;
-      href: string;
-    };
+export type CommunityCleanupPoint = string | InlineContentLink;
 
 export interface CommunityCleanupMessage {
   title: string;
@@ -113,19 +128,9 @@ export interface BringItem {
 
 export interface CollectStep {
   step: number;
-  text:
-    | string
-    | {
-        beforeLink: string;
-        linkLabel: string;
-        afterLink?: string;
-        href: string;
-      };
+  text: string | InlineContentLink;
   title?: string;
-  cta?: {
-    label: string;
-    href: string;
-  };
+  cta?: ContentLink;
 }
 
 export interface TrainingVideo {
@@ -151,7 +156,7 @@ export interface TechniqueGuide {
   images?: { src: string; alt: string }[];
   videos?: { title: string; url: string }[];
   instagramUrl?: string;
-  cta?: { label: string; href: string };
+  cta?: ContentLink;
 }
 
 export interface FaqItem {

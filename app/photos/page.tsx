@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CommunityImageGallery } from "@/components/community-image-gallery";
 import { PageShell } from "@/components/page-shell";
+import { RichTextParts } from "@/components/whatsapp/content-link";
 import {
   communityImages,
   communityImagesIntro,
@@ -18,21 +19,7 @@ export default function PhotosPage() {
         <div className="mt-2 space-y-2 text-meta text-ink">
           {communityImagesIntro.paragraphs.map((paragraph, index) => (
             <p key={index}>
-              {paragraph.parts.map((part, partIndex) =>
-                part.type === "link" ? (
-                  <a
-                    key={partIndex}
-                    href={part.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold text-mark underline underline-offset-2"
-                  >
-                    {part.label}
-                  </a>
-                ) : (
-                  <span key={partIndex}>{part.value}</span>
-                ),
-              )}
+              <RichTextParts parts={paragraph.parts} />
             </p>
           ))}
         </div>

@@ -5,7 +5,10 @@ import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
 import { TideTimesPanel } from "@/components/tide-times-panel";
 import { YoutubeEmbed } from "@/components/youtube-embed";
-import { ButtonLink } from "@/components/ui/button";
+import {
+  ContentLinkButton,
+  InlineContentLink,
+} from "@/components/whatsapp/content-link";
 import { Card } from "@/components/ui/card";
 import { Callout } from "@/components/ui/callout";
 import { Disclosure } from "@/components/ui/disclosure";
@@ -80,33 +83,17 @@ export default function HowToCleanPage() {
                 {typeof step.text === "string" ? (
                   step.text
                 ) : (
-                  <>
-                    {step.text.beforeLink}
-                    <a
-                      href={step.text.href}
-                      {...(step.text.href.startsWith("http")
-                        ? {
-                            target: "_blank" as const,
-                            rel: "noopener noreferrer",
-                          }
-                        : {})}
-                      className="font-bold text-mark underline underline-offset-2"
-                    >
-                      {step.text.linkLabel}
-                    </a>
-                    {step.text.afterLink}
-                  </>
+                  <InlineContentLink segment={step.text} />
                 )}
               </p>
               {step.cta ? (
                 <p className="mt-2">
-                  <ButtonLink
-                    href={step.cta.href}
-                    variant="primary"
-                    external={step.cta.href.startsWith("http")}
-                  >
-                    {step.cta.label}
-                  </ButtonLink>
+                  <ContentLinkButton
+                    link={step.cta}
+                    variant={
+                      "whatsappKey" in step.cta ? "whatsapp" : "primary"
+                    }
+                  />
                 </p>
               ) : null}
             </Step>
@@ -190,15 +177,12 @@ export default function HowToCleanPage() {
                     </div>
                   ) : null}
                   {guide.cta ? (
-                    <ButtonLink
-                      href={guide.cta.href}
+                    <ContentLinkButton
+                      link={guide.cta}
                       variant="whatsapp"
                       fullWidth
-                      external
                       className="mt-3"
-                    >
-                      {guide.cta.label}
-                    </ButtonLink>
+                    />
                   ) : null}
                   {guide.instagramUrl ? (
                     <InstagramEmbed

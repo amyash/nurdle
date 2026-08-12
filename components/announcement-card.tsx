@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ButtonLink } from "@/components/ui/button";
+import { ContentLinkButton } from "@/components/whatsapp/content-link";
 import { Callout } from "@/components/ui/callout";
 import { Disclosure } from "@/components/ui/disclosure";
 import { formatWhen } from "@/lib/dates";
@@ -160,23 +160,13 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
       )}
       {announcement.link && (
         <p className="mt-4">
-          {/^https?:\/\//.test(announcement.link.href) ? (
-            <ButtonLink
-              href={announcement.link.href}
-              variant="whatsapp"
-              fullWidth
-              external
-            >
-              {announcement.link.label}
-            </ButtonLink>
-          ) : (
-            <Link
-              href={announcement.link.href}
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-control bg-mark px-3 py-2.5 text-center text-sm font-bold text-white"
-            >
-              {announcement.link.label}
-            </Link>
-          )}
+          <ContentLinkButton
+            link={announcement.link}
+            variant={
+              "whatsappKey" in announcement.link ? "whatsapp" : "primary"
+            }
+            fullWidth
+          />
         </p>
       )}
     </>

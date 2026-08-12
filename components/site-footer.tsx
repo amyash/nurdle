@@ -1,3 +1,5 @@
+import { SiteFooterWhatsappLink } from "@/components/site-footer-whatsapp-link";
+
 export function SiteFooter() {
   return (
     <footer className="mx-auto max-w-lg border-t border-line px-4 py-4 text-xs leading-snug text-mute">
@@ -13,16 +15,7 @@ export function SiteFooter() {
           Amy
         </a>
         , a local volunteer. If you spot anything that&apos;s out of date or
-        have information to add, DM me on{" "}
-        <a
-          href="https://wa.me/447745720319"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-mute underline underline-offset-2"
-        >
-          WhatsApp
-        </a>
-        . To collaborate join my repo on{" "}
+        have information to add, DM me on <SiteFooterWhatsappLink />. To collaborate join my repo on{" "}
         <a
           href="https://github.com/amyash/nurdle"
           target="_blank"

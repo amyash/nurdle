@@ -8,7 +8,8 @@ import { CheckInModal } from "@/components/check-in/check-in-modal";
 import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
 import { CleanupLogSuccessModal } from "@/components/cleanup-logs/cleanup-log-success-modal";
 import { CleanupOverallCallout } from "@/components/cleanup-logs/cleanup-overall-callout";
-import { ButtonLink } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { useWhatsAppGate } from "@/components/whatsapp/whatsapp-gate";
 import { Card } from "@/components/ui/card";
 import {
   beachRegionLabels,
@@ -30,6 +31,7 @@ import {
   fetchCleanupStats,
 } from "@/lib/cleanup-logs/api";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { whatsappLinkKeyForBeach } from "@/lib/whatsapp-gate/links";
 import type {
   ActiveSessionCheckin,
   BeachCheckinStats,
@@ -67,6 +69,7 @@ function emptyStats(): BeachCheckinStats[] {
 
 export function BeachGroupsHubPanel() {
   const configured = isSupabaseConfigured();
+  const { openGate } = useWhatsAppGate();
   const sessionIdRef = useRef<string | null>(null);
   const [stats, setStats] = useState<BeachCheckinStats[]>(emptyStats);
   const [cleanupStats, setCleanupStats] = useState<CleanupStatsResponse | null>(
@@ -324,17 +327,19 @@ export function BeachGroupsHubPanel() {
             {otherBeachWhatsappGroups.map((group) => (
               <li key={group.id} className="flex flex-wrap items-center gap-2">
                 <p className="text-sm font-bold text-ink">{group.name}</p>
-                {group.whatsappUrl ? (
-                  <ButtonLink
-                    href={group.whatsappUrl}
-                    variant="whatsapp"
-                    external
-                  >
-                    Join WhatsApp
-                  </ButtonLink>
-                ) : (
-                  <p className="text-sm italic text-mute">Link not yet added</p>
-                )}
+                <Button
+                  type="button"
+                  variant="whatsapp"
+                  onClick={() =>
+                    openGate({
+                      linkKey: whatsappLinkKeyForBeach(group.id),
+                      beachId: group.id,
+                      label: group.name,
+                    })
+                  }
+                >
+                  Join WhatsApp
+                </Button>
               </li>
             ))}
           </ul>

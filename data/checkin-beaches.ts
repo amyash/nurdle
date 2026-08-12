@@ -48,17 +48,11 @@ export interface CheckinBeach {
   displayOrder: number;
   /** Card-list grouping on /beaches. */
   region: BeachRegion;
-  /** Beach WhatsApp invite — null until confirmed. */
-  whatsappUrl: string | null;
   /** Nurdle Equipment Station details — omit until known. */
   nest?: BeachNest | null;
 }
 
 export const CHECKIN_EXPIRY_HOURS = 2;
-
-/** Shared WhatsApp for the Whitley Bay coastline segments. */
-const WHITLEY_BAY_WHATSAPP =
-  "https://chat.whatsapp.com/H8NyTR4AThJIT014Wc5ooE";
 
 const LONGSANDS_NEST: BeachNest = {
   locationLinks: [
@@ -102,7 +96,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4495,
     displayOrder: 1,
     region: "north-tyneside",
-    whatsappUrl: WHITLEY_BAY_WHATSAPP,
   },
   {
     id: "whitley-bay-north",
@@ -112,7 +105,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4505,
     displayOrder: 2,
     region: "north-tyneside",
-    whatsappUrl: WHITLEY_BAY_WHATSAPP,
   },
   {
     id: "whitley-bay-central",
@@ -123,7 +115,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4494,
     displayOrder: 3,
     region: "north-tyneside",
-    whatsappUrl: WHITLEY_BAY_WHATSAPP,
   },
   {
     id: "whitley-bay-south",
@@ -133,7 +124,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4465,
     displayOrder: 4,
     region: "north-tyneside",
-    whatsappUrl: WHITLEY_BAY_WHATSAPP,
   },
   {
     id: "browns-bay",
@@ -144,7 +134,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.43,
     displayOrder: 5,
     region: "north-tyneside",
-    whatsappUrl: WHITLEY_BAY_WHATSAPP,
   },
   {
     id: "cullercoats-bay",
@@ -154,7 +143,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4328,
     displayOrder: 6,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/LJIE5xqsqWmGAIl2pLt4t2",
     nest: {
       mapsUrl: "https://maps.app.goo.gl/TCt1biSsvFaLMcwq8",
       paragraphs: [
@@ -186,7 +174,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4296,
     displayOrder: 7,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
     nest: LONGSANDS_NEST,
   },
   {
@@ -197,7 +184,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4269,
     displayOrder: 8,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/KtraHXq8Q3R6JrANxkzi8N",
     nest: LONGSANDS_NEST,
   },
   {
@@ -208,7 +194,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4158,
     displayOrder: 9,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/K2lktDs5NAj7UG1SYoDYwh",
   },
   {
     id: "tynemouth-haven",
@@ -218,7 +203,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4204,
     displayOrder: 10,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/IUp4YAxs7Yo7vZAqeO6Z1I",
   },
   {
     id: "newbiggin",
@@ -228,7 +212,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5098,
     displayOrder: 11,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/F3BpZ4dw3gmGlqTM7rPftx",
   },
   {
     id: "blyth",
@@ -238,7 +221,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5085,
     displayOrder: 12,
     region: "north-tyneside",
-    whatsappUrl: null,
     nest: {
       paragraphs: [
         "Thanks to Robin, who has generously offered to store the Blyth NEST equipment at his home.",
@@ -265,7 +247,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4745,
     displayOrder: 13,
     region: "north-tyneside",
-    whatsappUrl: null,
     nest: {
       locationLinks: [
         {
@@ -302,7 +283,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.5185,
     displayOrder: 14,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/C9bWFyadyH15kgIR1QTBLQ",
   },
   {
     id: "fish-quay",
@@ -312,7 +292,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4372,
     displayOrder: 15,
     region: "north-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/E3UFrnJFRE719lT7BztWoo",
     nest: {
       locationLinks: [
         {
@@ -357,7 +336,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4245,
     displayOrder: 16,
     region: "south-tyneside",
-    whatsappUrl: "https://chat.whatsapp.com/Kfd0BABx0dTH9Q9UgUks4r",
   },
   {
     id: "roker",
@@ -367,7 +345,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.3665,
     displayOrder: 17,
     region: "south-tyneside",
-    whatsappUrl: null,
   },
   {
     id: "seaburn",
@@ -377,7 +354,6 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.3667,
     displayOrder: 18,
     region: "south-tyneside",
-    whatsappUrl: null,
   },
 ];
 
@@ -385,7 +361,6 @@ export const checkinBeaches: CheckinBeach[] = [
 export const otherBeachWhatsappGroups: {
   id: string;
   name: string;
-  whatsappUrl: string | null;
 }[] = [];
 
 export const checkinBeachById = Object.fromEntries(

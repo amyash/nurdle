@@ -1,11 +1,26 @@
 import Image from "next/image";
 import { CopyableEmailTemplate } from "@/components/copyable-email-template";
 import { ScientificBriefingPanel } from "@/components/scientific-briefing";
-import { ButtonLink } from "@/components/ui/button";
+import {
+  ContentLinkButton,
+  InlineContentLink,
+} from "@/components/whatsapp/content-link";
 import { Callout } from "@/components/ui/callout";
 import { ContentStack } from "@/components/ui/content-stack";
 import { scientificBriefing } from "@/data/content";
-import type { OrganiserMessage } from "@/types";
+import type { ContentLink, OrganiserMessage } from "@/types";
+
+function contentLinkKey(link: ContentLink): string {
+  return "whatsappKey" in link ? link.whatsappKey : link.href;
+}
+
+function inlineSegmentKey(
+  segment: Extract<OrganiserMessage["actions"][number]["body"][number], object>,
+): string {
+  return "whatsappKey" in segment
+    ? `${segment.linkLabel}-${segment.whatsappKey}`
+    : `${segment.linkLabel}-${segment.href}`;
+}
 
 export function OrganiserMessagePanel({
   message,
@@ -53,21 +68,11 @@ export function OrganiserMessagePanel({
                   typeof paragraph === "string" ? (
                     <p key={paragraph}>{paragraph}</p>
                   ) : (
-                    <p key={paragraph.href + paragraph.linkLabel}>
-                      {paragraph.beforeLink}
-                      <a
-                        href={paragraph.href}
-                        {...(paragraph.href.startsWith("http")
-                          ? {
-                              target: "_blank" as const,
-                              rel: "noopener noreferrer",
-                            }
-                          : {})}
-                        className="font-bold text-accent-mint underline underline-offset-2"
-                      >
-                        {paragraph.linkLabel}
-                      </a>
-                      {paragraph.afterLink}
+                    <p key={inlineSegmentKey(paragraph)}>
+                      <InlineContentLink
+                        segment={paragraph}
+                        linkClassName="font-bold text-accent-mint underline underline-offset-2"
+                      />
                     </p>
                   ),
                 )}
@@ -75,17 +80,14 @@ export function OrganiserMessagePanel({
               {action.links && action.links.length > 0 && (
                 <ul className="mt-3 space-y-2">
                   {action.links.map((link) => (
-                    <li key={link.href}>
-                      <ButtonLink
-                        href={link.href}
-                        variant="primary"
+                    <li key={contentLinkKey(link)}>
+                      <ContentLinkButton
+                        link={link}
+                        variant={
+                          "whatsappKey" in link ? "whatsapp" : "primary"
+                        }
                         fullWidth
-                        {...(link.href.startsWith("mailto:")
-                          ? {}
-                          : { external: true })}
-                      >
-                        {link.label}
-                      </ButtonLink>
+                      />
                     </li>
                   ))}
                 </ul>
@@ -93,15 +95,23 @@ export function OrganiserMessagePanel({
               {action.textLinks && action.textLinks.length > 0 && (
                 <ul className="mt-3 space-y-2">
                   {action.textLinks.map((link) => (
-                    <li key={link.href}>
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-bold text-accent-mint underline underline-offset-2"
-                      >
-                        {link.label}
-                      </a>
+                    <li key={contentLinkKey(link)}>
+                      {"whatsappKey" in link ? (
+                        <ContentLinkButton
+                          link={link}
+                          variant="quiet"
+                          className="!min-h-0 !justify-start !px-0 !py-0 font-bold text-accent-mint underline underline-offset-2"
+                        />
+                      ) : (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-bold text-accent-mint underline underline-offset-2"
+                        >
+                          {link.label}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -126,15 +136,23 @@ export function OrganiserMessagePanel({
             />
             <ul className="mt-4 space-y-2">
               {message.actionFooterLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold text-accent-mint underline underline-offset-2"
-                  >
-                    {link.label}
-                  </a>
+                <li key={contentLinkKey(link)}>
+                  {"whatsappKey" in link ? (
+                    <ContentLinkButton
+                      link={link}
+                      variant="quiet"
+                      className="!min-h-0 !justify-start !px-0 !py-0 font-bold text-accent-mint underline underline-offset-2"
+                    />
+                  ) : (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-bold text-accent-mint underline underline-offset-2"
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
