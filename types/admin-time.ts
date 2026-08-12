@@ -33,4 +33,6 @@ export interface CreateAdminTimeLogInput {
   category: string;
   personName?: string | null;
   notes?: string | null;
+  formOpenedAt: number;
+  company?: string;
 }

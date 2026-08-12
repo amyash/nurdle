@@ -48,7 +48,7 @@ const BeachCheckinMap = dynamic(
     loading: () => (
       <div
         role="status"
-        className="rounded-card border border-line bg-white px-3 py-4 text-meta"
+        className="border border-line bg-surface px-3 py-4 text-meta"
       >
         Loading map…
       </div>
@@ -232,6 +232,8 @@ export function BeachGroupsHubPanel() {
     volunteerName: string;
     notes: string;
     confirmedEstimate: boolean;
+    formOpenedAt: number;
+    company: string;
   }) {
     if (!cleanupBeachId || busy) return;
     setBusy(true);
@@ -251,22 +253,18 @@ export function BeachGroupsHubPanel() {
   }
 
   return (
-    <div className="space-y-4">
-      <p className="text-body">
-        Find where volunteers are cleaning, join the beach WhatsApp group, and
-        log your clean-up when you finish. Cards have information on equipment
-        stations and council nurdle collection points where available.
-      </p>
-
-      <CleanupOverallCallout
-        stats={cleanupStats}
-        adminTotalMinutes={adminTotalMinutes}
-        loading={cleanupStatsLoading}
-        activeBeachCount={checkinBeaches.length}
-      />
+    <div>
+      <div className="border-b border-line pb-8">
+        <CleanupOverallCallout
+          stats={cleanupStats}
+          adminTotalMinutes={adminTotalMinutes}
+          loading={cleanupStatsLoading}
+          activeBeachCount={checkinBeaches.length}
+        />
+      </div>
 
       {(loadError || actionError) && (
-        <p role="alert" className="text-sm leading-snug text-red-800">
+        <p role="alert" className="mt-4 text-sm leading-snug text-red-800">
           {actionError ?? loadError}
         </p>
       )}
@@ -278,30 +276,35 @@ export function BeachGroupsHubPanel() {
       ) : null}
 
       {!configured ? (
-        <Card variant="warning" padding="sm" role="note">
+        <Card variant="warning" padding="sm" role="note" className="mt-6">
           Live check-in and clean-up logging isn’t configured for this
           environment yet. You can still browse the beaches below. An organiser
           needs to add Supabase credentials before live features work.
         </Card>
       ) : null}
 
-      <BeachCheckinMap
-        beaches={checkinBeaches}
-        statsById={statsById}
-        checkedInBeachId={myCheckin?.beachId ?? null}
-        onCheckInRequest={openCheckIn}
-      />
+      <div className="mt-8">
+        <BeachCheckinMap
+          beaches={checkinBeaches}
+          statsById={statsById}
+          checkedInBeachId={myCheckin?.beachId ?? null}
+          onCheckInRequest={openCheckIn}
+        />
+      </div>
 
-      <div className="space-y-8">
+      <div className="mt-10 space-y-10">
         {beachRegionOrder.map((region) => {
           const beaches = beachesInRegion(region);
           if (beaches.length === 0) return null;
           return (
-            <section key={region} aria-label={beachRegionLabels[region]}>
-              <h2 className="text-eyebrow text-mute">
+            <section key={region} aria-labelledby={`region-${region}`}>
+              <h2
+                id={`region-${region}`}
+                className="text-eyebrow text-mark border-b border-line pb-3"
+              >
                 {beachRegionLabels[region]}
               </h2>
-              <ul className="mt-3 space-y-3">
+              <ul>
                 {beaches.map((beach) => (
                   <li key={beach.id}>
                     <BeachHubCard
@@ -311,6 +314,10 @@ export function BeachGroupsHubPanel() {
                       cleanupDisabled={!configured}
                       busy={busy}
                       onLogCleanup={() => openCleanupLog(beach.id)}
+                      onCheckIn={() => openCheckIn(beach.id)}
+                      checkinStats={statsById[beach.id]}
+                      isCheckedInHere={myCheckin?.beachId === beach.id}
+                      checkInDisabled={!configured}
                     />
                   </li>
                 ))}
@@ -321,11 +328,14 @@ export function BeachGroupsHubPanel() {
       </div>
 
       {otherBeachWhatsappGroups.length > 0 ? (
-        <Card padding="sm">
+        <div className="mt-10 border-t border-line pt-8">
           <h3 className="text-eyebrow text-mute">Other WhatsApp groups</h3>
-          <ul className="mt-2 space-y-2">
+          <ul className="mt-4 space-y-3">
             {otherBeachWhatsappGroups.map((group) => (
-              <li key={group.id} className="flex flex-wrap items-center gap-2">
+              <li
+                key={group.id}
+                className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3"
+              >
                 <p className="text-sm font-bold text-ink">{group.name}</p>
                 <Button
                   type="button"
@@ -343,14 +353,14 @@ export function BeachGroupsHubPanel() {
               </li>
             ))}
           </ul>
-        </Card>
+        </div>
       ) : null}
 
-      <div className="my-6 border-t border-line pt-6" aria-hidden="true" />
+      <div className="mt-12 border-t border-line pt-10">
+        <AdminTimePanel />
+      </div>
 
-      <AdminTimePanel />
-
-      <p className="text-xs leading-snug text-mute">
+      <p className="mt-8 text-sm leading-snug text-mute-soft">
         Check-ins are approximate, automatically expire after two hours and are
         only intended to help volunteers understand where people are currently
         helping. Mesh filter bags are listed on the How to clean page.

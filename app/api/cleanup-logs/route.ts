@@ -11,6 +11,7 @@ import {
   sanitiseCleanupNotes,
 } from "@/lib/cleanup-logs/format";
 import { postGoogleAppsScriptWebhook } from "@/lib/google-sheets-webhook";
+import { rejectFormGateBot } from "@/lib/form-gate/api";
 import { type RpcCleanupLogRow } from "@/lib/cleanup-logs/map";
 
 function getServerSupabase() {
@@ -109,6 +110,9 @@ export async function POST(request: Request) {
   }
 
   const record = body as Record<string, unknown>;
+  const gateRejected = rejectFormGateBot(request, record);
+  if (gateRejected) return gateRejected;
+
   if (record.confirmedEstimate !== true) {
     return NextResponse.json(
       {

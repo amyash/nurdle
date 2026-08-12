@@ -19,6 +19,9 @@ import {
   Select,
   Textarea,
 } from "@/components/ui/form-field";
+import { FormGateHoneypotField } from "@/components/form-gate/honeypot-field";
+import { FORM_GATE_GENERIC_ERROR } from "@/lib/form-gate/constants";
+import { validateFormGate } from "@/lib/form-gate/validate";
 
 export function AdminTimeLogModal({
   open,
@@ -37,9 +40,12 @@ export function AdminTimeLogModal({
     category: string;
     personName: string;
     notes: string;
+    formOpenedAt: number;
+    company: string;
   }) => void;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const openedAtRef = useRef<number>(0);
   const titleId = useId();
   const dateId = useId();
   const hoursId = useId();
@@ -47,6 +53,7 @@ export function AdminTimeLogModal({
   const categoryId = useId();
   const nameId = useId();
   const notesId = useId();
+  const honeypotId = useId();
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
   const maxDate = todayDateStringLondon();
@@ -59,6 +66,7 @@ export function AdminTimeLogModal({
 
   useEffect(() => {
     if (!open) return;
+    openedAtRef.current = Date.now();
     const today = todayDateStringLondon();
     formRef.current?.reset();
     const dateInput = formRef.current?.elements.namedItem(
@@ -128,15 +136,29 @@ export function AdminTimeLogModal({
             setLocalError("Choose what this admin time was for.");
             return;
           }
+          const company = String(data.get("company") ?? "");
+          if (
+            !validateFormGate({
+              formOpenedAt: openedAtRef.current,
+              honeypot: company,
+            })
+          ) {
+            setLocalError(FORM_GATE_GENERIC_ERROR);
+            return;
+          }
           onSubmit({
             workDate,
             durationMinutes: duration.minutes,
             category,
             personName: String(data.get("personName") ?? ""),
             notes: String(data.get("notes") ?? ""),
+            formOpenedAt: openedAtRef.current,
+            company,
           });
         }}
       >
+        <FormGateHoneypotField id={honeypotId} />
+
         <p className="text-sm leading-snug text-mute">
           For organising, website work, communications, and other non-beach
           volunteer time.

@@ -158,6 +158,8 @@ export async function createCleanupLog(
         volunteerName: input.volunteerName ?? null,
         notes: input.notes ?? null,
         confirmedEstimate: true,
+        formOpenedAt: input.formOpenedAt,
+        company: input.company ?? "",
       }),
     });
 

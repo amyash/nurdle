@@ -12,6 +12,7 @@ import {
 } from "@/lib/admin-time/format";
 import { type RpcAdminTimeLogRow } from "@/lib/admin-time/map";
 import { postGoogleAppsScriptWebhook } from "@/lib/google-sheets-webhook";
+import { rejectFormGateBot } from "@/lib/form-gate/api";
 
 function getServerSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
@@ -87,6 +88,9 @@ export async function POST(request: Request) {
   }
 
   const record = body as Record<string, unknown>;
+  const gateRejected = rejectFormGateBot(request, record);
+  if (gateRejected) return gateRejected;
+
   const workDate = String(record.workDate ?? "");
   const durationMinutes = Number(record.durationMinutes);
   const category = String(record.category ?? "");

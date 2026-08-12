@@ -19,6 +19,9 @@ import {
   Input,
   Textarea,
 } from "@/components/ui/form-field";
+import { FormGateHoneypotField } from "@/components/form-gate/honeypot-field";
+import { FORM_GATE_GENERIC_ERROR } from "@/lib/form-gate/constants";
+import { validateFormGate } from "@/lib/form-gate/validate";
 
 export function CleanupLogModal({
   beachId,
@@ -42,9 +45,12 @@ export function CleanupLogModal({
     volunteerName: string;
     notes: string;
     confirmedEstimate: boolean;
+    formOpenedAt: number;
+    company: string;
   }) => void;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const openedAtRef = useRef<number>(0);
   const titleId = useId();
   const dateId = useId();
   const hoursId = useId();
@@ -55,6 +61,7 @@ export function CleanupLogModal({
   const nameHelpId = useId();
   const notesId = useId();
   const confirmId = useId();
+  const honeypotId = useId();
   const communityId = useId();
   const errorId = useId();
   const [localError, setLocalError] = useState<string | null>(null);
@@ -69,6 +76,7 @@ export function CleanupLogModal({
 
   useEffect(() => {
     if (!open) return;
+    openedAtRef.current = Date.now();
     const today = todayDateStringLondon();
     formRef.current?.reset();
     const dateInput = formRef.current?.elements.namedItem(
@@ -149,6 +157,16 @@ export function CleanupLogModal({
             );
             return;
           }
+          const company = String(data.get("company") ?? "");
+          if (
+            !validateFormGate({
+              formOpenedAt: openedAtRef.current,
+              honeypot: company,
+            })
+          ) {
+            setLocalError(FORM_GATE_GENERIC_ERROR);
+            return;
+          }
           onSubmit({
             beachId,
             cleanupDate,
@@ -158,9 +176,13 @@ export function CleanupLogModal({
             volunteerName: String(data.get("volunteerName") ?? ""),
             notes: String(data.get("notes") ?? ""),
             confirmedEstimate: true,
+            formOpenedAt: openedAtRef.current,
+            company,
           });
         }}
       >
+        <FormGateHoneypotField id={honeypotId} />
+
         <FormField label="Date of clean-up" htmlFor={dateId} className="min-w-0">
           <Input
             id={dateId}
@@ -254,20 +276,20 @@ export function CleanupLogModal({
           aria-describedby={volumeHelpId}
         >
           <legend className="text-sm font-bold">How much did you collect?</legend>
-          <div className="mt-2 space-y-1" role="radiogroup">
+          <div className="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup">
             {CLEANUP_VOLUME_OPTIONS.map((option) => (
               <label
                 key={option.id}
-                className="flex min-h-10 items-center gap-2 text-sm"
+                className="flex min-h-12 cursor-pointer items-center gap-3 border border-line bg-paper px-3 py-2.5 text-sm has-[:checked]:border-mark has-[:checked]:bg-surface-quiet"
               >
                 <input
                   type="radio"
                   name="collectedVolume"
                   value={option.id}
                   required
-                  className="h-4 w-4 shrink-0"
+                  className="h-4 w-4 shrink-0 accent-[var(--mark)]"
                 />
-                {option.label}
+                <span className="font-bold">{option.label}</span>
               </label>
             ))}
           </div>

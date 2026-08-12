@@ -4,7 +4,6 @@ import { useEffect, useId, useState } from "react";
 import { AdminTimeLogModal } from "@/components/admin-time/admin-time-log-modal";
 import { AdminTimeSuccessModal } from "@/components/admin-time/admin-time-success-modal";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   createAdminTimeLog,
   fetchAdminTimeStats,
@@ -72,6 +71,8 @@ export function AdminTimePanel() {
     category: string;
     personName: string;
     notes: string;
+    formOpenedAt: number;
+    company: string;
   }) {
     if (busy) return;
     setBusy(true);
@@ -82,6 +83,8 @@ export function AdminTimePanel() {
       category: input.category,
       personName: input.personName || null,
       notes: input.notes || null,
+      formOpenedAt: input.formOpenedAt,
+      company: input.company,
     });
     setBusy(false);
 
@@ -98,16 +101,16 @@ export function AdminTimePanel() {
 
   return (
     <>
-      <Card padding="sm" aria-labelledby={titleId}>
-        <h3 id={titleId} className="text-eyebrow text-mute">
+      <section aria-labelledby={titleId}>
+        <h2 id={titleId} className="text-section">
           Organising &amp; admin time
-        </h3>
-        <p className="mt-2 text-meta">
+        </h2>
+        <p className="mt-3 reading-measure text-body text-mute">
           Log non-beach volunteer hours — website work, coordination,
           communications, sewing supplies, and other organising.
         </p>
 
-        <p className="mt-2 text-sm font-bold text-ink" role="status">
+        <p className="mt-4 text-lg font-bold text-ink" role="status">
           {loading
             ? "Loading admin totals…"
             : formatAdminHours(stats?.totalDurationMinutes ?? 0)}
@@ -122,14 +125,13 @@ export function AdminTimePanel() {
         <Button
           type="button"
           variant="secondary"
-          fullWidth
           disabled={busy}
           onClick={openForm}
-          className="mt-3 border-ink"
+          className="mt-5"
         >
           Log admin time
         </Button>
-      </Card>
+      </section>
 
       <AdminTimeLogModal
         open={formOpen}

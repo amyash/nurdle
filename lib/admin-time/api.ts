@@ -75,6 +75,8 @@ export async function createAdminTimeLog(
         category: input.category,
         personName: input.personName ?? null,
         notes: input.notes ?? null,
+        formOpenedAt: input.formOpenedAt,
+        company: input.company ?? "",
       }),
     });
 

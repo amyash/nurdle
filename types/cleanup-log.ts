@@ -53,4 +53,6 @@ export interface CreateCleanupLogInput {
   volunteerName?: string | null;
   notes?: string | null;
   confirmedEstimate: boolean;
+  formOpenedAt: number;
+  company?: string;
 }
