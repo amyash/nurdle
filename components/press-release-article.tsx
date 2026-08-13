@@ -6,189 +6,234 @@ export function PressReleaseArticle() {
       <p className="text-eyebrow text-mark">Press release</p>
 
       <h1 className="mt-4 text-page-title">
-        Volunteers log 3000 hours cleaning up nurdles as community campaign
-        escalates with open letter to Port of Tyne
+        Spring tide looms as nurdle volunteers demand more action
       </h1>
 
       <p className="mt-4 text-meta font-bold">
-        North East England – 2 August 2026
+        North East England – 11 August 2026
       </p>
 
       <ul className="mt-5 list-disc space-y-2 pl-5 text-body">
         <li>
-          Volunteers have logged more than 3000 hours to the clean-up of up to
-          25 tonnes of plastic nurdles spilled into the River Tyne, recovering
-          more than 285 kg.
+          A new spring tide between 14-18 August is expected to bring a fresh
+          wave of nurdles onto beaches. Organisers are urging clean-up
+          volunteers to prioritise these days.
         </li>
         <li>
-          An open letter signed by dozens of organisations, businesses,
-          councillors and community groups calls on the Port of Tyne to
-          authorise trained local teams to help recover nurdles directly from
-          the river.
+          Volunteers have logged more than 5,300 hours in total, including
+          almost 4,900 hours of hands-on beach clean-up across 2,336 sessions,
+          plus a further 400+ hours of admin and manufacturing work behind the
+          scenes, recovering around half a tonne of nurdles from North East
+          beaches on their own.
         </li>
         <li>
-          On Monday morning, campaigners will deliver the letter to the Port of
-          Tyne offices in North Shields (10 am) and South Shields (11 am),
-          marking the first coordinated action involving volunteers, the council
-          and the port.
+          Despite reports the official clean-up operation is making progress,
+          the total weight of nurdles recovered from the river and sea by
+          authorities remains unclear.
         </li>
         <li>
-          The campaign has expanded to include 500 volunteer-made collection
-          bags made by 30 machinists, community equipment hubs (NESTs) and
-          official council drop-off points for recovered nurdles.
+          Following the community&apos;s open letter, the Port of Tyne has
+          agreed to allow trained volunteers onto the river from Tuesday 11
+          August – but campaigners say it is not enough.
+        </li>
+        <li>
+          Millions of nurdles remain trapped in the river, marinas and
+          harbours, continuing to wash onto beaches from Newbiggin-by-the-Sea to
+          Roker beach.
+        </li>
+        <li>
+          Community representatives met Government minister Stephen Morgan when
+          he visited South Shields on Monday to share their concerns.
+        </li>
+        <li>
+          Campaigners are backing a UK parliamentary petition calling for
+          mandatory “zero plastic pellet loss” rules, matching new EU law, and
+          are urging supporters to sign before it closes on 13 September.
+        </li>
+        <li>
+          The community demands the Environment Agency give the Civil Emergency
+          category to nurdle spill.
         </li>
       </ul>
 
       <div className="mt-6 space-y-4 text-body">
         <p>
-          Nearly two weeks after up to 25 tonnes of plastic pellets, known as
-          nurdles, were spilled into the River Tyne, a community-led recovery
-          effort has evolved from mass beach cleans into a sustained daily
-          operation along the North East coastline – and is now escalating with
-          a coordinated open letter to the Port of Tyne.
+          Three weeks on from the accidental collision between the Wind Orca
+          and the berthed BG Orange at the Port of Tyne on 19 July, where a
+          reported 17 tonnes of plastic nurdles spilled into the River Tyne, the
+          community-led clean-up shows no sign of slowing down. Volunteers have
+          contributed more than 5,300 hours in total - almost 4,900 of them
+          hands-on beach clean-up across 2,336 sessions, plus 400+ hours of
+          co-ordination and manufacturing behind the scenes - recovering an
+          estimated half a tonne of nurdles across the region.
         </p>
 
         <p>
-          Dozens of community groups, councillors, businesses and environmental
-          organisations have signed the letter, including Mayor Kim McGuinness,
-          Surfers Against Sewage UK, Northumberland Wildlife Trust and North Sea
-          Volunteer Lifeguards. The letter argues that current recovery efforts
-          are failing to tackle the spill at its source. Millions of nurdles
-          remain trapped in the river, marinas and harbours, continuing to wash
-          onto local beaches.
-        </p>
-
-        <p>
-          The letter calls on the Port of Tyne to authorise trained local rescue
-          teams, experienced vessel operators and other qualified volunteers to
-          assist with recovery operations directly in the water, arguing that
-          clearing beaches alone cannot stop the ongoing pollution. The demand
-          represents one of the largest coordinated environmental appeals made
-          by North East communities in recent years.
+          Campaigners warn the clean-up remains a race against time, especially
+          with the spring tide approaching. “The swell could churn up the sand,
+          bringing buried nurdles back to the surface and into the river,” says
+          Sally McGee, a local surf instructor and campaign spokesperson. “This
+          is an important window in which we have to act. Every volunteer,
+          professional and government resource needs to be focused on recovering
+          as many pellets as possible before the tide carries them out to sea.”
         </p>
 
         <h2 className="text-section">
-          First coordinated action with authorities
+          NIFCA access welcomed, but Port pressed to do more
         </h2>
 
         <p>
-          On Monday, community volunteers will hold their first coordinated
-          action involving both the local council and the Port of Tyne.
-          Representatives from the campaign will deliver the open letter to Matt
-          Beeton, Chief Executive of the Port of Tyne, calling for an urgent
-          expansion of recovery efforts within the River Tyne.
+          The community welcomed the involvement of NIFCA (the Northumberland
+          Inshore Fisheries and Conservation Authority) on the water this week,
+          but campaigners are demanding the Port needs to do more: “The
+          community is really pleased to see NIFCA out on the water,” says
+          McGee. “Their presence is a clear indication that collective pressure
+          can lead to meaningful action. This is an important boost for everyone
+          who has been working tirelessly to respond to the spill.”
         </p>
 
         <p>
-          Oliver Armstrong, a volunteer community organiser, explains: “We need
-          far more from the companies responsible and we need it now.” Armstrong
-          is part of the collective team who have composed the letter as “a
-          clear cry to the full leadership of the Port of Tyne to step up, act
-          more thoroughly, and to give the professionals who offered weeks ago
-          the permission and support to clean up the river from the poison that
-          has fallen in.”
+          “However, what we are asking is for the Port of Tyne to use its
+          extensive connections within the maritime community to mobilise
+          trained volunteers and appropriate vessels. It should not be the
+          responsibility of the community to identify, recruit and coordinate
+          boats with the specific skills and equipment that the Port itself has
+          said are required. If the Port recognises that more vessels and
+          trained personnel are needed on the river, then it is the Port&apos;s
+          responsibility to put out that call and use its own networks to bring
+          them in.”
+        </p>
+
+        <h2 className="text-section">
+          Community pushes officials on accountability
+        </h2>
+
+        <p>
+          On Friday 7 August, community representatives met the North East
+          Combined Authority (Mayor Kim McGuinness&apos;s office) and the
+          Northumbria Local Resilience Forum in a listening session held ahead
+          of a government briefing with Defra (the Department for Environment,
+          Food and Rural Affairs) later that day. The Mayor&apos;s office said
+          it had raised concerns directly with Defra, calling for legal and
+          regulatory change to prevent similar incidents in future and publicly
+          recognised the work of thousands of volunteers, who were offered a new
+          formal route into recovery planning through the Local Resilience
+          Forum.
         </p>
 
         <p>
-          “All of our community believes it makes no sense to us that they were
-          told to stand down and it has surely caused far more damage. If
-          they&apos;d been allowed to get to work, millions of nurdles could
-          have been prevented from leaving the Tyne,” he says.
+          Community representatives also challenged recent public messaging from
+          government agencies and the Port of Tyne describing the response as
+          “rapid”, arguing that overstating success risks damaging public trust.
+          They pressed officials on where responsibility ultimately sits, saying
+          it remains unclear how the recovery effort is divided between the
+          Environment Agency, the Maritime and Coastguard Agency, the Port of
+          Tyne, local authorities and volunteers themselves.
         </p>
 
         <p>
-          Volunteers warn that the clean-up remains a race against time.
-          Photographs taken in recent days show extensive clusters of nurdles
-          still floating in the River Tyne, around North Shields Fish Quay and
-          nearby marinas, where they continue to escape into the North Sea and
-          wash onto beaches across the region. Volunteers with professional
-          recording equipment have also provided video evidence appearing to
-          show ducks, swans and cygnets mistaking the pellets for food.
+          Volunteers reiterated that their earlier calls for more boats were not
+          requests for untrained volunteers to be sent out on the water, but for
+          the Port of Tyne to deploy experienced professional vessels already on
+          the river, including marina safety boats and marine police, which
+          volunteers say have been available but under-used. They also asked for
+          direct contact with the Environment Agency, having been repeatedly
+          redirected between departments; officials agreed to help facilitate
+          this and said they would intervene if the pattern continued.
+        </p>
+
+        <h2 className="text-section">
+          Government minister visits the North East
+        </h2>
+
+        <p>
+          On Monday, MP Stephen Morgan from Defra visited the North East to meet
+          with local officials and affected communities, saying he will help to
+          ensure clean-up happens as quickly and effectively as possible. The
+          ‘nurdlers’, who feel they are still leading a large share of the
+          clean-up, hope Morgan will improve resources and personnel to speed up
+          recovery, and press the Environment Agency for better transparency.
+        </p>
+
+        <h2 className="text-section">Wildlife continues to suffer</h2>
+
+        <p>
+          Nurdles are not toxic in themselves, but readily absorb pollutants and
+          chemicals from seawater, and are frequently mistaken for food by
+          birds, fish and other wildlife, according to North Tyneside and South
+          Tyneside councils. Volunteers have recorded video evidence showing
+          seagulls, ducks, swans and cygnets in the River Tyne and on local
+          beaches appearing to eat nurdles.
         </p>
 
         <p>
-          “Once these pellets go out to sea, they&apos;ll keep breaking down
-          into smaller and smaller microplastics that never truly go away,” says
-          Grace Holden-Cook, who studied microplastic pollution and will begin a
-          Masters in Marine Conservation and Sustainability at Newcastle
-          University in September. “That means they can be eaten at every level
-          of the food chain, working their way back up to us. What&apos;s so
-          frightening is that microplastics absorb chemicals and toxins that can
-          be harmful once eaten. If a bird or fish mistakes them for food, they
-          can starve with a stomach full of plastic they can&apos;t digest –
-          and that fish could end up on your dinner plate.”
+          “Nurdles are scattered among seaweed, rocks and sand, with seagulls,
+          black-headed gulls and crows pecking at them along the shoreline where
+          they usually feed on small worms, fish eggs and larvae,” says Leo
+          Hargreaves, a Nextdoor Nature Officer at Northumberland Wildlife Trust.
+          “Birds, fish and marine mammals frequently mistake them for food,
+          filling their stomachs with indigestible plastic that can cause
+          starvation or internal injury,” explains Hargreaves.
+        </p>
+
+        <h2 className="text-section">
+          Campaign backs new pellet-loss law and demands Civil Emergency
+          category
+        </h2>
+
+        <p>
+          Campaigners also point to a new EU law, Regulation (EU) 2025/2365,
+          which requires large handlers of plastic pellets to carry out risk
+          management plans and independent audits. “Such a change in law would
+          be a vital step towards preventing this from happening in the future,”
+          says Hargreaves. “Each year an estimated 445,970 tonnes of nurdles
+          enter the environment. The scale is hard to imagine.”
         </p>
 
         <p>
-          “Let&apos;s get out there and collect these pellets while we can still
-          see them. Even picking up a handful could save a marine life.”
+          The campaign is backing the UK Parliament petition calling for the
+          government to mandate this EU law. The “zero plastic pellet loss”
+          petition needs 10,000 signatures to secure a government response, and
+          closes on 13 September.
         </p>
 
         <p>
-          Organised clean-up events continue daily, while hundreds of residents
-          independently collect nurdles at low tide across beaches from
-          Northumberland to Sunderland. Volunteers remain a constant presence on
-          the shoreline, working to remove pellets before they are washed back
-          out to sea or buried beneath the sand. According to the
-          community&apos;s online tracking system, volunteers have now
-          contributed more than 3000 hours to the clean-up effort and recovered
-          over 285 kg of nurdles from local beaches.
+          Anneliese Allen-Norris, a volunteer and energy policy specialist says,
+          “Campaigners argue that a nurdle spill can legally be treated as a
+          civil emergency, but the government is often hesitant to formally
+          declare one. The councils, the Environment Agency and specialist
+          marine clean-up agencies have handled the response as a pollution
+          incident instead of an emergency – and the response phase lasted only
+          24 hours.”
         </p>
 
         <p>
-          The campaign has also sparked an extensive grassroots support network.
-          A team of volunteer seamstresses, coordinated by local resident Lou
-          Shackleton, has produced more than 500 reusable mesh collection bags,
-          enabling hundreds of people to safely collect the tiny plastic
-          pellets. “I can&apos;t believe how quickly this has all come together.
-          Within days we pulled together donations materials, tried and tested
-          patterns, and 30 machinists. We&apos;ve produced 500 bags so far, and
-          we&apos;re only on day six of the response, with fabric still being
-          stitched in people&apos;s homes. And we&apos;re still innovating,”
-          says Shackleton.
+          “This nurdle spill should and can be classified as a civil emergency
+          under the Civil Contingencies Act 2004, because it’s a major spill
+          that may cause serious damage to the environment,” says Allen-Norris.
+          “That damage doesn’t have to have happened already, it’s the potential
+          for damage that’s important – and we’re already seeing marine life
+          consuming nurdles, which can also spread further afield.”
+        </p>
+
+        <h2 className="text-section">Grassroots support keeps growing</h2>
+
+        <p>
+          The campaign&apos;s grassroots infrastructure continues to grow. A
+          team of volunteer seamstresses has now produced more than 500 reusable
+          mesh collection bags, and a network of community equipment hubs
+          (NESTs) allows volunteers to collect nurdle clean-up kits before
+          heading to the beach. The Port of Blyth has continued to show what
+          cooperation can look like, with around 40 port employees joining beach
+          cleans at both Blyth and Cambois last week.
         </p>
 
         <p>
-          A network of community equipment hubs, known as NESTs (Network of
-          Equipment Stations), has now been established, with the first based at
-          Panama Swimming Club in Whitley Bay, where members of the public can
-          collect clean-up equipment before heading to the beach. But, as
-          Shackleton explains, “it&apos;s also very much about the people who
-          can&apos;t actually get to the beaches for whatever reason –
-          location, illness or caring responsibilities – the ones making the
-          filter bags, making calls, coordinating from home. There are so many
-          components to this amazing ecosystem of responders. I&apos;ve been
-          part of community organising in the past but I&apos;ve never seen
-          anything like this before. It&apos;s magic.”
-        </p>
-
-        <p>
-          Local authorities have formalised a growing number of official
-          drop-off points for collected nurdles, reflecting a significant shift
-          in their approach. Initially, members of the public were advised not
-          to intervene, but campaigners say sustained community action has
-          helped encourage a more collaborative response. The Port of Blyth has
-          also shown institutional leadership by actively supporting staff
-          participation in the clean-up effort. On Thursday morning, around 40
-          port employees joined the clean-up at Blyth Beach, with many
-          expressing pride in being able to contribute to the community
-          response.
-        </p>
-
-        <p>
-          The spill has generated significant regional media attention, with
-          campaign organisers tracking more than 50 stories across local
-          newspapers, broadcasters and online publications. Despite interest
-          from several national news organisations, campaigners believe the
-          scale of the environmental disaster has yet to receive the national
-          attention it warrants.
-        </p>
-
-        <p>
-          Organisers hope Monday&apos;s event will mark the beginning of closer
-          cooperation between residents, public authorities and industry to
-          tackle what they describe as the UK&apos;s most significant marine
-          plastic pollution incident in recent history.
+          Organisers say the priorities are clear: authorities must match the
+          pace already set by the community, provide a transparent account of
+          what has and has not been achieved, and give a clear answer on how
+          many nurdles remain unaccounted for - and who is responsible for
+          recovering them.
         </p>
       </div>
 
@@ -198,22 +243,6 @@ export function PressReleaseArticle() {
         </h2>
 
         <div className="mt-4 space-y-5 text-body">
-          <p>
-            <span className="font-bold">
-              Leah Pattem (Volunteer press coordinator)
-            </span>
-            <br />
-            Email:{" "}
-            <a href="mailto:leahpattem@gmail.com" className={linkClass}>
-              leahpattem@gmail.com
-            </a>
-            <br />
-            WhatsApp (call or message):{" "}
-            <a href="tel:+34640362659" className={linkClass}>
-              +34 640362659
-            </a>
-          </p>
-
           <p>
             <span className="font-bold">
               Katie Bryson (Volunteer press coordinator)
@@ -229,6 +258,22 @@ export function PressReleaseArticle() {
               +44 7966 143129
             </a>
           </p>
+
+          <p>
+            <span className="font-bold">
+              Leah Pattem (Volunteer press coordinator)
+            </span>
+            <br />
+            Email:{" "}
+            <a href="mailto:leahpattem@gmail.com" className={linkClass}>
+              leahpattem@gmail.com
+            </a>
+            <br />
+            WhatsApp (call or message):{" "}
+            <a href="tel:+34640362659" className={linkClass}>
+              +34 640362659
+            </a>
+          </p>
         </div>
       </section>
 
@@ -240,10 +285,12 @@ export function PressReleaseArticle() {
         <div className="mt-5 space-y-3 text-body">
           <p>
             <span className="font-bold">Images: </span>
-            High-quality images and video footage free to use: Beach cleans,
-            volunteer profiles, wildlife eating nurdles, nurdles floating on
-            water, nurdles on beaches, Port of Blyth workers, NESTs, drone
-            footage of beach cleans.
+            High-quality images and video footage free to use: Early beach
+            cleans, recent beach cleans, volunteer profiles, wildlife eating
+            nurdles, nurdles floating on water, nurdles on beaches, Port of
+            Blyth workers, Nurdle UK workers, volunteer equipment stations
+            (NESTs), machinists (‘stitchineers’), drone footage of beach cleans,
+            volunteer boats on the river.
           </p>
 
           <p>
@@ -253,32 +300,41 @@ export function PressReleaseArticle() {
             request.
           </p>
 
-          <p className="font-bold">Letter delivery (Monday 3 August)</p>
-
-          <ul className="list-disc space-y-1.5 pl-5">
-            <li>
-              10 am at Neville House, Bell St, Tynemouth, North Shields NE30 1LJ
-            </li>
-            <li>
-              11 am at Maritime House, Tyne Dock, South Shields, NE34 9PT
-            </li>
-          </ul>
-
-          <p className="font-bold">
-            Beaches where volunteers are collecting nurdles:
+          <p>
+            <span className="font-bold">Petition: </span>
+            <a
+              href="https://petition.parliament.uk/petitions/759563"
+              className={linkClass}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              petition.parliament.uk/petitions/759563
+            </a>{" "}
+            – UK to mandate “zero plastic pellet loss” in line with new EU law.
+            Closes 13 September 2026.
           </p>
 
           <p>
-            <span className="font-bold">North of the Tyne River: </span>
-            Fish Quay beach, Tynemouth Haven beach, Longsands beach, King
-            Edward&apos;s Bay, Cullercoats beach, Whitley Bay beach, Seaton
-            Sluice beach, Blyth beach, Newbiggin beach, Cambois beach, Druridge
-            Bay beach, Amble beach, Cresswell beach.
+            <span className="font-bold">Hashtags: </span>
+            The campaign has adopted two unifying hashtags: #SaveOurTyne and
+            #SaveWorTyne
           </p>
 
           <p>
-            <span className="font-bold">South of the Tyne River: </span>
-            Sunderland beach, Roker beach, Little Haven beach, Sandhaven beach.
+            <span className="font-bold">Fact-checking: </span>
+            The River Tyne plastic pellet spill is the largest of its kind in
+            the UK, but not the largest in Europe. At around 17 tonnes, it is
+            comparable in scale to Europe’s largest recorded plastic pellet
+            spill: the 26-tonne Toconao spill off the coast of Galicia, Spain,
+            in December 2023.
+          </p>
+
+          <p>
+            <span className="font-bold">Coverage: </span>
+            The scale of public interest reflects the significance of the spill:
+            the campaign has now featured in more than 100 media appearances
+            across local, national and international outlets, and organisers say
+            the story continues to resonate as new developments emerge.
           </p>
         </div>
       </section>

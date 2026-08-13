@@ -88,7 +88,7 @@ export const organiserMessage: OrganiserMessage = {
   sourceLabel: "Community organiser message",
   headline: "Over 1 Billion Plastic Pellets Released into the River Tyne",
   context: [
-    "On 19 July 2026, following a collision between two vessels in the Port of Tyne, an estimated 24 tonnes of plastic pellets—known as nurdles—entered the River Tyne. Around one billion of these tiny plastic pellets have since washed up along beaches across the North East, prompting a huge community-led clean-up effort.",
+    "On 19 July 2026, following a collision between two vessels in the Port of Tyne, an estimated 17 tonnes of plastic pellets—known as nurdles—entered the River Tyne. Around one billion of these tiny plastic pellets have since washed up along beaches across the North East, prompting a huge community-led clean-up effort.",
     "This website brings together the latest community updates, practical guidance and resources to help volunteers respond to the spill. It has been created by volunteers to make it easier to find key information without having to search through hundreds of WhatsApp messages.",
     "The clean-up effort is currently being coordinated by the local community alongside organisations, councils and specialist contractors working on the wider response. Information on this site is updated regularly, but guidance can change quickly, so please check the latest updates before heading to the beach.",
   ],
@@ -230,7 +230,7 @@ export const scientificBriefing: ScientificBriefing = {
         "Although each pellet is tiny, the scale is enormous:",
       ],
       bullets: [
-        "Approximately 1,000,000,000 pellets. Roughly 25 tonnes.",
+        "Approximately 1,000,000,000 pellets. Roughly 17 tonnes.",
         "Capable of spreading over many kilometres of coastline.",
         "Extremely difficult to recover completely.",
         "Marine scientists regard nurdle spills as one of the most persistent forms of plastic pollution because the pellets continue circulating between beaches and the sea for years.",
@@ -664,19 +664,19 @@ export const howToCollectIntro =
 /** Ecosystem care guidance shown under How to collect. */
 export const ecosystemProtection = {
   title: "Protect our ecosystems when collecting Nurdles",
-  blocks: [
-    {
-      heading: "On digging",
-      text: "Please avoid digging or taking mechanical approaches.",
-    },
-    {
-      heading: "Wet sand",
-      text: "The damp intertidal band (the sand exposed between tides) is the most biologically productive part of the beach. It is packed with burrowing infauna — lugworms, ragworms, cockles, tellins, razor clams, sandhoppers — which are the main food supply for wading birds and inshore fish. Turning or excavating this sand kills and exposes those buried animals directly, and it flips oxygen-poor sediment up to the surface.",
-    },
-    {
-      heading: "Move and remove as little seaweed as possible.",
-      text: "Seaweed is a vital part of our beach ecosystem. It's home to lots of helpful tiny life forms and the local birds too! Pick it up, shake it into a bucket to catch nurdles, remove nurdles from under it, and put it back.",
-    },
+  subtitle: "Volunteer guidance: Collecting nurdles with minimal impact",
+  intro:
+    "When collecting nurdles, please help minimise disturbance to wildlife and coastal habitats by following these guidelines:",
+  guidelines: [
+    "Keep disturbance to a minimum. Take a common-sense approach and avoid unnecessary trampling or habitat damage while searching.",
+    "Leave as much seaweed in place as possible. Searching for nurdles in and around seaweed is often necessary but avoid removing large amounts of drift seaweed, as it provides important habitat and food for wildlife.",
+    "Avoid pulling seaweed growing on rocky shores.",
+    "If you move rocks, always return them to their original position.",
+    "Avoid standing on biogenic reefs or other sensitive habitats (e.g. mussel beds, barnacles etc).",
+    "If collecting on rocky shores, avoid repeated visits to the same area. Where possible, concentrate efforts over a day or two before allowing the site to recover from trampling and disturbance.",
+    "Avoid disturbing birds and other wildlife. Some temporary disturbance is unavoidable, but please keep it to the minimum necessary while collecting.",
+    "Avoid collecting nurdles at seal haul-out sites at all costs (e.g. St Mary’s lighthouse). Specific permission and guidance must be provided by organisations such as Natural England.",
+    "Shallow digging in sandy beaches (around 10 cm) is acceptable. Sandy beaches are mobile sediment habitats, meaning they move at every tide and storm. Digging shallow holes to reach buried nurdles should not cause significant environmental harm, particularly in dry sand. There should not be a need to dig deeply or excavate large areas, as nurdles are unlikely to be buried very deep at this stage. Please use common sense, avoid unnecessary excavation, and replace the sand you remove to restore the area as much as possible.",
   ],
 } as const;
 

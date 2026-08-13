@@ -2,7 +2,7 @@ import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTML
 import { cn } from "@/lib/cn";
 
 const controlClass =
-  "mt-1 w-full rounded-control border border-line bg-paper px-3 py-2.5 text-base text-ink disabled:opacity-60";
+  "mt-1 box-border w-full min-w-0 max-w-full rounded-control border border-line bg-paper px-3 py-2.5 text-base text-ink disabled:opacity-60";
 
 export function FormField({
   label,

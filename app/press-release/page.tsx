@@ -5,7 +5,7 @@ import { PageShell } from "@/components/page-shell";
 export const metadata: Metadata = {
   title: "Press release",
   description:
-    "Volunteers log 3000 hours cleaning up nurdles as community campaign escalates with open letter to Port of Tyne.",
+    "Spring tide looms as nurdle volunteers demand more action — North East England, 11 August 2026.",
 };
 
 export default function PressReleasePage() {

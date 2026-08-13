@@ -231,34 +231,36 @@ export function WildlifeReportModal({
           </Select>
         </FormField>
 
-        <FormField label="Date observed" htmlFor={dateId} className="mt-4">
-          <Input
-            id={dateId}
-            key={maxDate}
-            name="dateObserved"
-            type="date"
-            required
-            disabled={busy}
-            min={WILDLIFE_MIN_DATE}
-            max={maxDate}
-            defaultValue={maxDate}
-            className="box-border min-w-0 max-w-full"
-          />
+        <FormField label="Date observed" htmlFor={dateId} className="mt-4 min-w-0">
+          <div className="min-w-0 overflow-hidden">
+            <Input
+              id={dateId}
+              key={maxDate}
+              name="dateObserved"
+              type="date"
+              required
+              disabled={busy}
+              min={WILDLIFE_MIN_DATE}
+              max={maxDate}
+              defaultValue={maxDate}
+            />
+          </div>
         </FormField>
 
         <FormField
           label="Approximate time"
           htmlFor={timeId}
           optional
-          className="mt-4"
+          className="mt-4 min-w-0"
         >
-          <Input
-            id={timeId}
-            name="timeObserved"
-            type="time"
-            disabled={busy}
-            className="box-border min-w-0 max-w-full"
-          />
+          <div className="min-w-0 overflow-hidden">
+            <Input
+              id={timeId}
+              name="timeObserved"
+              type="time"
+              disabled={busy}
+            />
+          </div>
         </FormField>
 
         <FormField label="Animal" htmlFor={animalId} className="mt-4">

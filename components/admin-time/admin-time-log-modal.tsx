@@ -165,24 +165,25 @@ export function AdminTimeLogModal({
         </p>
 
         <FormField label="Date" htmlFor={dateId} className="mt-4 min-w-0">
-          <Input
-            id={dateId}
-            key={maxDate}
-            name="workDate"
-            type="date"
-            required
-            disabled={busy}
-            min={ADMIN_TIME_MIN_DATE}
-            max={maxDate}
-            defaultValue={maxDate}
-            className="box-border min-w-0 max-w-full"
-          />
+          <div className="min-w-0 overflow-hidden">
+            <Input
+              id={dateId}
+              key={maxDate}
+              name="workDate"
+              type="date"
+              required
+              disabled={busy}
+              min={ADMIN_TIME_MIN_DATE}
+              max={maxDate}
+              defaultValue={maxDate}
+            />
+          </div>
         </FormField>
 
-        <fieldset className="mt-4" disabled={busy}>
+        <fieldset className="mt-4 min-w-0" disabled={busy}>
           <legend className="text-sm font-bold">Time spent</legend>
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <div>
+          <div className="mt-2 grid min-w-0 grid-cols-2 gap-2">
+            <div className="min-w-0">
               <label htmlFor={hoursId} className="block text-xs font-bold">
                 Hours
               </label>
@@ -197,7 +198,7 @@ export function AdminTimeLogModal({
                 required
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <label htmlFor={minutesId} className="block text-xs font-bold">
                 Minutes
               </label>
@@ -219,7 +220,7 @@ export function AdminTimeLogModal({
         <FormField
           label="What was this for?"
           htmlFor={categoryId}
-          className="mt-4"
+          className="mt-4 min-w-0"
         >
           <Select
             id={categoryId}

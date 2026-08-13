@@ -184,41 +184,42 @@ export function CleanupLogModal({
         <FormGateHoneypotField id={honeypotId} />
 
         <FormField label="Date of clean-up" htmlFor={dateId} className="min-w-0">
-          <Input
-            id={dateId}
-            key={maxDate}
-            name="cleanupDate"
-            type="date"
-            required
-            disabled={busy}
-            min={CLEANUP_LOG_MIN_DATE}
-            max={maxDate}
-            defaultValue={maxDate}
-            onInvalid={(event) => {
-              const input = event.currentTarget;
-              if (input.validity.rangeOverflow) {
-                input.setCustomValidity("Logged time is in the future");
-              } else if (input.validity.rangeUnderflow) {
-                input.setCustomValidity(
-                  "Please log time after nurdle spill",
-                );
-              } else if (input.validity.valueMissing) {
-                input.setCustomValidity("Choose a clean-up date.");
-              } else {
-                input.setCustomValidity("");
-              }
-            }}
-            onInput={(event) => {
-              event.currentTarget.setCustomValidity("");
-            }}
-            className="box-border min-w-0 max-w-full"
-          />
+          <div className="min-w-0 overflow-hidden">
+            <Input
+              id={dateId}
+              key={maxDate}
+              name="cleanupDate"
+              type="date"
+              required
+              disabled={busy}
+              min={CLEANUP_LOG_MIN_DATE}
+              max={maxDate}
+              defaultValue={maxDate}
+              onInvalid={(event) => {
+                const input = event.currentTarget;
+                if (input.validity.rangeOverflow) {
+                  input.setCustomValidity("Logged time is in the future");
+                } else if (input.validity.rangeUnderflow) {
+                  input.setCustomValidity(
+                    "Please log time after nurdle spill",
+                  );
+                } else if (input.validity.valueMissing) {
+                  input.setCustomValidity("Choose a clean-up date.");
+                } else {
+                  input.setCustomValidity("");
+                }
+              }}
+              onInput={(event) => {
+                event.currentTarget.setCustomValidity("");
+              }}
+            />
+          </div>
         </FormField>
 
-        <fieldset className="mt-4" disabled={busy}>
+        <fieldset className="mt-4 min-w-0" disabled={busy}>
           <legend className="text-sm font-bold">Time spent cleaning</legend>
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <div>
+          <div className="mt-2 grid min-w-0 grid-cols-2 gap-2">
+            <div className="min-w-0">
               <label htmlFor={hoursId} className="block text-xs font-bold">
                 Hours
               </label>
@@ -233,7 +234,7 @@ export function CleanupLogModal({
                 required
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <label htmlFor={minutesId} className="block text-xs font-bold">
                 Minutes
               </label>
@@ -255,7 +256,7 @@ export function CleanupLogModal({
         <FormField
           label="How many people did this clean-up include?"
           htmlFor={volunteersId}
-          className="mt-4"
+          className="mt-4 min-w-0"
         >
           <Input
             id={volunteersId}

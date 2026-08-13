@@ -181,13 +181,14 @@ export default function HowToCleanPage() {
       </Section>
 
       <Section id="ecosystem" title={ecosystemProtection.title} showDivider>
-        <div className="space-y-6 reading-measure">
-          {ecosystemProtection.blocks.map((block) => (
-            <div key={block.heading}>
-              <h3 className="text-card-title">{block.heading}</h3>
-              <p className="mt-2 text-body text-mute">{block.text}</p>
-            </div>
-          ))}
+        <div className="reading-measure">
+          <h3 className="text-card-title">{ecosystemProtection.subtitle}</h3>
+          <p className="mt-3 text-body text-mute">{ecosystemProtection.intro}</p>
+          <ul className="mt-4 list-disc space-y-3 pl-5 text-body text-mute">
+            {ecosystemProtection.guidelines.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </Section>
 

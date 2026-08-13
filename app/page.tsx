@@ -54,37 +54,6 @@ export default function HomePage() {
               {organiserMessage.context[0]}
             </p>
 
-            <dl className="mt-8 grid max-w-lg grid-cols-2 gap-x-8 gap-y-5 sm:max-w-2xl sm:grid-cols-4 sm:gap-x-10">
-              <div>
-                <dt className="text-eyebrow text-mute">Released</dt>
-                <dd className="mt-1 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-                  1&nbsp;billion+
-                </dd>
-                <dd className="text-meta">plastic pellets</dd>
-              </div>
-              <div>
-                <dt className="text-eyebrow text-mute">Date</dt>
-                <dd className="mt-1 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-                  19 Jul
-                </dd>
-                <dd className="text-meta">2026</dd>
-              </div>
-              <div>
-                <dt className="text-eyebrow text-mute">Location</dt>
-                <dd className="mt-1 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-                  Tyne
-                </dd>
-                <dd className="text-meta">River &amp; coast</dd>
-              </div>
-              <div>
-                <dt className="text-eyebrow text-mute">Volume</dt>
-                <dd className="mt-1 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-                  ~24&nbsp;t
-                </dd>
-                <dd className="text-meta">estimated</dd>
-              </div>
-            </dl>
-
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/beaches"

@@ -187,3 +187,22 @@ body {
     --gutter: 2rem;
   }
 }
+
+/* iOS Chrome/Safari: native date controls have a huge intrinsic min-width
+   that can blow out modal layouts. Force them to shrink with the container. */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  min-width: 0;
+  text-align: left;
+}

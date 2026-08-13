@@ -47,7 +47,7 @@ export function Modal({
     <dialog
       ref={dialogRef}
       className={cn(
-        "fixed left-1/2 top-1/2 z-50 m-0 max-h-[90dvh] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-soft border border-line bg-paper p-0 text-ink open:backdrop:bg-ink/45",
+        "fixed inset-x-4 top-1/2 z-50 m-0 box-border max-h-[90dvh] w-auto min-w-0 -translate-y-1/2 overflow-x-hidden overflow-y-auto rounded-soft border border-line bg-paper p-0 text-ink open:backdrop:bg-ink/45 sm:inset-x-auto sm:left-1/2 sm:w-[calc(100%-2rem)] sm:-translate-x-1/2",
         size === "sm" ? "max-w-md" : "max-w-lg",
         className,
       )}
@@ -61,11 +61,11 @@ export function Modal({
       }}
       {...props}
     >
-      <div className={cn("px-4 py-4", panelClassName)}>
+      <div className={cn("min-w-0 overflow-x-hidden px-4 py-4", panelClassName)}>
         {(title || showClose) && (
           <div className="mb-4 flex items-start justify-between gap-3">
             {title ? (
-              <h2 id={titleId} className="text-card-title min-w-0 flex-1">
+              <h2 id={titleId} className="text-card-title min-w-0 flex-1 break-words">
                 {title}
               </h2>
             ) : (
