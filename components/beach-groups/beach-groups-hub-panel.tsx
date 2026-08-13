@@ -260,6 +260,7 @@ export function BeachGroupsHubPanel() {
           adminTotalMinutes={adminTotalMinutes}
           loading={cleanupStatsLoading}
           activeBeachCount={checkinBeaches.length}
+          highlight
         />
       </div>
 

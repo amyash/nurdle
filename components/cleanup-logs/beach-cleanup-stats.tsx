@@ -16,28 +16,29 @@ export function BeachCleanupStats({
   className?: string;
   action?: React.ReactNode;
 }) {
+  const panelClass = cn(
+    "rounded-soft border border-urgent/30 bg-urgent-soft px-4 py-3",
+    className ?? "mt-4",
+  );
+
   if (loading) {
     return (
       <div
-        className={cn("min-h-6", className ?? "mt-4")}
+        className={cn(panelClass, "min-h-12 border-urgent/20 bg-urgent-soft/70")}
         aria-hidden="true"
       />
     );
   }
 
   if (!stats || stats.submissionCount === 0) {
-    return (
-      <p className={cn("text-meta", className ?? "mt-4")}>
-        No clean-ups logged yet
-      </p>
-    );
+    return <p className={cn("text-meta", panelClass)}>No clean-ups logged yet</p>;
   }
 
   return (
     <ul
       className={cn(
+        panelClass,
         "flex flex-wrap gap-x-5 gap-y-1 text-sm text-mute",
-        className ?? "mt-4",
       )}
     >
       <li>

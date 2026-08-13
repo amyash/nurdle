@@ -48,6 +48,7 @@ export function HomepageCleanupCallout() {
       adminTotalMinutes={adminTotalMinutes}
       loading={loading}
       activeBeachCount={checkinBeaches.length}
+      highlight
     />
   );
 }

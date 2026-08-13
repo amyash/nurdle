@@ -21,16 +21,27 @@ export function CleanupOverallCallout({
   adminTotalMinutes = 0,
   loading,
   activeBeachCount,
+  highlight = false,
 }: {
   stats: CleanupStatsResponse | null;
   adminTotalMinutes?: number;
   loading: boolean;
   activeBeachCount: number;
+  /** Warm standout panel — used on the homepage. */
+  highlight?: boolean;
 }) {
+  const panelClass = highlight
+    ? "rounded-soft border border-urgent/30 bg-urgent-soft px-5 py-6 sm:px-7 sm:py-7"
+    : undefined;
+
   if (loading) {
     return (
       <div
-        className="min-h-28 border-t border-line bg-surface/40"
+        className={
+          highlight
+            ? "min-h-28 rounded-soft border border-urgent/20 bg-urgent-soft/70"
+            : "min-h-28 border-t border-line bg-surface/40"
+        }
         aria-hidden="true"
       />
     );
@@ -41,7 +52,7 @@ export function CleanupOverallCallout({
 
   if (!hasCleanup && !hasAdmin) {
     return (
-      <div>
+      <div className={panelClass}>
         <p className="reading-measure text-body text-mute">
           No clean-ups logged yet. Use{" "}
           <strong className="text-ink">Log your clean-up</strong> on a beach to
@@ -56,7 +67,7 @@ export function CleanupOverallCallout({
   const adminHours = adminTotalMinutes / 60;
 
   return (
-    <div>
+    <div className={panelClass}>
       <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {overall && hasCleanup ? (
           <div>
@@ -101,7 +112,7 @@ export function CleanupOverallCallout({
         ) : null}
       </dl>
       {hasCleanup ? (
-        <p className="mt-6 text-meta">
+        <p className="mt-6 text-meta text-urgent-ink/80">
           Across {beaches.toLocaleString("en-GB")} beach
           {beaches === 1 ? "" : "es"} with logged activity
         </p>
