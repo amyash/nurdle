@@ -37,7 +37,7 @@ export const communityCleanupMessage: CommunityCleanupMessage = {
     "Basic tools required are sieves / dustpan and brushes, and bin bags. People are making mesh sieves, but they are not essential.",
     "After high tide is optimal — clear the tide line before it gets washed out again.",
     "Anything collected should ideally be bagged and left by council bins, marked as volunteer collections.",
-    "Photos of what you’ve collected should ideally be posted in the PHOTOS ONLY group of the WhatsApp community, in case we need evidence later on.",
+    "Photos of what you’ve collected help document the damage for later evidence — note date, time and location when you can.",
     "Good is better than perfect in a crisis — do what you can when you can. Just don’t trample nurdles into the sand.",
     {
       beforeLink: "Submit your findings with ",
@@ -49,11 +49,7 @@ export const communityCleanupMessage: CommunityCleanupMessage = {
 
 /** Shown under How to collect — evidence / photos note. */
 export const photosNote = {
-  beforeLink:
-    "Please take photos of the nurdles to document the damage. There will hopefully be legal action, an inquiry or investigation — the more evidence the better. There is a dedicated group called ",
-  linkLabel: "PHOTOS ONLY",
-  afterLink: " in the community WhatsApp.",
-  whatsappKey: "photos-only" as const,
+  text: "Please take photos of the nurdles to document the damage. There will hopefully be legal action, an inquiry or investigation — the more evidence the better.",
   nurdleHunt: {
     beforeLink: "Submit your findings with ",
     linkLabel: "The Great Nurdle Hunt",
@@ -805,12 +801,8 @@ export const techniqueGuides: TechniqueGuide[] = [
     title: "Mesh bag tutorial",
     steps: [],
     description:
-      "This quick video provides guidance on sewing mesh bags to filter out the sand and seawater, leaving the plastic pellets in the bag. We have a dedicated WhatsApp group for volunteers sewing mesh bags.",
+      "This quick video provides guidance on sewing mesh bags to filter out the sand and seawater, leaving the plastic pellets in the bag.",
     instagramUrl: "https://www.instagram.com/reels/DbQcPcBohWc/",
-    cta: {
-      label: "Mesh bag WhatsApp group",
-      whatsappKey: "mesh-bags",
-    },
   },
   {
     id: "removing-nurdles-from-seaweed",
@@ -889,16 +881,7 @@ export const communityImagesIntro = {
         {
           type: "text" as const,
           value:
-            " for exact location information. There is a dedicated group called ",
-        },
-        {
-          type: "whatsapp" as const,
-          label: "PHOTOS ONLY",
-          linkKey: "photos-only" as const,
-        },
-        {
-          type: "text" as const,
-          value: " in the community WhatsApp.",
+            " for exact location information.",
         },
       ],
     },

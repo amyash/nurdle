@@ -12,34 +12,33 @@ export type WhatsappLinkKey =
   | "newbiggin"
   | "cambois"
   | "fish-quay"
-  | "south-shields"
-  | "photos-only"
-  | "mesh-bags"
+  | "seaton-sluice"
+  | "blyth"
+  | "marina"
   | "site-contact"
   | "__community__";
 
 const ENCODED_LINKS: Record<WhatsappLinkKey, string> = {
-  "whitley-bay": "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9IOE55VFI0QVRoSklUMDE0V2M1b29F",
+  "whitley-bay":
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9INlQ4MmNDYTNoTkIxbmVTMkd0SFd2",
   "cullercoats-bay":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9MSklFNXhxc3FXbUdBSWwycEx0NHQy",
-  longsands: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9LdHJhSFhxOFEzUjZKckFOeGt6aThO",
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9IMXZSb3Vtb0dnMDk3SFRLN3NoWUxo",
+  longsands: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9HbkdrWElZNDdCREpxR3dKZXZiVURi",
   "king-edwards-bay":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9LMmxrdERzNU5BajdVRzFTWW9EWXdo",
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9CblZLbVlpN1EzNUNZTm1HRFBIamJx",
   "tynemouth-haven":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9JVXA0WUF4czdZbzd2WkFxZU82WjFJ",
-  newbiggin: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9GM0JwWjRkdzNnbUdscVRNN3JQZnR4",
-  cambois: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9DOWJXRnlhZHlIMTVrZ0lSMVFUQkxR",
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9GUWxSQURQV0lnSEU2QktiTGFUTU1U",
+  newbiggin: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9ETnY4czZWTzhMS0JDM2ZrR2wxOUFX",
+  cambois: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9KeWx5U05pYW9oVTlKMFdHOFphY0ZM",
   "fish-quay":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9FM1VGcm5KRlJFNzE5bFQ3Qnp0V29v",
-  "south-shields":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9LZmQwQkFCeDBkVEg5UTlVZ1VrczRy",
-  "photos-only":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9CdTNQVlF6RHZiRjAzazZmME5UdmdL",
-  "mesh-bags":
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9DZWdjaWI1WnRXb0FvcEdZR1NUanVr",
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9MY3JWRXhTZlo2NUV5bWltVVVXTnJy",
+  "seaton-sluice":
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9GMlU5VENEbjFFTEFEbGhlSVFPQ2Fn",
+  blyth: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9Hblc4ZGhTd05JTUY1R2RPTHpCZWFC",
+  marina: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9KY250Q3VPelpoZUNBODRwV082dGRa",
   "site-contact": "aHR0cHM6Ly93YS5tZS80NDc3NDU3MjAzMTk=",
   __community__:
-    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9LWFRaNnpPNjlzaTB2TnFOMG5yYzFm",
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9FalFQY0JveVNtcTZwcjh1YUF0OXpP",
 };
 
 const BEACH_LINK_KEYS: Partial<Record<string, WhatsappLinkKey>> = {
@@ -56,7 +55,9 @@ const BEACH_LINK_KEYS: Partial<Record<string, WhatsappLinkKey>> = {
   newbiggin: "newbiggin",
   cambois: "cambois",
   "fish-quay": "fish-quay",
-  "south-shields": "south-shields",
+  "seaton-sluice": "seaton-sluice",
+  blyth: "blyth",
+  marina: "marina",
 };
 
 export function whatsappLinkKeyForBeach(beachId: string): WhatsappLinkKey {
@@ -72,12 +73,10 @@ export function whatsappGateLabelForKey(key: WhatsappLinkKey): string {
   switch (key) {
     case "__community__":
       return "community WhatsApp";
-    case "photos-only":
-      return "PHOTOS ONLY WhatsApp";
-    case "mesh-bags":
-      return "mesh bag WhatsApp";
     case "site-contact":
       return "site maintainer WhatsApp";
+    case "marina":
+      return "marina WhatsApp";
     default:
       return "beach WhatsApp";
   }

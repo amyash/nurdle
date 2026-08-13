@@ -361,7 +361,7 @@ export const checkinBeaches: CheckinBeach[] = [
 export const otherBeachWhatsappGroups: {
   id: string;
   name: string;
-}[] = [];
+}[] = [{ id: "marina", name: "Marina" }];
 
 export const checkinBeachById = Object.fromEntries(
   checkinBeaches.map((beach) => [beach.id, beach]),
