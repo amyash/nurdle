@@ -1163,11 +1163,6 @@ export const communityImages: CommunityImage[] = [
     alt: "Volunteer in wellies scrubbing seaweed from a rock into a bin bag of nurdles",
   },
   {
-    id: "bowl-nurdles",
-    src: "/community/bowl-nurdles.webp",
-    alt: "Close-up of collected white nurdles mixed with sand in a bowl",
-  },
-  {
     id: "rocky-shore-nurdles",
     src: "/community/rocky-shore-nurdles.webp",
     alt: "Nurdles scattered across seaweed-covered rocks on the shore",
