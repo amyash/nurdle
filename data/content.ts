@@ -405,6 +405,56 @@ export const announcements: Announcement[] = [
     ],
   },
   {
+    id: "help-this-weekend-aug-14",
+    datetime: "2026-08-13T18:00:00+01:00",
+    sourceName: "Community announcement",
+    headline: "Can you help this weekend?",
+    blocks: [
+      {
+        type: "p",
+        parts: [
+          "We need volunteers urgently to join the North East Nurdle Clean-Up this weekend, just after the High Tides morning and evening. The Spring Tides are expected to bring more nurdles higher up our beaches.",
+        ],
+      },
+      {
+        type: "p",
+        parts: ["Let's grab them while we can!"],
+      },
+      {
+        type: "lg",
+        parts: ["Where"],
+      },
+      {
+        type: "p",
+        parts: [
+          "The Fish Quay beach in North Shields is a priority, but all beaches welcome nurdle volunteers.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["When"],
+      },
+      {
+        type: "bullets",
+        items: [
+          ["Fri 14 Aug: High Tides 5:06am & 5:40pm"],
+          ["Sat 15 Aug: High Tides 5:47am & 6:20pm"],
+          ["Sun 16 Aug: High Tides 6:27am & 6:58pm"],
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["What to bring"],
+      },
+      {
+        type: "p",
+        parts: [
+          "Gloves, buckets, dustpan + brush if you can. Equipment is also available to use at the beaches.",
+        ],
+      },
+    ],
+  },
+  {
     id: "sally-what-now-jul-30",
     datetime: "2026-07-30T18:25:00+01:00",
     sourceName: "Sally Yonder · Community admin",
