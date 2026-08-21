@@ -289,6 +289,122 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "tides-nurdles-weekend-aug-21",
+    datetime: "2026-08-21T21:45:00+01:00",
+    sourceName: "Community announcement",
+    headline: "Tides and Nurdles this weekend",
+    blocks: [
+      {
+        type: "p",
+        parts: ["It's tricky making predictions. Here's what we do know."],
+      },
+      {
+        type: "p",
+        parts: [
+          "It’s the first big northerly swell coming in since the nurdles were spilled through Saturday. And dropping off on Sunday eve/Monday.",
+        ],
+      },
+      {
+        type: "p",
+        parts: ["Winds flip offshore on Saturday."],
+      },
+      {
+        type: "lg",
+        parts: ["What this might mean for nurdles"],
+      },
+      {
+        type: "p",
+        parts: ["Prediction wise, not sure."],
+      },
+      {
+        type: "p",
+        parts: ["Will this bigger swell churn up and bring nurdles?"],
+      },
+      {
+        type: "p",
+        parts: [
+          "We don’t know, it’s not massive but it’s the most significant we’ve had.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "Northerly though too, so would be interesting to see where it sends those nurdles that are out at sea too.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["Next week"],
+      },
+      {
+        type: "p",
+        parts: [
+          "Interestingly looks like Monday brings some south easterly winds which brought nurdles to the north end of beaches before.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "nurdle-forecast-aug-17",
+    datetime: "2026-08-17T09:00:00+01:00",
+    sourceName: "Community announcement",
+    headline: "Nurdle Forecast — Mon 17 – Thursday 20 August",
+    blocks: [
+      {
+        type: "p",
+        parts: ["Here's what we know about conditions this week."],
+      },
+      {
+        type: "p",
+        parts: [
+          "As we learned last week this is not an exact science. Here's a sense of what to expect this week.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["Tides and Wind"],
+      },
+      {
+        type: "p",
+        parts: [
+          "Smaller tides on Tuesday and Wednesday with light to moderate offshore winds and a small swell.",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "It's early days for nurdle forecasting... the prediction is this won’t bring huge amounts of nurdles to our beaches.",
+        ],
+      },
+      {
+        type: "lg",
+        parts: ["End of the week"],
+      },
+      {
+        type: "p",
+        parts: [
+          "Current forecast: by Thursday a stronger northerly wind arrives bringing with it slightly bigger swell (waves).",
+        ],
+      },
+      {
+        type: "p",
+        parts: [
+          "The southern end of the larger North East facing beaches such as Longsands, Whitley Bay, Seaton Sluice, Cambois & Roker may see an increase in nurdles (They all have an element of north facing that will pick up this swell/wind).",
+        ],
+      },
+    ],
+    link: {
+      label: "Surfline swell forecast",
+      href: "https://www.surfline.com/",
+    },
+    links: [
+      {
+        label: "Tide time charts",
+        href: "/how-to-clean#tides",
+      },
+    ],
+  },
+  {
     id: "sally-what-now-jul-30",
     datetime: "2026-07-30T18:25:00+01:00",
     sourceName: "Sally Yonder · Community admin",

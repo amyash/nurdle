@@ -2,7 +2,14 @@ import Link from "next/link";
 import { ContentLinkButton } from "@/components/whatsapp/content-link";
 import { Disclosure } from "@/components/ui/disclosure";
 import { formatWhen } from "@/lib/dates";
-import type { Announcement, AnnouncementTextPart } from "@/types";
+import type { Announcement, AnnouncementTextPart, ContentLink } from "@/types";
+
+function announcementCtas(announcement: Announcement): ContentLink[] {
+  return [
+    ...(announcement.link ? [announcement.link] : []),
+    ...(announcement.links ?? []),
+  ];
+}
 
 function AnnouncementHeadline({ announcement }: { announcement: Announcement }) {
   const className = "mt-2 text-card-title text-ink";
@@ -163,16 +170,24 @@ function AnnouncementBody({ announcement }: { announcement: Announcement }) {
           ))}
         </ul>
       )}
-      {announcement.link && (
-        <p className="mt-5">
-          <ContentLinkButton
-            link={announcement.link}
-            variant={
-              "whatsappKey" in announcement.link ? "whatsapp" : "primary"
-            }
-          />
-        </p>
-      )}
+      {announcementCtas(announcement).length > 0 ? (
+        <ul className="mt-5 flex max-w-sm flex-col gap-2">
+          {announcementCtas(announcement).map((link, index) => (
+            <li key={"whatsappKey" in link ? link.whatsappKey : link.href}>
+              <ContentLinkButton
+                link={link}
+                variant={
+                  "whatsappKey" in link
+                    ? "whatsapp"
+                    : index === 0
+                      ? "primary"
+                      : "secondary"
+                }
+              />
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </>
   );
 }

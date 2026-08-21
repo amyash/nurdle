@@ -64,6 +64,7 @@ export interface Announcement {
   blocks?: AnnouncementBlock[];
   times?: string[];
   link?: ContentLink;
+  links?: ContentLink[];
   sourceName?: string;
   /** When true, card starts collapsed and expands on tap. */
   expandable?: boolean;
