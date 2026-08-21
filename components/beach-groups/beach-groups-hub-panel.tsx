@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AdminTimePanel } from "@/components/admin-time/admin-time-panel";
 import { BeachHubCard } from "@/components/beach-groups/beach-hub-card";
+import { RestOfUkBeachSection } from "@/components/beach-groups/rest-of-uk-beach-section";
 import { CheckInModal } from "@/components/check-in/check-in-modal";
 import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
 import { CleanupLogSuccessModal } from "@/components/cleanup-logs/cleanup-log-success-modal";
@@ -322,6 +323,10 @@ export function BeachGroupsHubPanel() {
             </section>
           );
         })}
+      </div>
+
+      <div className="mt-10">
+        <RestOfUkBeachSection />
       </div>
 
       {otherBeachWhatsappGroups.length > 0 ? (

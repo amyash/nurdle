@@ -115,6 +115,32 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.4494,
     displayOrder: 3,
     region: "north-tyneside",
+    nest: {
+      locationLinks: [
+        {
+          label: "Panama Swimming Club on Google Maps",
+          url: "https://www.google.com/maps/search/?api=1&query=Panama+Swimming+Club+Northern+Promenade+Whitley+Bay",
+        },
+      ],
+      paragraphs: [
+        "Panama club are storing nurdle equipment and putting it out for volunteers to use.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items:",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
   },
   {
     id: "whitley-bay-south",
@@ -211,6 +237,16 @@ export const checkinBeaches: CheckinBeach[] = [
     latitude: 55.1845,
     longitude: -1.5098,
     displayOrder: 11,
+    region: "north-tyneside",
+  },
+  {
+    id: "cresswell-to-alnmouth",
+    name: "Cresswell to Alnmouth (inc Druridge and Amble)",
+    slug: "cresswell-to-alnmouth",
+    // Druridge Bay — representative pin for the Cresswell–Alnmouth stretch
+    latitude: 55.279,
+    longitude: -1.567,
+    displayOrder: 19,
     region: "north-tyneside",
   },
   {

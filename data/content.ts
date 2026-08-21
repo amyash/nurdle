@@ -18,6 +18,31 @@ export const whatsappCommunity = {
   whatsappKey: "__community__" as const,
 };
 
+/** Initial Rest of UK landing — may move or change. */
+export const restOfUk = {
+  title: "Rest of UK",
+  lead: "This hub is for the Port of Tyne nurdle spill in the North East. If you are finding nurdles elsewhere in the UK, here is where to start.",
+  paragraphs: [
+    "Nurdles wash up on beaches around the country, not only on Tyneside. The Great Nurdle Hunt is the national citizen-science project for recording finds and helping build a picture of plastic pellet pollution.",
+    "We have also started a Rest of UK WhatsApp group for volunteers outside North and South Tyneside. This is an initial test — it may not stay part of this community.",
+  ],
+  nurdleHunt: {
+    label: "Visit the Great Nurdle Hunt",
+    href: "https://www.nurdlehunt.org.uk/",
+  },
+  whatsapp: {
+    label: "Join the Rest of UK WhatsApp group",
+    whatsappKey: "rest-of-uk" as const,
+  },
+  beachesTeaser: {
+    eyebrow: "Outside North and South Tyneside",
+    title: "Rest of UK",
+    body: "Finding nurdles beyond the Tyne? Record them with the Great Nurdle Hunt, or join an initial WhatsApp group for the rest of the UK.",
+    pageLabel: "More about Rest of UK",
+    href: "/rest-of-uk",
+  },
+} as const;
+
 /** Top of Beach cleanup — North Shields tide times for today. */
 export const northShieldsTideTimes = {
   title: "Today's tide times for North Shields, England",
@@ -654,7 +679,7 @@ export const whatToBring: BringItem[] = [
   },
 ];
 
-/** Hygiene note shown under What to bring — not a numbered kit item. */
+/** Hygiene note shown above ecosystem protection on How to clean. */
 export const soapAndWaterGuidance = {
   title: "Soap and Water: Still the Champion for cleaning hands",
   paragraphs: [

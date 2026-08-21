@@ -15,6 +15,7 @@ export type WhatsappLinkKey =
   | "seaton-sluice"
   | "blyth"
   | "marina"
+  | "rest-of-uk"
   | "site-contact"
   | "__community__";
 
@@ -36,6 +37,8 @@ const ENCODED_LINKS: Record<WhatsappLinkKey, string> = {
     "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9GMlU5VENEbjFFTEFEbGhlSVFPQ2Fn",
   blyth: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9Hblc4ZGhTd05JTUY1R2RPTHpCZWFC",
   marina: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9KY250Q3VPelpoZUNBODRwV082dGRa",
+  "rest-of-uk":
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9ITWthNktxYlBxMEkzWFZNQVI3Rm40",
   "site-contact": "aHR0cHM6Ly93YS5tZS80NDc3NDU3MjAzMTk=",
   __community__:
     "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9FalFQY0JveVNtcTZwcjh1YUF0OXpP",
@@ -58,6 +61,8 @@ const BEACH_LINK_KEYS: Partial<Record<string, WhatsappLinkKey>> = {
   "seaton-sluice": "seaton-sluice",
   blyth: "blyth",
   marina: "marina",
+  "cresswell-to-alnmouth": "__community__",
+  "rest-of-uk": "rest-of-uk",
 };
 
 export function whatsappLinkKeyForBeach(beachId: string): WhatsappLinkKey {
@@ -77,6 +82,8 @@ export function whatsappGateLabelForKey(key: WhatsappLinkKey): string {
       return "site maintainer WhatsApp";
     case "marina":
       return "marina WhatsApp";
+    case "rest-of-uk":
+      return "Rest of UK WhatsApp";
     default:
       return "beach WhatsApp";
   }

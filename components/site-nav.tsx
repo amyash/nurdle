@@ -12,6 +12,7 @@ type NavItem =
 
 const primaryNav: NavItem[] = [
   { href: "/beaches", label: "Beaches" },
+  { href: "/rest-of-uk", label: "Rest of UK" },
   { href: "/how-to-clean", label: "How to clean" },
   { href: "/news", label: "Updates" },
   { href: "/wildlife-impact", label: "Wildlife" },
