@@ -654,6 +654,22 @@ export const whatToBring: BringItem[] = [
   },
 ];
 
+/** Hygiene note shown under What to bring — not a numbered kit item. */
+export const soapAndWaterGuidance = {
+  title: "Soap and Water: Still the Champion for cleaning hands",
+  paragraphs: [
+    "When you stop for a brew, break, or to head home, hand hygiene really matters. Hand gel is handy in many situations, but on its own it is not enough for this kind of clean-up. Good old-fashioned soap and clean running water are still the best option because they actually lift away sand, silt, tiny plastic fragments, grease, oils and germs. If you can, use the beach facilities, clean tap water and soap, and wash your hands properly before eating, drinking, smoking, touching your face, or leaving the site.",
+    "It removes dirt and silt: Soap and running water physically lift and rinse away sand, mud, tiny plastic fragments and contamination. Hand gel cannot do that.",
+  ],
+  soapIsKing: {
+    heading: "Soap is king:",
+    points: [
+      "It helps break down residues: Soap is better at dealing with grease, oils and fuel-type residues that may be present in a commercial river environment.",
+      "It gives germs less chance to stay put: The rubbing and rinsing action helps remove microorganisms from your hands, including from around nails and small creases in the skin.",
+    ],
+  },
+} as const;
+
 export const howToCollectIntro =
   "Avoid treading nurdles into the sand as best you can.";
 

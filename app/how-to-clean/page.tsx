@@ -19,6 +19,7 @@ import {
   ecosystemProtection,
   techniqueGuides,
   trainingVideos,
+  soapAndWaterGuidance,
   whatToBring,
   whatToBringIntro,
 } from "@/data/content";
@@ -80,6 +81,22 @@ export default function HowToCleanPage() {
             </li>
           ))}
         </ul>
+        <div className="mt-8 border-t border-line pt-8 reading-measure">
+          <h3 className="text-card-title">{soapAndWaterGuidance.title}</h3>
+          {soapAndWaterGuidance.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="mt-3 text-body text-mute">
+              {paragraph}
+            </p>
+          ))}
+          <p className="mt-4 text-body font-bold text-ink">
+            {soapAndWaterGuidance.soapIsKing.heading}
+          </p>
+          <ul className="mt-3 list-disc space-y-3 pl-5 text-body text-mute">
+            {soapAndWaterGuidance.soapIsKing.points.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       <Section id="collect" title="How to collect" showDivider>
