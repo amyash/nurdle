@@ -231,11 +231,6 @@ export function BeachCheckinMap({
         }
       });
 
-      marker.bindTooltip(
-        `${beach.name}: ${submissionCount}`,
-        { direction: "top", opacity: 0.95 },
-      );
-
       marker.addTo(layer);
     }
 
