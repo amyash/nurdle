@@ -2,8 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import type { CheckinBeach } from "@/data/checkin-beaches";
-import type { BeachCheckinStats } from "@/types/check-in";
-import { volunteerCountLabel } from "@/lib/check-in/format";
+import type { CleanupAggregate } from "@/types/cleanup-log";
 import "leaflet/dist/leaflet.css";
 
 type LeafletModule = typeof import("leaflet");
@@ -16,11 +15,18 @@ function escapeHtml(value: string): string {
     .replaceAll('"', "&quot;");
 }
 
-function markerRadius(count: number): number {
-  if (count <= 0) return 10;
-  if (count < 5) return 12;
-  if (count < 15) return 15;
+function markerRadius(submissionCount: number): number {
+  if (submissionCount <= 0) return 10;
+  if (submissionCount < 5) return 12;
+  if (submissionCount < 15) return 15;
   return 18;
+}
+
+function cleanupSummaryLabel(stats: CleanupAggregate | undefined): string {
+  const count = stats?.submissionCount ?? 0;
+  if (count === 0) return "No clean-ups logged yet";
+  if (count === 1) return "1 clean-up logged";
+  return `${count.toLocaleString("en-GB")} clean-ups logged`;
 }
 
 /** One-finger scroll keeps the page moving; two fingers pan the map. */
@@ -54,27 +60,25 @@ function setupTwoFingerPan(map: import("leaflet").Map) {
 
 export function BeachCheckinMap({
   beaches,
-  statsById,
-  checkedInBeachId,
-  onCheckInRequest,
+  cleanupStatsById,
+  onLogCleanupRequest,
 }: {
   beaches: CheckinBeach[];
-  statsById: Record<string, BeachCheckinStats | undefined>;
-  checkedInBeachId: string | null;
-  onCheckInRequest: (beachId: string) => void;
+  cleanupStatsById: Record<string, CleanupAggregate | undefined>;
+  onLogCleanupRequest: (beachId: string) => void;
 }) {
   const mapId = useId().replace(/:/g, "");
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<import("leaflet").Map | null>(null);
   const layerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const leafletRef = useRef<LeafletModule | null>(null);
-  const onCheckInRef = useRef(onCheckInRequest);
+  const onLogCleanupRef = useRef(onLogCleanupRequest);
   const [mapError, setMapError] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
-    onCheckInRef.current = onCheckInRequest;
-  }, [onCheckInRequest]);
+    onLogCleanupRef.current = onLogCleanupRequest;
+  }, [onLogCleanupRequest]);
 
   useEffect(() => {
     let cancelled = false;
@@ -107,7 +111,7 @@ export function BeachCheckinMap({
       } catch {
         if (!cancelled) {
           setMapError(
-            "The map couldn’t load on this device. Use the beach list below to check in.",
+            "The map couldn’t load on this device. Use the beach list below to log a clean-up.",
           );
         }
       }
@@ -135,33 +139,33 @@ export function BeachCheckinMap({
     const bounds: import("leaflet").LatLngExpression[] = [];
 
     for (const beach of beaches) {
-      const count = statsById[beach.id]?.volunteerCount ?? 0;
-      const isHere = checkedInBeachId === beach.id;
+      const stats = cleanupStatsById[beach.id];
+      const submissionCount = stats?.submissionCount ?? 0;
       const latLng: import("leaflet").LatLngExpression = [
         beach.latitude,
         beach.longitude,
       ];
       bounds.push(latLng);
 
-      const radius = markerRadius(count);
+      const radius = markerRadius(submissionCount);
       const marker = L.circleMarker(latLng, {
         radius,
-        color: isHere ? "#0f766e" : "#111827",
-        weight: isHere ? 3 : 2,
-        fillColor: count > 0 ? "#0f766e" : "#ffffff",
-        fillOpacity: count > 0 ? 0.85 : 0.95,
+        color: "#111827",
+        weight: 2,
+        fillColor: submissionCount > 0 ? "#0f766e" : "#ffffff",
+        fillOpacity: submissionCount > 0 ? 0.85 : 0.95,
       });
 
       const popup = L.popup({ closeButton: true }).setContent(
         `<div style="min-width:10rem;font-family:system-ui,sans-serif">
           <p style="margin:0;font-weight:700">${escapeHtml(beach.name)}</p>
-          <p style="margin:0.35rem 0 0;font-size:0.875rem">${escapeHtml(volunteerCountLabel(count))}</p>
+          <p style="margin:0.35rem 0 0;font-size:0.875rem">${escapeHtml(cleanupSummaryLabel(stats))}</p>
           <button
             type="button"
             data-beach-id="${escapeHtml(beach.id)}"
             style="margin-top:0.6rem;width:100%;border:0;border-radius:0.375rem;background:#0f766e;color:#fff;font-weight:700;font-size:0.875rem;padding:0.55rem 0.75rem;cursor:pointer"
           >
-            Check in here
+            Log your clean
           </button>
         </div>`,
       );
@@ -174,13 +178,13 @@ export function BeachCheckinMap({
         if (button instanceof HTMLButtonElement) {
           button.onclick = () => {
             map.closePopup();
-            onCheckInRef.current(beach.id);
+            onLogCleanupRef.current(beach.id);
           };
         }
       });
 
       marker.bindTooltip(
-        `${beach.name}: ${count}`,
+        `${beach.name}: ${submissionCount}`,
         { direction: "top", opacity: 0.95 },
       );
 
@@ -195,7 +199,7 @@ export function BeachCheckinMap({
     }
 
     map.invalidateSize();
-  }, [beaches, statsById, checkedInBeachId, mapReady]);
+  }, [beaches, cleanupStatsById, mapReady]);
 
   if (mapError) {
     return (
@@ -220,7 +224,7 @@ export function BeachCheckinMap({
         ref={containerRef}
         className="h-64 w-full min-h-64 sm:h-72"
         role="img"
-        aria-label="Map of North Tyneside beaches used for volunteer check-in. Full details are listed below."
+        aria-label="Map of North Tyneside beaches used to log clean-ups. Full details are listed below."
       />
       <p className="border-t border-line px-3 py-2 text-xs leading-snug text-mute sm:hidden">
         Use two fingers to move the map. One finger scrolls the page.

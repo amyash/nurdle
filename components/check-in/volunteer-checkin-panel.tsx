@@ -252,9 +252,8 @@ export function VolunteerCheckinPanel() {
 
       <BeachCheckinMap
         beaches={checkinBeaches}
-        statsById={statsById}
-        checkedInBeachId={myCheckin?.beachId ?? null}
-        onCheckInRequest={openCheckIn}
+        cleanupStatsById={{}}
+        onLogCleanupRequest={() => {}}
       />
 
       <ul className="space-y-3">
