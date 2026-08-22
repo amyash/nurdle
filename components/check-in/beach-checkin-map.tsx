@@ -32,6 +32,14 @@ function cleanupSummaryLabel(stats: CleanupAggregate | undefined): string {
   return `${count.toLocaleString("en-GB")} clean-ups logged`;
 }
 
+function waitForLayout(): Promise<void> {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => resolve());
+    });
+  });
+}
+
 /** One-finger scroll keeps the page moving; two fingers pan the map. */
 function setupTwoFingerPan(map: import("leaflet").Map) {
   const container = map.getContainer();
@@ -105,34 +113,16 @@ export function BeachCheckinMap({
   }, [expanded, closeExpanded]);
 
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !mapReady) return;
-
-    if (expanded) {
-      map.scrollWheelZoom.enable();
-    } else {
-      map.scrollWheelZoom.disable();
-    }
-
-    const frame = window.requestAnimationFrame(() => {
-      map.invalidateSize();
-      const bounds = boundsRef.current;
-      if (bounds.length > 0) {
-        map.fitBounds(bounds as import("leaflet").LatLngBoundsExpression, {
-          padding: expanded ? [48, 48] : [24, 24],
-          maxZoom: expanded ? 14 : 15,
-        });
-      }
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, [expanded, mapReady]);
-
-  useEffect(() => {
     let cancelled = false;
 
     async function initMap() {
-      if (!containerRef.current || mapRef.current) return;
+      setMapReady(false);
+      mapRef.current?.remove();
+      mapRef.current = null;
+      layerRef.current = null;
+
+      await waitForLayout();
+      if (cancelled || !containerRef.current) return;
 
       try {
         const L = await import("leaflet");
@@ -140,7 +130,7 @@ export function BeachCheckinMap({
 
         leafletRef.current = L;
         const map = L.map(containerRef.current, {
-          scrollWheelZoom: false,
+          scrollWheelZoom: expanded,
           attributionControl: true,
         });
 
@@ -169,13 +159,11 @@ export function BeachCheckinMap({
 
     return () => {
       cancelled = true;
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-        layerRef.current = null;
-      }
+      mapRef.current?.remove();
+      mapRef.current = null;
+      layerRef.current = null;
     };
-  }, []);
+  }, [expanded]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -234,8 +222,8 @@ export function BeachCheckinMap({
       marker.addTo(layer);
     }
 
+    boundsRef.current = bounds;
     if (bounds.length > 0) {
-      boundsRef.current = bounds;
       map.fitBounds(bounds as import("leaflet").LatLngBoundsExpression, {
         padding: expanded ? [48, 48] : [24, 24],
         maxZoom: expanded ? 14 : 15,
@@ -268,14 +256,15 @@ export function BeachCheckinMap({
       <div
         className={cn(
           "overflow-hidden border border-line bg-paper",
-          expanded && "fixed inset-0 z-50 flex flex-col border-0",
+          expanded &&
+            "fixed inset-0 z-50 flex h-[100dvh] max-h-[100dvh] flex-col border-0",
         )}
         role={expanded ? "dialog" : undefined}
         aria-modal={expanded || undefined}
         aria-label={expanded ? "Expanded beaches map" : undefined}
       >
         {expanded ? (
-          <div className="flex shrink-0 items-center justify-between border-b border-line px-3 py-2">
+          <div className="relative z-10 flex shrink-0 items-center justify-between border-b border-line bg-paper px-3 py-2">
             <h2 className="text-sm font-bold text-ink">Beaches map</h2>
             <IconButton label="Close map" onClick={closeExpanded}>
               ×
@@ -283,9 +272,7 @@ export function BeachCheckinMap({
           </div>
         ) : null}
 
-        <div
-          className={cn("relative", expanded && "flex min-h-0 flex-1 flex-col")}
-        >
+        <div className={cn("relative", expanded ? "min-h-0 flex-1" : "")}>
           {!mapReady ? (
             <p className="px-3 py-3 text-meta" role="status">
               Loading map…
@@ -308,23 +295,23 @@ export function BeachCheckinMap({
             ref={containerRef}
             className={cn(
               "w-full",
-              expanded ? "min-h-0 flex-1" : "h-64 min-h-64 sm:h-72",
+              expanded ? "h-full min-h-[12rem]" : "h-64 min-h-64 sm:h-72",
             )}
             role="img"
             aria-label="Map of North Tyneside beaches used to log clean-ups. Full details are listed below."
           />
-
-          <p
-            className={cn(
-              "border-t border-line px-3 py-2 text-xs leading-snug text-mute sm:hidden",
-              expanded && "shrink-0",
-            )}
-          >
-            {expanded
-              ? "Use two fingers to move the map."
-              : "Use two fingers to move the map. One finger scrolls the page."}
-          </p>
         </div>
+
+        <p
+          className={cn(
+            "border-t border-line px-3 py-2 text-xs leading-snug text-mute sm:hidden",
+            expanded && "relative z-10 shrink-0 bg-paper",
+          )}
+        >
+          {expanded
+            ? "Use two fingers to move the map."
+            : "Use two fingers to move the map. One finger scrolls the page."}
+        </p>
       </div>
     </>
   );
