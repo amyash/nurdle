@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { CheckinBeach } from "@/data/checkin-beaches";
 import type { CleanupAggregate } from "@/types/cleanup-log";
+import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
+import { cn } from "@/lib/cn";
 import "leaflet/dist/leaflet.css";
 
 type LeafletModule = typeof import("leaflet");
@@ -73,12 +76,57 @@ export function BeachCheckinMap({
   const layerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const leafletRef = useRef<LeafletModule | null>(null);
   const onLogCleanupRef = useRef(onLogCleanupRequest);
+  const boundsRef = useRef<import("leaflet").LatLngExpression[]>([]);
   const [mapError, setMapError] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const closeExpanded = useCallback(() => setExpanded(false), []);
 
   useEffect(() => {
     onLogCleanupRef.current = onLogCleanupRequest;
   }, [onLogCleanupRequest]);
+
+  useEffect(() => {
+    if (!expanded) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeExpanded();
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [expanded, closeExpanded]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+
+    if (expanded) {
+      map.scrollWheelZoom.enable();
+    } else {
+      map.scrollWheelZoom.disable();
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      map.invalidateSize();
+      const bounds = boundsRef.current;
+      if (bounds.length > 0) {
+        map.fitBounds(bounds as import("leaflet").LatLngBoundsExpression, {
+          padding: expanded ? [48, 48] : [24, 24],
+          maxZoom: expanded ? 14 : 15,
+        });
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [expanded, mapReady]);
 
   useEffect(() => {
     let cancelled = false;
@@ -192,14 +240,15 @@ export function BeachCheckinMap({
     }
 
     if (bounds.length > 0) {
+      boundsRef.current = bounds;
       map.fitBounds(bounds as import("leaflet").LatLngBoundsExpression, {
-        padding: [24, 24],
-        maxZoom: 15,
+        padding: expanded ? [48, 48] : [24, 24],
+        maxZoom: expanded ? 14 : 15,
       });
     }
 
     map.invalidateSize();
-  }, [beaches, cleanupStatsById, mapReady]);
+  }, [beaches, cleanupStatsById, mapReady, expanded]);
 
   if (mapError) {
     return (
@@ -213,22 +262,75 @@ export function BeachCheckinMap({
   }
 
   return (
-    <div className="overflow-hidden border border-line bg-paper">
-      {!mapReady ? (
-        <p className="px-3 py-3 text-meta" role="status">
-          Loading map…
-        </p>
+    <>
+      {expanded ? (
+        <div
+          className="h-64 w-full min-h-64 border border-line bg-paper sm:h-72"
+          aria-hidden
+        />
       ) : null}
+
       <div
-        id={`checkin-map-${mapId}`}
-        ref={containerRef}
-        className="h-64 w-full min-h-64 sm:h-72"
-        role="img"
-        aria-label="Map of North Tyneside beaches used to log clean-ups. Full details are listed below."
-      />
-      <p className="border-t border-line px-3 py-2 text-xs leading-snug text-mute sm:hidden">
-        Use two fingers to move the map. One finger scrolls the page.
-      </p>
-    </div>
+        className={cn(
+          "overflow-hidden border border-line bg-paper",
+          expanded && "fixed inset-0 z-50 flex flex-col border-0",
+        )}
+        role={expanded ? "dialog" : undefined}
+        aria-modal={expanded || undefined}
+        aria-label={expanded ? "Expanded beaches map" : undefined}
+      >
+        {expanded ? (
+          <div className="flex shrink-0 items-center justify-between border-b border-line px-3 py-2">
+            <h2 className="text-sm font-bold text-ink">Beaches map</h2>
+            <IconButton label="Close map" onClick={closeExpanded}>
+              ×
+            </IconButton>
+          </div>
+        ) : null}
+
+        <div
+          className={cn("relative", expanded && "flex min-h-0 flex-1 flex-col")}
+        >
+          {!mapReady ? (
+            <p className="px-3 py-3 text-meta" role="status">
+              Loading map…
+            </p>
+          ) : null}
+
+          {!expanded && mapReady ? (
+            <Button
+              type="button"
+              variant="secondary"
+              className="absolute right-2 top-2 z-[1000] min-h-9 px-3 py-1.5 text-xs shadow-sm"
+              onClick={() => setExpanded(true)}
+            >
+              Expand map
+            </Button>
+          ) : null}
+
+          <div
+            id={`checkin-map-${mapId}`}
+            ref={containerRef}
+            className={cn(
+              "w-full",
+              expanded ? "min-h-0 flex-1" : "h-64 min-h-64 sm:h-72",
+            )}
+            role="img"
+            aria-label="Map of North Tyneside beaches used to log clean-ups. Full details are listed below."
+          />
+
+          <p
+            className={cn(
+              "border-t border-line px-3 py-2 text-xs leading-snug text-mute sm:hidden",
+              expanded && "shrink-0",
+            )}
+          >
+            {expanded
+              ? "Use two fingers to move the map."
+              : "Use two fingers to move the map. One finger scrolls the page."}
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
