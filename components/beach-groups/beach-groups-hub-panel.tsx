@@ -19,6 +19,7 @@ import {
   checkinBeaches,
   otherBeachWhatsappGroups,
 } from "@/data/checkin-beaches";
+import { showRestOfUkBeachSection } from "@/data/content";
 import {
   checkInVolunteer,
   fetchBeachCheckinStats,
@@ -325,9 +326,11 @@ export function BeachGroupsHubPanel() {
         })}
       </div>
 
-      <div className="mt-10">
-        <RestOfUkBeachSection />
-      </div>
+      {showRestOfUkBeachSection ? (
+        <div className="mt-10">
+          <RestOfUkBeachSection />
+        </div>
+      ) : null}
 
       {otherBeachWhatsappGroups.length > 0 ? (
         <div className="mt-10 border-t border-line pt-8">

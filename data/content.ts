@@ -18,6 +18,9 @@ export const whatsappCommunity = {
   whatsappKey: "__community__" as const,
 };
 
+/** Set to true when admins are ready to show the Rest of UK card on the beaches page. */
+export const showRestOfUkBeachSection = false;
+
 /** Initial Rest of UK landing — may move or change. */
 export const restOfUk = {
   title: "Rest of UK",
