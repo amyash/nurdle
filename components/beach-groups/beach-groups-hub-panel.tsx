@@ -1,11 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminTimePanel } from "@/components/admin-time/admin-time-panel";
 import { BeachHubCard } from "@/components/beach-groups/beach-hub-card";
 import { RestOfUkBeachSection } from "@/components/beach-groups/rest-of-uk-beach-section";
-import { CheckInModal } from "@/components/check-in/check-in-modal";
 import { CleanupLogModal } from "@/components/cleanup-logs/cleanup-log-modal";
 import { CleanupLogSuccessModal } from "@/components/cleanup-logs/cleanup-log-success-modal";
 import { CleanupOverallCallout } from "@/components/cleanup-logs/cleanup-overall-callout";
@@ -20,12 +19,6 @@ import {
   otherBeachWhatsappGroups,
 } from "@/data/checkin-beaches";
 import { showRestOfUkBeachSection } from "@/data/content";
-import {
-  checkInVolunteer,
-  fetchBeachCheckinStats,
-  fetchMyActiveCheckin,
-} from "@/lib/check-in/api";
-import { getOrCreateCheckinSessionId } from "@/lib/check-in/session";
 import { fetchAdminTimeStats } from "@/lib/admin-time/api";
 import {
   createCleanupLog,
@@ -34,10 +27,6 @@ import {
 } from "@/lib/cleanup-logs/api";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { whatsappLinkKeyForBeach } from "@/lib/whatsapp-gate/links";
-import type {
-  ActiveSessionCheckin,
-  BeachCheckinStats,
-} from "@/types/check-in";
 import type { CleanupStatsResponse } from "@/types/cleanup-log";
 
 const BeachCheckinMap = dynamic(
@@ -60,87 +49,31 @@ const BeachCheckinMap = dynamic(
 
 const POLL_MS = 25_000;
 
-function emptyStats(): BeachCheckinStats[] {
-  return checkinBeaches.map((beach) => ({
-    beachId: beach.id,
-    volunteerCount: 0,
-    latestCheckedInAt: null,
-    sampleFirstName: null,
-  }));
-}
-
 export function BeachGroupsHubPanel() {
   const configured = isSupabaseConfigured();
   const { openGate } = useWhatsAppGate();
-  const sessionIdRef = useRef<string | null>(null);
-  const [stats, setStats] = useState<BeachCheckinStats[]>(emptyStats);
   const [cleanupStats, setCleanupStats] = useState<CleanupStatsResponse | null>(
     null,
   );
   const [adminTotalMinutes, setAdminTotalMinutes] = useState(0);
   const [cleanupStatsLoading, setCleanupStatsLoading] = useState(true);
-  const [myCheckin, setMyCheckin] = useState<ActiveSessionCheckin | null>(null);
-  const [loadError, setLoadError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [modalBeachId, setModalBeachId] = useState<string | null>(null);
-  const [modalError, setModalError] = useState<string | null>(null);
   const [cleanupBeachId, setCleanupBeachId] = useState<string | null>(null);
   const [cleanupError, setCleanupError] = useState<string | null>(null);
   const [showCleanupSuccess, setShowCleanupSuccess] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  function ensureSessionId(): string {
-    if (!sessionIdRef.current) {
-      sessionIdRef.current = getOrCreateCheckinSessionId();
-    }
-    return sessionIdRef.current;
-  }
-
-  const statsById = useMemo(
-    () => Object.fromEntries(stats.map((row) => [row.beachId, row])),
-    [stats],
+  const cleanupStatsById = useMemo(
+    () => cleanupStats?.byBeach ?? {},
+    [cleanupStats],
   );
 
-  const modalBeach = modalBeachId
-    ? checkinBeaches.find((beach) => beach.id === modalBeachId)
-    : undefined;
-
-  const refresh = useCallback(async (sid: string) => {
-    const [statsResult, mineResult, cleanupResult, adminResult] =
-      await Promise.all([
-        fetchBeachCheckinStats(),
-        fetchMyActiveCheckin(sid),
-        fetchCleanupStats(),
-        fetchAdminTimeStats(),
-      ]);
-
-    if (statsResult.ok) {
-      const byId = Object.fromEntries(
-        statsResult.stats.map((row) => [row.beachId, row]),
-      );
-      setStats(
-        checkinBeaches.map(
-          (beach) =>
-            byId[beach.id] ?? {
-              beachId: beach.id,
-              volunteerCount: 0,
-              latestCheckedInAt: null,
-              sampleFirstName: null,
-            },
-        ),
-      );
-      setLoadError(null);
-    } else if (statsResult.error === "not_configured") {
-      setStats(emptyStats());
-      setLoadError(statsResult.message);
-    } else {
-      setLoadError(statsResult.message);
-    }
-
-    if (mineResult.ok) {
-      setMyCheckin(mineResult.checkin);
-    }
+  const refresh = useCallback(async () => {
+    const [cleanupResult, adminResult] = await Promise.all([
+      fetchCleanupStats(),
+      fetchAdminTimeStats(),
+    ]);
 
     if (cleanupResult.ok) {
       setCleanupStats(cleanupResult.stats);
@@ -157,17 +90,15 @@ export function BeachGroupsHubPanel() {
   }, []);
 
   useEffect(() => {
-    const sid = ensureSessionId();
-
-    void refresh(sid);
+    void refresh();
 
     const poll = window.setInterval(() => {
-      void refresh(sid);
+      void refresh();
     }, POLL_MS);
 
     const onVisible = () => {
       if (document.visibilityState === "visible") {
-        void refresh(sid);
+        void refresh();
       }
     };
     document.addEventListener("visibilitychange", onVisible);
@@ -177,41 +108,6 @@ export function BeachGroupsHubPanel() {
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, [refresh]);
-
-  async function handleConfirmCheckIn(firstName: string) {
-    if (!modalBeachId) return;
-    const sessionId = ensureSessionId();
-    setBusy(true);
-    setModalError(null);
-    const result = await checkInVolunteer({
-      beachId: modalBeachId,
-      sessionId,
-      firstName,
-    });
-    setBusy(false);
-
-    if (!result.ok) {
-      setModalError(result.message);
-      return;
-    }
-
-    setMyCheckin(result.checkin);
-    setModalBeachId(null);
-    setStatusMessage(`Checked in at ${modalBeach?.name ?? "the beach"}.`);
-    await refresh(sessionId);
-  }
-
-  function openCheckIn(beachId: string) {
-    if (!configured) {
-      setActionError(
-        "Volunteer check-in isn’t connected yet. Please try again later.",
-      );
-      return;
-    }
-    setActionError(null);
-    setModalError(null);
-    setModalBeachId(beachId);
-  }
 
   function openCleanupLog(beachId: string) {
     if (!configured) {
@@ -251,7 +147,7 @@ export function BeachGroupsHubPanel() {
     setCleanupBeachId(null);
     setShowCleanupSuccess(true);
     setStatusMessage("Clean-up logged.");
-    await refresh(ensureSessionId());
+    await refresh();
   }
 
   return (
@@ -266,11 +162,11 @@ export function BeachGroupsHubPanel() {
         />
       </div>
 
-      {(loadError || actionError) && (
+      {actionError ? (
         <p role="alert" className="mt-4 text-sm leading-snug text-red-800">
-          {actionError ?? loadError}
+          {actionError}
         </p>
-      )}
+      ) : null}
 
       {statusMessage ? (
         <p className="sr-only" role="status" aria-live="polite">
@@ -280,18 +176,17 @@ export function BeachGroupsHubPanel() {
 
       {!configured ? (
         <Card variant="warning" padding="sm" role="note" className="mt-6">
-          Live check-in and clean-up logging isn’t configured for this
-          environment yet. You can still browse the beaches below. An organiser
-          needs to add Supabase credentials before live features work.
+          Clean-up logging isn’t configured for this environment yet. You can
+          still browse the beaches below. An organiser needs to add Supabase
+          credentials before live features work.
         </Card>
       ) : null}
 
       <div className="mt-8">
         <BeachCheckinMap
           beaches={checkinBeaches}
-          statsById={statsById}
-          checkedInBeachId={myCheckin?.beachId ?? null}
-          onCheckInRequest={openCheckIn}
+          cleanupStatsById={cleanupStatsById}
+          onLogCleanupRequest={openCleanupLog}
         />
       </div>
 
@@ -364,17 +259,6 @@ export function BeachGroupsHubPanel() {
       <div className="mt-12 pt-2">
         <AdminTimePanel />
       </div>
-
-      <CheckInModal
-        beachName={modalBeach?.name ?? "this beach"}
-        open={modalBeachId != null}
-        busy={busy}
-        error={modalError}
-        onClose={() => {
-          if (!busy) setModalBeachId(null);
-        }}
-        onConfirm={(firstName) => void handleConfirmCheckIn(firstName)}
-      />
 
       <CleanupLogModal
         beachId={cleanupBeachId ?? checkinBeaches[0]?.id ?? ""}
