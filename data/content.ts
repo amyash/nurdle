@@ -292,6 +292,17 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "community-press-release-aug-24",
+    datetime: "2026-08-24T10:00:00+01:00",
+    sourceName: "Press release",
+    headline:
+      "North East volunteers left to fill the gap as official clean-up scales back and nurdle pollution reaches Yorkshire coast",
+    headlineHref: "/press-release",
+    body: [
+      "One month after the Tyne spill, volunteers say the official clean-up is scaling back as nurdle pollution is confirmed as far south as Marske-by-the-Sea — around 45 miles of coastline.",
+    ],
+  },
+  {
     id: "tides-nurdles-weekend-aug-21",
     datetime: "2026-08-21T21:45:00+01:00",
     sourceName: "Community announcement",

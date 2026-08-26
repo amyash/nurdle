@@ -5,7 +5,7 @@ import { PageShell } from "@/components/page-shell";
 export const metadata: Metadata = {
   title: "Press release",
   description:
-    "Spring tide looms as nurdle volunteers demand more action — North East England, 11 August 2026.",
+    "North East volunteers left to fill the gap as official clean-up scales back and nurdle pollution reaches Yorkshire coast — North East England, 24 August 2026.",
 };
 
 export default function PressReleasePage() {
