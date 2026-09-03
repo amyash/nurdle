@@ -287,11 +287,11 @@ export const checkinBeaches: CheckinBeach[] = [
       locationLinks: [
         {
           label: "what3words",
-          url: "https://what3words.com/rugs.tigers.rare",
+          url: "https://what3words.com/aside.snow.long",
         },
       ],
       paragraphs: [
-        "The Seaton Sluice NEST can be found at the Seaton Sluice Boating Association which is to the right of the Kings Arm's pub. You can find the supplies just inside the gate and they are accessible during opening hours, typically between 9am and 6/7pm.",
+        "The Seaton Sluice NEST can be found at the Seaton Sluice Fountain Head car park next to the nurdle collection bin provided by the council.",
         "If you have any questions, the WhatsApp group for this beach may be able to help or get in touch with Jennifer Stobbs at [07746 099109] or jenstobbs@hotmail.co.uk.",
       ],
       equipmentIntro:
