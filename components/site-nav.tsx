@@ -23,11 +23,7 @@ const moreNav: NavItem[] = [
   { href: "/in-the-news", label: "In the news" },
   { href: "/open-letter", label: "Open letter" },
   { href: "/press-release", label: "Press release" },
-  {
-    href: "https://www.northtyneside.gov.uk/form/plastic-pellets-on-beaches-nurdl",
-    label: "Report nurdles",
-    external: true,
-  },
+  { href: "/report-nurdles", label: "Report nurdles" },
 ];
 
 function ExternalLinkIcon() {
