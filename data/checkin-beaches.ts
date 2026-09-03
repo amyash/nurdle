@@ -231,13 +231,80 @@ export const checkinBeaches: CheckinBeach[] = [
     region: "north-tyneside",
   },
   {
-    id: "newbiggin",
-    name: "Newbiggin",
-    slug: "newbiggin",
+    id: "newbiggin-east",
+    name: "Newbiggin East",
+    slug: "newbiggin-east",
     latitude: 55.1845,
-    longitude: -1.5098,
+    longitude: -1.5085,
     displayOrder: 11,
     region: "north-tyneside",
+    nest: {
+      locationLinks: [
+        {
+          label: "Newbiggin Maritime Centre on Google Maps",
+          url: "https://maps.app.goo.gl/m7pd12c8FPBhSYrF9",
+        },
+      ],
+      paragraphs: [
+        "To the left of the main entrance doors to the Newbiggin Maritime Centre, just outside.",
+        "The Newbiggin Maritime Centre hosts an equipment store box that is taken in at night and put out in the morning by the staff at the centre.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items.",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
+  },
+  {
+    id: "newbiggin-west",
+    name: "Newbiggin West",
+    slug: "newbiggin-west",
+    latitude: 55.1848,
+    longitude: -1.5112,
+    displayOrder: 11,
+    region: "north-tyneside",
+    nest: {
+      locationLinks: [
+        {
+          label: "what3words",
+          url: "https://what3words.com/latter.foreheads.printers",
+        },
+        {
+          label: "Needle's Eye Cafe on Google Maps",
+          url: "https://share.google/s9J0ErPkBGIx3AWcX",
+        },
+      ],
+      paragraphs: [
+        "The Needle's Eye Cafe is hosting an equipment storage box located by the dog stick library on the pathway between the cafe and the beach. Thanks to Stephanie and Wayne for hosting.",
+        "The box is put out when the cafe is open.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items.",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
   },
   {
     id: "cresswell-to-alnmouth",
