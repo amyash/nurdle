@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AnnouncementCard } from "@/components/announcement-card";
 import { BriefingEventPanel } from "@/components/briefing-event";
 import { LatestUpdateCard } from "@/components/latest-update-card";
@@ -19,6 +20,16 @@ export default function NewsPage() {
       title="Updates"
       lead="A chronological feed of community posts, guidance and practical information."
     >
+      <p className="mb-8 reading-measure text-body text-mute">
+        Newspaper and broadcast reports of the volunteer effort are collected on{" "}
+        <Link
+          href="/in-the-news"
+          className="font-bold text-mark underline underline-offset-2"
+        >
+          In the news
+        </Link>
+        .
+      </p>
       {newest ? (
         <section className="border-b border-line pb-10">
           <p className="text-eyebrow text-urgent mb-4">Newest</p>

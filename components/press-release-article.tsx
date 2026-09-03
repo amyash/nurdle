@@ -263,7 +263,11 @@ export function PressReleaseArticle() {
           <p>
             <span className="font-bold">Coverage: </span>
             the campaign has featured in more than 140 media appearances across
-            local, national and international outlets
+            local, national and international outlets. A selection is listed on{" "}
+            <a href="/in-the-news" className={linkClass}>
+              In the news
+            </a>
+            .
           </p>
         </div>
       </section>

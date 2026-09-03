@@ -20,6 +20,7 @@ const primaryNav: NavItem[] = [
 
 const moreNav: NavItem[] = [
   { href: "/photos", label: "Photos" },
+  { href: "/in-the-news", label: "In the news" },
   { href: "/open-letter", label: "Open letter" },
   { href: "/press-release", label: "Press release" },
   {
