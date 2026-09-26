@@ -19,11 +19,13 @@ const primaryNav: NavItem[] = [
 ];
 
 const moreNav: NavItem[] = [
+  { href: "/organise-a-group", label: "Corporate events" },
   { href: "/photos", label: "Photos" },
   { href: "/in-the-news", label: "In the news" },
   { href: "/open-letter", label: "Open letter" },
   { href: "/press-release", label: "Press release" },
   { href: "/report-nurdles", label: "Report nurdles" },
+  { href: "/repairing-mesh-bags", label: "Repairing mesh bags" },
 ];
 
 function ExternalLinkIcon() {

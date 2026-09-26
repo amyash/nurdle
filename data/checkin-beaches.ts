@@ -22,6 +22,18 @@ export interface BeachNestLocationLink {
   url: string;
 }
 
+/** Northumberland County Council nurdle drop-off (what3words). */
+export interface CouncilDropoff {
+  name: string;
+  w3wUrl: string;
+}
+
+export const NORTHUMBERLAND_NURDLE_COLLECTION_URL =
+  "https://www.northumberland.gov.uk/news/plastic-pellets-nurdles-countys-beaches-updated-august-19th";
+
+export const NORTHUMBERLAND_DROPOFF_MAP_URL =
+  "https://northumberland.maps.arcgis.com/apps/instant/basic/index.html?appid=9a0418203be54af9b382948c70f8367e";
+
 export interface BeachNest {
   /** Single Google Maps link — shown as “Location” when `locationLinks` is omitted. */
   mapsUrl?: string | null;
@@ -50,9 +62,43 @@ export interface CheckinBeach {
   region: BeachRegion;
   /** Nurdle Equipment Station details — omit until known. */
   nest?: BeachNest | null;
+  /** Council places to leave collected nurdles. */
+  councilDropoffs?: CouncilDropoff[];
 }
 
 export const CHECKIN_EXPIRY_HOURS = 2;
+
+const STANDARD_NEST_KIT = {
+  equipmentIntro:
+    "Most NESTs are stocked with a selection of the following items.",
+  equipment: [
+    "Mesh sieves",
+    "Collection bags",
+    "Gloves",
+    "Buckets",
+    "Soft brushes",
+    "Other donated equipment",
+  ],
+  notes: [
+    "Stock levels may vary, and some items may be temporarily unavailable.",
+    "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+    "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+  ],
+} satisfies Pick<BeachNest, "equipmentIntro" | "equipment" | "notes">;
+
+/** Shared Sunderland BID lockbox copy. Inline [label](url) becomes a link. */
+function sunderlandBidNest(entry: "Seaburn" | "Roker", w3wWords: string): BeachNest {
+  const w3wUrl = `https://what3words.com/${w3wWords.toLowerCase()}`;
+  return {
+    locationLinks: [{ label: "what3words", url: w3wUrl }],
+    paragraphs: [
+      "The NEST equipment box is located in the Coastal Clean Up Crew lockbox. The lockbox is owned by the BID and holds other volunteering equipment. There is an access code which is managed by BID. To request the code, please use this contact form and say that you would like to use the nurdle clean up equipment: [Volunteer With Us - Sunderland BID](https://sunderlandbid.co.uk/volunteer-with-us/)",
+      "Once you have the code, the location of the lock box is:",
+      `For ${entry} entry - W3W location is [${w3wWords}](${w3wUrl}).`,
+    ],
+    ...STANDARD_NEST_KIT,
+  };
+}
 
 const LONGSANDS_NEST: BeachNest = {
   locationLinks: [
@@ -89,146 +135,70 @@ const LONGSANDS_NEST: BeachNest = {
 
 export const checkinBeaches: CheckinBeach[] = [
   {
-    id: "st-marys-lighthouse",
-    name: "St Mary’s Lighthouse",
-    slug: "st-marys-lighthouse",
-    latitude: 55.0718,
-    longitude: -1.4495,
+    id: "cresswell-to-alnmouth",
+    name: "Cresswell to Alnmouth (inc Druridge and Amble)",
+    slug: "cresswell-to-alnmouth",
+    // Druridge Bay — representative pin for the Cresswell–Alnmouth stretch
+    latitude: 55.279,
+    longitude: -1.567,
     displayOrder: 1,
-    region: "north-tyneside",
-  },
-  {
-    id: "whitley-bay-north",
-    name: "Whitley Bay North (Briardene)",
-    slug: "whitley-bay-north",
-    latitude: 55.0565,
-    longitude: -1.4505,
-    displayOrder: 2,
-    region: "north-tyneside",
-  },
-  {
-    id: "whitley-bay-central",
-    name: "Whitley Bay Central (Panama)",
-    slug: "whitley-bay-central",
-    // Former single Whitley Bay pin — Panama Dip / central promenade
-    latitude: 55.0481,
-    longitude: -1.4494,
-    displayOrder: 3,
     region: "north-tyneside",
     nest: {
       locationLinks: [
         {
-          label: "Panama Swimming Club on Google Maps",
-          url: "https://www.google.com/maps/search/?api=1&query=Panama+Swimming+Club+Northern+Promenade+Whitley+Bay",
+          label: "Hauxley Nature Reserve on Google Maps",
+          url: "https://maps.app.goo.gl/TSNvPPoaWgCJif7M6",
+        },
+        {
+          label: "Druridge Bay Country Park on Google Maps",
+          url: "https://maps.app.goo.gl/yutzuSCo2HwQwASy6",
         },
       ],
       paragraphs: [
-        "Panama club are storing nurdle equipment and putting it out for volunteers to use.",
+        "Hauxley and Druridge Bay have the following NEST boxes.",
+        "Hauxley: The Hauxley NEST can be found at the Hauxley Nature Reserve. You can ask at the centre if you can't find it.",
+        "Druridge: The Druridge NEST can be found at Druridge Bay Country Park. You can ask at the centre if you can't find it.",
+        "If you have any questions, the WhatsApp group for this beach may be able to help.",
       ],
       equipmentIntro:
-        "Most NESTs are stocked with a selection of the following items:",
+        "Most NESTs are stocked with a selection of the following items.",
       equipment: [
         "Mesh sieves",
-        "Collection bags",
-        "Gloves",
+        "Disposable gloves",
         "Buckets",
         "Soft brushes",
+        "Mesh filter bags handmade with donated materials by volunteers",
         "Other donated equipment",
       ],
       notes: [
         "Stock levels may vary, and some items may be temporarily unavailable.",
         "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
         "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+        "If there is a problem at either of these NESTs please use the WhatsApp group for this location.",
       ],
     },
-  },
-  {
-    id: "whitley-bay-south",
-    name: "Whitley Bay South",
-    slug: "whitley-bay-south",
-    latitude: 55.042,
-    longitude: -1.4465,
-    displayOrder: 4,
-    region: "north-tyneside",
-  },
-  {
-    id: "browns-bay",
-    name: "Brown’s Bay",
-    slug: "browns-bay",
-    // Between Whitley Bay South and Cullercoats
-    latitude: 55.0403,
-    longitude: -1.43,
-    displayOrder: 5,
-    region: "north-tyneside",
-  },
-  {
-    id: "cullercoats-bay",
-    name: "Cullercoats Bay",
-    slug: "cullercoats-bay",
-    latitude: 55.0349,
-    longitude: -1.4328,
-    displayOrder: 6,
-    region: "north-tyneside",
-    nest: {
-      mapsUrl: "https://maps.app.goo.gl/TCt1biSsvFaLMcwq8",
-      paragraphs: [
-        "The equipment container is located at the bottom of the beach access ramp at Cullercoats Bay, next to the lifebuoy housing and council bins.",
-        "The container is usually unlocked between 6:00–8:00 am and locked between 9:00–11:00 pm. Should this not be the case, volunteers can ask in the beach WhatsApp group, where a local PSC keyholder may be able to help.",
-      ],
-      equipmentIntro:
-        "Most NESTs are stocked with a selection of the following items:",
-      equipment: [
-        "Mesh sieves",
-        "Collection bags",
-        "Gloves",
-        "Buckets",
-        "Soft brushes",
-        "Other donated equipment",
-      ],
-      notes: [
-        "Stock levels may vary, and some items may be temporarily unavailable.",
-        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
-        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
-      ],
-    },
-  },
-  {
-    id: "longsands-north",
-    name: "Tynemouth Longsands — North",
-    slug: "longsands-north",
-    latitude: 55.0288,
-    longitude: -1.4296,
-    displayOrder: 7,
-    region: "north-tyneside",
-    nest: LONGSANDS_NEST,
-  },
-  {
-    id: "longsands-south",
-    name: "Tynemouth Longsands — South",
-    slug: "longsands-south",
-    latitude: 55.0234,
-    longitude: -1.4269,
-    displayOrder: 8,
-    region: "north-tyneside",
-    nest: LONGSANDS_NEST,
-  },
-  {
-    id: "king-edwards-bay",
-    name: "King Edward’s Bay",
-    slug: "king-edwards-bay",
-    latitude: 55.0182,
-    longitude: -1.4158,
-    displayOrder: 9,
-    region: "north-tyneside",
-  },
-  {
-    id: "tynemouth-haven",
-    name: "Tynemouth Haven",
-    slug: "tynemouth-haven",
-    latitude: 55.0156,
-    longitude: -1.4204,
-    displayOrder: 10,
-    region: "north-tyneside",
+    councilDropoffs: [
+      {
+        name: "Amble Dunes",
+        w3wUrl: "https://what3words.com/encoded.ourselves.bland",
+      },
+      {
+        name: "Low Hauxley",
+        w3wUrl: "https://what3words.com/salmon.scans.totals",
+      },
+      {
+        name: "Druridge: boat compound car park opposite Drift Inn cafe",
+        w3wUrl: "https://what3words.com/strongly.streetcar.gestures",
+      },
+      {
+        name: "Druridge: Blakes Burn water outlet",
+        w3wUrl: "https://what3words.com/bespoke.jammy.throwaway",
+      },
+      {
+        name: "Cresswell village: public toilet block",
+        w3wUrl: "https://what3words.com/river.entrusted.crackles",
+      },
+    ],
   },
   {
     id: "newbiggin",
@@ -236,7 +206,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "newbiggin",
     latitude: 55.1845,
     longitude: -1.5098,
-    displayOrder: 11,
+    displayOrder: 2,
     region: "north-tyneside",
     nest: {
       locationLinks: [
@@ -274,16 +244,27 @@ export const checkinBeaches: CheckinBeach[] = [
         "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
       ],
     },
+    councilDropoffs: [
+      {
+        name: "Newbiggin Maritime Centre",
+        w3wUrl: "https://what3words.com/gamer.finer.pools",
+      },
+    ],
   },
   {
-    id: "cresswell-to-alnmouth",
-    name: "Cresswell to Alnmouth (inc Druridge and Amble)",
-    slug: "cresswell-to-alnmouth",
-    // Druridge Bay — representative pin for the Cresswell–Alnmouth stretch
-    latitude: 55.279,
-    longitude: -1.567,
-    displayOrder: 19,
+    id: "cambois",
+    name: "Cambois",
+    slug: "cambois",
+    latitude: 55.1528,
+    longitude: -1.5185,
+    displayOrder: 3,
     region: "north-tyneside",
+    councilDropoffs: [
+      {
+        name: "Charlton's car park beach access",
+        w3wUrl: "https://what3words.com/natively.fade.quarrel",
+      },
+    ],
   },
   {
     id: "blyth",
@@ -291,7 +272,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "blyth",
     latitude: 55.1422,
     longitude: -1.5085,
-    displayOrder: 12,
+    displayOrder: 4,
     region: "north-tyneside",
     nest: {
       paragraphs: [
@@ -310,6 +291,16 @@ export const checkinBeaches: CheckinBeach[] = [
         "Other donated equipment",
       ],
     },
+    councilDropoffs: [
+      {
+        name: "Blyth Beach: Dave Stephens Centre",
+        w3wUrl: "https://what3words.com/less.ants.degree",
+      },
+      {
+        name: "Blyth: South Harbour",
+        w3wUrl: "https://what3words.com/doors.anyone.farms",
+      },
+    ],
   },
   {
     id: "seaton-sluice",
@@ -317,7 +308,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "seaton-sluice",
     latitude: 55.0825,
     longitude: -1.4745,
-    displayOrder: 13,
+    displayOrder: 5,
     region: "north-tyneside",
     nest: {
       locationLinks: [
@@ -348,12 +339,145 @@ export const checkinBeaches: CheckinBeach[] = [
     },
   },
   {
-    id: "cambois",
-    name: "Cambois",
-    slug: "cambois",
-    latitude: 55.1528,
-    longitude: -1.5185,
+    id: "st-marys-lighthouse",
+    name: "St Mary’s Lighthouse",
+    slug: "st-marys-lighthouse",
+    latitude: 55.0718,
+    longitude: -1.4495,
+    displayOrder: 6,
+    region: "north-tyneside",
+  },
+  {
+    id: "whitley-bay-north",
+    name: "Whitley Bay North (Briardene)",
+    slug: "whitley-bay-north",
+    latitude: 55.0565,
+    longitude: -1.4505,
+    displayOrder: 7,
+    region: "north-tyneside",
+  },
+  {
+    id: "whitley-bay-central",
+    name: "Whitley Bay Central (Panama)",
+    slug: "whitley-bay-central",
+    // Former single Whitley Bay pin — Panama Dip / central promenade
+    latitude: 55.0481,
+    longitude: -1.4494,
+    displayOrder: 8,
+    region: "north-tyneside",
+    nest: {
+      locationLinks: [
+        {
+          label: "Panama Swimming Club on Google Maps",
+          url: "https://www.google.com/maps/search/?api=1&query=Panama+Swimming+Club+Northern+Promenade+Whitley+Bay",
+        },
+      ],
+      paragraphs: [
+        "Panama club are storing nurdle equipment and putting it out for volunteers to use.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items:",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
+  },
+  {
+    id: "whitley-bay-south",
+    name: "Whitley Bay South",
+    slug: "whitley-bay-south",
+    latitude: 55.042,
+    longitude: -1.4465,
+    displayOrder: 9,
+    region: "north-tyneside",
+  },
+  {
+    id: "browns-bay",
+    name: "Brown’s Bay",
+    slug: "browns-bay",
+    // Between Whitley Bay South and Cullercoats
+    latitude: 55.0403,
+    longitude: -1.43,
+    displayOrder: 10,
+    region: "north-tyneside",
+  },
+  {
+    id: "cullercoats-bay",
+    name: "Cullercoats Bay",
+    slug: "cullercoats-bay",
+    latitude: 55.0349,
+    longitude: -1.4328,
+    displayOrder: 11,
+    region: "north-tyneside",
+    nest: {
+      mapsUrl: "https://maps.app.goo.gl/TCt1biSsvFaLMcwq8",
+      paragraphs: [
+        "The equipment container is located at the bottom of the beach access ramp at Cullercoats Bay, next to the lifebuoy housing and council bins.",
+        "The container is usually unlocked between 6:00–8:00 am and locked between 9:00–11:00 pm. Should this not be the case, volunteers can ask in the beach WhatsApp group, where a local PSC keyholder may be able to help.",
+      ],
+      equipmentIntro:
+        "Most NESTs are stocked with a selection of the following items:",
+      equipment: [
+        "Mesh sieves",
+        "Collection bags",
+        "Gloves",
+        "Buckets",
+        "Soft brushes",
+        "Other donated equipment",
+      ],
+      notes: [
+        "Stock levels may vary, and some items may be temporarily unavailable.",
+        "Please return any borrowed equipment to the NEST clean and in good condition so it's ready for the next volunteer.",
+        "The mesh bags may be used by the charity Nurdle in response to future nurdle spills.",
+      ],
+    },
+  },
+  {
+    id: "longsands-north",
+    name: "Tynemouth Longsands — North",
+    slug: "longsands-north",
+    latitude: 55.0288,
+    longitude: -1.4296,
+    displayOrder: 12,
+    region: "north-tyneside",
+    nest: LONGSANDS_NEST,
+  },
+  {
+    id: "longsands-south",
+    name: "Tynemouth Longsands — South",
+    slug: "longsands-south",
+    latitude: 55.0234,
+    longitude: -1.4269,
+    displayOrder: 13,
+    region: "north-tyneside",
+    nest: LONGSANDS_NEST,
+  },
+  {
+    id: "king-edwards-bay",
+    name: "King Edward’s Bay",
+    slug: "king-edwards-bay",
+    latitude: 55.0182,
+    longitude: -1.4158,
     displayOrder: 14,
+    region: "north-tyneside",
+  },
+  {
+    id: "tynemouth-haven",
+    name: "Tynemouth Haven",
+    slug: "tynemouth-haven",
+    latitude: 55.0156,
+    longitude: -1.4204,
+    displayOrder: 15,
     region: "north-tyneside",
   },
   {
@@ -362,7 +486,7 @@ export const checkinBeaches: CheckinBeach[] = [
     slug: "fish-quay",
     latitude: 55.0097,
     longitude: -1.4372,
-    displayOrder: 15,
+    displayOrder: 16,
     region: "north-tyneside",
     nest: {
       locationLinks: [
@@ -401,22 +525,29 @@ export const checkinBeaches: CheckinBeach[] = [
   },
   {
     id: "south-shields",
-    name: "Littlehaven (South Shields)",
+    name: "Littlehaven and Sandhaven",
     slug: "littlehaven-south-shields",
     // Keep id south-shields so existing cleanup/check-in rows stay valid
     latitude: 55.0042,
     longitude: -1.4245,
-    displayOrder: 16,
-    region: "south-tyneside",
-  },
-  {
-    id: "roker",
-    name: "Roker",
-    slug: "roker",
-    latitude: 54.9215,
-    longitude: -1.3665,
     displayOrder: 17,
     region: "south-tyneside",
+    nest: {
+      locationLinks: [
+        {
+          label: "South Shields Surf School on Google Maps",
+          url: "https://maps.app.goo.gl/U1nHkcd5cFUv7Pjw9",
+        },
+        {
+          label: "The Sand Dancer on Google Maps",
+          url: "https://maps.app.goo.gl/7EQMhVz1m4N7iutT7",
+        },
+      ],
+      paragraphs: [
+        "There is equipment available to borrow from South Shields Surf School during their opening hours, including large brooms and mesh filter bags.",
+        "There are sieves and paper bags to borrow for collecting nurdles, available from The Sand Dancer pub during their opening hours. There is a table just inside each entrance with a small crate containing the kit.",
+      ],
+    },
   },
   {
     id: "seaburn",
@@ -426,6 +557,17 @@ export const checkinBeaches: CheckinBeach[] = [
     longitude: -1.3667,
     displayOrder: 18,
     region: "south-tyneside",
+    nest: sunderlandBidNest("Seaburn", "Cave.Vets.Other"),
+  },
+  {
+    id: "roker",
+    name: "Roker",
+    slug: "roker",
+    latitude: 54.9215,
+    longitude: -1.3665,
+    displayOrder: 19,
+    region: "south-tyneside",
+    nest: sunderlandBidNest("Roker", "Activism.Tinsel.Foam"),
   },
 ];
 

@@ -7,7 +7,7 @@ export function InstagramEmbed({
   title: string;
   className?: string;
 }) {
-  const match = url.match(/instagram\.com\/(?:reel|reels|p)\/([^/?#]+)/i);
+  const match = url.match(/instagram\.com\/(reel|reels|p)\/([^/?#]+)/i);
   if (!match) {
     return (
       <p className="text-sm italic text-[var(--mute)]">
@@ -16,7 +16,8 @@ export function InstagramEmbed({
     );
   }
 
-  const embedSrc = `https://www.instagram.com/reel/${match[1]}/embed`;
+  const kind = match[1].toLowerCase() === "p" ? "p" : "reel";
+  const embedSrc = `https://www.instagram.com/${kind}/${match[2]}/embed`;
 
   // Instagram does not expose controls to hide likes/comments; clip the
   // embed footer so only the video (and top chrome) remain visible.

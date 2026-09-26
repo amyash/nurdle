@@ -14,7 +14,10 @@ export function Technique({
   children?: ReactNode;
 }) {
   return (
-    <article className="border-t border-line py-8 sm:py-10">
+    <article
+      id={guide.id}
+      className="scroll-mt-24 border-t border-line py-8 sm:py-10"
+    >
       <h3 className="text-body font-bold text-ink">{guide.title}</h3>
       {guide.description ? (
         <p className="mt-3 reading-measure text-body text-mute">
