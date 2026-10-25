@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ContentLinkButton } from "@/components/whatsapp/content-link";
 import { Disclosure } from "@/components/ui/disclosure";
@@ -9,6 +10,28 @@ function announcementCtas(announcement: Announcement): ContentLink[] {
     ...(announcement.link ? [announcement.link] : []),
     ...(announcement.links ?? []),
   ];
+}
+
+export function AnnouncementFigure({
+  announcement,
+}: {
+  announcement: Announcement;
+}) {
+  if (!announcement.image) return null;
+  const { src, alt, width, height } = announcement.image;
+
+  return (
+    <figure className="mt-4 max-w-3xl overflow-hidden border border-line bg-paper">
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        sizes="(max-width: 768px) 100vw, 768px"
+        className="h-auto w-full"
+      />
+    </figure>
+  );
 }
 
 function AnnouncementHeadline({ announcement }: { announcement: Announcement }) {
@@ -224,6 +247,7 @@ export function AnnouncementCard({
       <article className={featured ? "pb-2" : undefined}>
         <AnnouncementMeta announcement={announcement} />
         <AnnouncementHeadline announcement={announcement} />
+        <AnnouncementFigure announcement={announcement} />
         {preview && !featured ? (
           <p className="mt-3 reading-measure text-meta line-clamp-2">
             {preview}
@@ -245,6 +269,7 @@ export function AnnouncementCard({
     <article>
       <AnnouncementMeta announcement={announcement} />
       <AnnouncementHeadline announcement={announcement} />
+      <AnnouncementFigure announcement={announcement} />
       <AnnouncementBody announcement={announcement} />
     </article>
   );

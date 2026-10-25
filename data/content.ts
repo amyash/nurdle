@@ -292,6 +292,28 @@ export const scientificBriefing: ScientificBriefing = {
  */
 export const announcements: Announcement[] = [
   {
+    id: "nerf-awards-shortlist-2026-10-25",
+    datetime: "2026-10-25T18:00:00+00:00",
+    sourceName: "Community announcement",
+    headline: "Community nurdle response shortlisted for a NERF Award",
+    image: {
+      src: "/news/nerf-awards-community-shortlist.jpg",
+      alt: "NERF Awards 26 graphic: Best Campaign shortlist for Community Nurdle Response. Ceremony on 19 November at Newcastle Civic Centre.",
+      width: 1024,
+      height: 535,
+    },
+    body: [
+      "The community response to the Port of Tyne nurdle spill has been shortlisted for Best Campaign at the NERF Awards 2026.",
+      "The North East Recycling Forum has named Community Nurdle Response on the Best Campaign shortlist. It recognises the volunteers who have been on the beaches since July: organising clean-ups, making kit, logging hours, and keeping the effort going.",
+      "Winners will be announced at the NERF Annual Conference and Awards on Thursday 19 November 2026 at Newcastle Civic Centre. This year’s conference, DRS: From Policy to Practice, brings together people from across the waste and resources sector to look at the Deposit Return Scheme, share experience, and talk through the opportunities and challenges ahead. The awards are part of that day, a chance to celebrate organisations and individuals across the region.",
+      "The shortlist belongs to everyone who has collected a bag, passed on a method, or helped someone else get started. Thank you.",
+    ],
+    link: {
+      label: "Read the NERF Awards announcement",
+      href: "https://www.nerf.org.uk/post/nerf-awards-bringing-people-together-to-drive-change",
+    },
+  },
+  {
     id: "community-press-release-aug-24",
     datetime: "2026-08-24T10:00:00+01:00",
     sourceName: "Press release",

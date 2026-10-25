@@ -68,6 +68,12 @@ export interface Announcement {
   sourceName?: string;
   /** When true, card starts collapsed and expands on tap. */
   expandable?: boolean;
+  image?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
 }
 
 export interface BriefingEvent {

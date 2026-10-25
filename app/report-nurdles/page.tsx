@@ -84,23 +84,44 @@ export default function ReportNurdlesPage() {
         {/* River Tyne */}
         <section className="border-t border-line pt-8">
           <h2 className="mb-4 text-section-title">River Tyne</h2>
-          <ul className="space-y-3 text-body text-ink">
-            <li>
-              Email{" "}
-              <a
-                href="mailto:community.reporting@portoftyne.co.uk"
-                className={linkClass}
-              >
-                community.reporting@portoftyne.co.uk
+          <div className="space-y-3 text-body text-ink">
+            <p>There is a new number for reporting nurdles in the river.</p>
+            <p>
+              Vessel Traffic Services (VTS){" "}
+              <a href="tel:+441912572080" className={linkClass}>
+                0191 257 2080
               </a>
-            </li>
-            <li>
-              Call{" "}
-              <a href="tel:+447483579324" className={linkClass}>
-                07483 579 324
-              </a>
-            </li>
-          </ul>
+            </p>
+            <p>
+              From the Port of Tyne, there is a request that any increased
+              numbers of sightings in the river be reported{" "}
+              <strong>IMMEDIATELY</strong> to Vessel Traffic Services (VTS){" "}
+              <a href="tel:+441912572080" className={linkClass}>
+                0191 257 2080
+              </a>{" "}
+              to give them a chance to respond on the day.
+            </p>
+            <p>
+              If there is no answer, please use the former contact details:
+            </p>
+            <ul className="space-y-3">
+              <li>
+                Email{" "}
+                <a
+                  href="mailto:community.reporting@portoftyne.co.uk"
+                  className={linkClass}
+                >
+                  community.reporting@portoftyne.co.uk
+                </a>
+              </li>
+              <li>
+                Call{" "}
+                <a href="tel:+447483579324" className={linkClass}>
+                  07483 579 324
+                </a>
+              </li>
+            </ul>
+          </div>
         </section>
 
         {/* South Tyneside */}

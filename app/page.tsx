@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { AnnouncementFigure } from "@/components/announcement-card";
 import { HomepageCleanupCallout } from "@/components/cleanup-logs/homepage-cleanup-callout";
 import { HomepageTakeAction } from "@/components/home/homepage-take-action";
 import { ScientificBriefingPanel } from "@/components/scientific-briefing";
@@ -153,6 +154,7 @@ export default function HomePage() {
             >
               {newest?.headline ?? latestUpdate.summary}
             </h2>
+            {newest ? <AnnouncementFigure announcement={newest} /> : null}
             <p className="mt-3 reading-measure text-body text-mute">
               {excerptFromAnnouncement(newest) ?? latestUpdate.summary}
             </p>
