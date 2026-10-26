@@ -310,7 +310,7 @@ export const announcements: Announcement[] = [
     ],
     link: {
       label: "Read the NERF Awards announcement",
-      href: "https://www.nerf.org.uk/post/nerf-awards-bringing-people-together-to-drive-change",
+      href: "https://www.nerf.org.uk/post/celebrating-the-north-east-waste-resources-sector-nerf-awards-2026-shortlist-announced",
     },
   },
   {
