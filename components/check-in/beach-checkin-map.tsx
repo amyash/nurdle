@@ -3,6 +3,11 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { CheckinBeach } from "@/data/checkin-beaches";
 import type { CleanupAggregate } from "@/types/cleanup-log";
+import {
+  formatVolunteerHours,
+  formatVolunteerSessions,
+  formatEstimatedWeight,
+} from "@/lib/cleanup-logs/format";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { cn } from "@/lib/cn";
@@ -30,6 +35,16 @@ function cleanupSummaryLabel(stats: CleanupAggregate | undefined): string {
   if (count === 0) return "No clean-ups logged yet";
   if (count === 1) return "1 clean-up logged";
   return `${count.toLocaleString("en-GB")} clean-ups logged`;
+}
+
+function beachStatsHtml(stats: CleanupAggregate | undefined): string {
+  if (!stats || stats.submissionCount === 0) return "";
+  const lines = [
+    escapeHtml(formatVolunteerHours(stats.totalVolunteerHours)),
+    escapeHtml(formatVolunteerSessions(stats.totalVolunteerSessions)),
+    escapeHtml(formatEstimatedWeight(stats.totalEstimatedWeightKg)),
+  ];
+  return `<ul style="margin:0.4rem 0 0;padding:0;list-style:none;font-size:0.7rem;color:#6b7280;line-height:1.5">${lines.map((l) => `<li>${l}</li>`).join("")}</ul>`;
 }
 
 function waitForLayout(): Promise<void> {
@@ -196,6 +211,7 @@ export function BeachCheckinMap({
         `<div style="min-width:10rem;font-family:system-ui,sans-serif">
           <p style="margin:0;font-weight:700">${escapeHtml(beach.name)}</p>
           <p style="margin:0.35rem 0 0;font-size:0.875rem">${escapeHtml(cleanupSummaryLabel(stats))}</p>
+          ${beachStatsHtml(stats)}
           <button
             type="button"
             data-beach-id="${escapeHtml(beach.id)}"
