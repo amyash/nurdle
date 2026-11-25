@@ -22,6 +22,7 @@ export function clientIpFromRequest(request: Request): string {
 export function checkFormSubmissionRateLimit(
   key: string,
   nowMs = Date.now(),
+  limit = FORM_GATE_RATE_LIMIT,
 ): boolean {
   const bucket = buckets.get(key);
   if (!bucket || nowMs >= bucket.resetAt) {
@@ -32,7 +33,7 @@ export function checkFormSubmissionRateLimit(
     return true;
   }
 
-  if (bucket.count >= FORM_GATE_RATE_LIMIT) {
+  if (bucket.count >= limit) {
     return false;
   }
 

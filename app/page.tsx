@@ -3,6 +3,7 @@ import Image from "next/image";
 import { AnnouncementFigure } from "@/components/announcement-card";
 import { HomepageCleanupCallout } from "@/components/cleanup-logs/homepage-cleanup-callout";
 import { HomepageTakeAction } from "@/components/home/homepage-take-action";
+import { WriteToMpPanel } from "@/components/write-to-mp/write-to-mp-panel";
 import { ScientificBriefingPanel } from "@/components/scientific-briefing";
 import { PageShell } from "@/components/page-shell";
 import { Section } from "@/components/section";
@@ -92,6 +93,29 @@ export default function HomePage() {
         className="!pt-10"
       >
         <HomepageCleanupCallout />
+      </Section>
+
+      <Section
+        id="write-to-your-mp"
+        eyebrow="Call to action"
+        title="Ask your MP to sign"
+        lead={
+          <>
+            Professional clean-up is being scaled back while nurdles remain on
+            the coast. Find your MP from your postcode and send a letter asking
+            them to back a government-funded clean-up.{" "}
+            <Link
+              href="/write-to-your-mp"
+              className="font-bold text-mark underline underline-offset-2"
+            >
+              Share this page
+            </Link>
+            .
+          </>
+        }
+        showDivider
+      >
+        <WriteToMpPanel />
       </Section>
 
       {/* How to help — primary site destinations */}

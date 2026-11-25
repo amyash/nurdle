@@ -14,6 +14,7 @@ const sans = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nurdle-hub.vercel.app"),
   title: {
     default: "Nurdle Hub NE — Port of Tyne nurdle spill",
     template: "%s · Nurdle Hub NE",

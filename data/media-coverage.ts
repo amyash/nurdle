@@ -10,6 +10,44 @@ export interface MediaCoverageItem {
 /** Newest first. Headlines and dates taken from the original articles. */
 export const mediaCoverage: MediaCoverageItem[] = [
   {
+    id: "chronicle-2026-11-24",
+    outlet: "Chronicle Live",
+    date: "2026-11-24",
+    headline:
+      "Nurdle volunteers warn North East beach pollution ‘very high’, months on from plastic spill disaster",
+    href: "https://www.chroniclelive.co.uk/news/north-east-news/nurdle-volunteers-warn-north-east-34959928",
+    summary:
+      "A volunteer survey of about 40 miles of coastline finds very high nurdle densities at Blyth, Whitley Bay, North Shields Fish Quay and Sandhaven. Community leaders are asking for a government-funded clean-up.",
+  },
+  {
+    id: "northumberland-gazette-2026-11-24",
+    outlet: "Northumberland Gazette",
+    date: "2026-11-24",
+    headline:
+      "‘Very high’ levels of nurdles still reported at Blyth beach as volunteers slam ‘unacceptable’ response",
+    href: "https://www.northumberlandgazette.co.uk/news/nurdle-spillage-blyth-beach-unacceptable-response-9370106",
+    summary:
+      "Forty volunteers who mapped the coast say Blyth is still very high density, and call plans to wind down the professional clean-up this month unacceptable.",
+  },
+  {
+    id: "bbc-2026-10-26",
+    outlet: "BBC News",
+    date: "2026-10-26",
+    headline: "What do we still need to know about the Tyne nurdle spill?",
+    href: "https://www.bbc.co.uk/news/articles/c34g1e81e9jeo",
+    summary:
+      "Three months on, the BBC sets out what is still unknown. Volunteer Lou Shackleton says a core group is still clearing beaches and needs more people.",
+  },
+  {
+    id: "bbc-2026-09-30",
+    outlet: "BBC News",
+    date: "2026-09-30",
+    headline: "Only 28% of nurdles ‘recovered’, researchers say",
+    href: "https://www.bbc.co.uk/news/articles/c5zjzr4rrl8lo",
+    summary:
+      "Newcastle University and Cefas calculate that 5.14 tonnes of almost 18 had been recovered by the end of September, despite volunteers spending thousands of hours on the beaches.",
+  },
+  {
     id: "telegraph-2026-08-28",
     outlet: "The Telegraph",
     date: "2026-08-28",
@@ -19,6 +57,16 @@ export const mediaCoverage: MediaCoverageItem[] = [
       "Volunteers and local inventors using homemade sieves, nets and prototype machines to recover pellets after the Port of Tyne spill.",
   },
   {
+    id: "shields-gazette-2026-08-25",
+    outlet: "Shields Gazette",
+    date: "2026-08-25",
+    headline:
+      "More than 6,500 volunteer hours logged as the nurdle clean-up continues in South Shields",
+    href: "https://www.shieldsgazette.com/news/more-than-6500-volunteer-hours-logged-as-the-nurdle-clean-up-continues-in-south-shields-8938392",
+    summary:
+      "Volunteers report more than 6,500 hours on the beaches and press the Port of Tyne for another meeting on letting trained people help in the river.",
+  },
+  {
     id: "bbc-2026-08-06",
     outlet: "BBC News",
     date: "2026-08-06",
@@ -26,6 +74,16 @@ export const mediaCoverage: MediaCoverageItem[] = [
     href: "https://www.bbc.co.uk/news/articles/c36dzpykk0wo",
     summary:
       "Tyne Rivers Trust says fish have already been found with nurdles in their system, and warns the pellets could stay in the river for years.",
+  },
+  {
+    id: "chronicle-2026-08-06",
+    outlet: "Chronicle Live",
+    date: "2026-08-06",
+    headline:
+      "Inside the big North East clean-up as volunteers bid to tackle nurdle ‘disaster’",
+    href: "https://www.chroniclelive.co.uk/news/north-east-news/inside-big-north-east-clean-34415539",
+    summary:
+      "At North Shields Fish Quay, people are collecting pellets with nets, buckets and dustpans. Coordinator Olly Armstrong says at least 2,500 volunteers are involved.",
   },
   {
     id: "bbc-2026-08-03",

@@ -145,77 +145,8 @@ export const organiserMessage: OrganiserMessage = {
       ],
     },
     {
-      id: "write-reps",
-      title: "3. Write to your MP, councillor and the Mayor",
-      body: [
-        "Contact all three. Ask for a large-scale effort at the right tide times to collect nurdles. People are needed specifically Monday and Tuesday for a large-scale cleanup — and the council should respond with numbers and the right gear.",
-        "Always include your name and address at the top.",
-        {
-          beforeLink:
-            "Residents in North Tyneside constituency can write to MP Alan Campbell, or ",
-          linkLabel: "find your local councillors",
-          afterLink: "",
-          href: "https://www.gov.uk/find-your-local-councillors",
-        },
-      ],
-      links: [
-        {
-          label: "Email MP Alan Campbell",
-          href: "mailto:alan.campbell.mp@parliament.uk",
-        },
-      ],
-      emailTemplate: {
-        label: "EMAIL TEMPLATE FOR COUNCILLORS & MPs",
-        subject:
-          "URGENT: Port of Tyne Nurdle Disaster — Inadequate Official Response & Critical Action Needed",
-        body: `Dear [Name of Councillor / MP],
-
-I am writing to you as a constituent residing in [Your Town/Area] to express my deep frustration regarding the major plastic spill originating from the River Tyne. Following the vessel collision, over 24 tonnes—an estimated 1 billion raw plastic pellets ('nurdles')—were released into our marine ecosystem.
-
-As reported by the BBC ("Plea for action over billion plastic pellets washed up on beaches"), and as witnessed firsthand by community members on the ground, the current response from local councils and national agencies is drastically insufficient.
-
-What are our local councils and responsible agencies actually doing right now? The reality is that official action remains largely passive, reliant on monitoring and minimal surface measures, leaving unpaid volunteers to shoulder the physical burden of Northern Europe’s largest microplastic disaster.
-
-Official Notice to Mariners logs and emergency records from the Port of Tyne expose severe systemic failures in the disaster response:
-
-Timeline Delays & Administrative Lag: Significant operational gaps occurred between initial detection and deployment. Critical hours were lost to administrative approvals, risk assessments, and multi-agency coordination delays while billions of pellets drifted unchecked.
-
-Reactive Containment: Rather than deploying immediate, large-scale booming systems at the river source, the response was reactive. Physical barriers arrived days late—long after ocean currents and winds had dispersed the plume across vast coastal stretches.
-
-Resource & Logistics Constraints: There was a lack of pre-positioned, industrial-scale microplastic recovery equipment (such as specialised sifting or vacuum units).
-
-Communication Bottlenecks: Fragmented information flow between initial observers, local authorities, and central environmental agencies severely delayed the escalation required for a disaster of this scale.
-
-1. It is critical to understand the biological timeline of this spill: while raw plastic pellets are not inherently toxic when first dropped, they can become toxic the longer they remain in the water.
-
-Toxin Accumulation Over Time: As floating nurdles drift, their hydrophobic surfaces act like sponges, absorbing persistent organic pollutants (POPs) and heavy metals from seawater.
-
-Pathogen Reservoirs: Over weeks and years, nurdles develop a biological coating (biofilm or "Plastisphere") that could harbour dangerous human pathogens, including E. coli and Vibrio species, creating a growing public health hazard on public bathing beaches.
-
-Seabed Burial: As bio-fouling increases their weight, wave action eventually sinks these pellets into seabed sediments, where they cause permanent ecological damage to benthic life that is virtually impossible to fix.
-
-Indefinite Persistence: Unlike oil spills, which eventually dissipate or biodegrade, plastic pellets stay in nature indefinitely, continually breaking down into microplastics.
-
-2. What Is Being Done Right Now Is Not Enough
-A few static booms placed days late on the river do not stop the continuous re-deposition of nurdles with every high tide. Councils cannot rely on residents spending hours on their knees with kitchen sieves to solve an industrial marine disaster. We need active, high-capacity estuarine recovery machinery, skimmers, and specialised containment working directly in the river mouth now before these pellets permanently embed into our coastal ecosystems.
-
-3. Urgent Demands for Local & Parliamentary Action
-I call on you to urgently demand the following from the Councils, Defra, the Environment Agency, and the Maritime and Coastguard Agency (MCA):
-Escalate River-Source Recovery.
-Provide Full Support for Volunteer Logistics
-Enforce Full Corporate Liability & Legislative Reform
-
-Volunteers cannot be expected to carry the burden of a major industrial marine spill while official agency responses remain stalled in administrative delay. I look forward to hearing what direct steps you are taking to hold agencies accountable and escalate recovery efforts immediately.
-
-Yours sincerely,
-[Your Full Name]
-[Your Full Postal Address & Postcode]
-[Your Phone Number - Optional]`,
-      },
-    },
-    {
       id: "sign-petition",
-      title: "4. Sign zero plastic pellet loss petition",
+      title: "3. Sign zero plastic pellet loss petition",
       body: [
         "Help keep this issue on the national agenda by signing the official UK Parliament petition.",
       ],
@@ -291,6 +222,22 @@ export const scientificBriefing: ScientificBriefing = {
  * Link to General WhatsApp for polls and day-of coordination.
  */
 export const announcements: Announcement[] = [
+  {
+    id: "cleanup-scaled-back-2026-11-25",
+    datetime: "2026-11-25T22:00:00+00:00",
+    sourceName: "Community announcement",
+    headline: "Professional clean-up is being scaled back",
+    body: [
+      "Four months after the Port of Tyne spill, the insurer-funded clean-up is being scaled back and beaches outside the river have been declared clean. The last published assessment, in September, still had 71% of the pellets unaccounted for.",
+      "That September assessment covered almost 18 tonnes of plastic pellets that entered the river. There has been no public update from the response groups in the three months since, and no published measurements explaining how a beach was judged clean.",
+      "Over those three months, trained volunteers mapped about 40 miles of coastline with the Plastic Pollution Index method from ITOPF, the international body that advises on marine pollution response. The surveys keep finding nurdle densities at high or very high levels.",
+      "Local councils brought in a small team of agency workers to carry on. They are on repeated two-week contracts, and the latest reported end date is 29 November.",
+    ],
+    link: {
+      label: "Ask your MP to sign the open letter",
+      href: "/write-to-your-mp",
+    },
+  },
   {
     id: "nerf-awards-shortlist-2026-10-25",
     datetime: "2026-10-25T18:00:00+00:00",
@@ -1092,7 +1039,7 @@ export const faqs: FaqItem[] = [
     id: "pressure",
     question: "How do I press the council to do more?",
     answer:
-      "Write to your MP, your councillor and the Mayor — all three. Ask for a large-scale tide-based cleanup with proper numbers and equipment. Include your name and address at the top.",
+      "Ask your MP to sign the open letter. The form on the homepage finds them from your postcode and fills in a letter asking for a government-funded clean-up.",
   },
   {
     id: "who",

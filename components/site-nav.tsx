@@ -22,6 +22,7 @@ const moreNav: NavItem[] = [
   { href: "/organise-a-group", label: "Corporate events" },
   { href: "/photos", label: "Photos" },
   { href: "/in-the-news", label: "In the news" },
+  { href: "/write-to-your-mp", label: "Ask your MP to sign" },
   { href: "/open-letter", label: "Open letter" },
   { href: "/press-release", label: "Press release" },
   { href: "/report-nurdles", label: "Report nurdles" },

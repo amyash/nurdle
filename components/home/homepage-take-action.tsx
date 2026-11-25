@@ -51,7 +51,7 @@ export function HomepageTakeAction({
               <Disclosure
                 className="border border-line bg-paper open:bg-surface"
                 summaryClassName="px-4 py-3 text-sm font-bold text-ink"
-                summary="Show email template for councillors & MPs"
+                summary="Show email template for councillors and the Mayor"
               >
                 <div className="border-t border-line px-4 pb-4 pt-3">
                   <CopyableEmailTemplate
