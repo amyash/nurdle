@@ -20,7 +20,24 @@ import type { MpLookup } from "@/types/write-to-mp";
 
 const POSTCODE_HINT = "Enter a full UK postcode, such as NE30 2HE.";
 
-export function WriteToMpPanel() {
+function LetterBody({ body }: { body: string }) {
+  const parts = body.split(/(\[[^\]]+\])/g);
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.startsWith("[") ? (
+          <span key={index} className="text-mute">
+            {part}
+          </span>
+        ) : (
+          <span key={index}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
+
+export function WriteToMpPanel({ liveLetter = false }: { liveLetter?: boolean }) {
   const postcodeId = useId();
   const nameId = useId();
   const streetId = useId();
@@ -60,7 +77,10 @@ export function WriteToMpPanel() {
   const validation = validateConstituent(constituentInput);
   const fieldErrors: Partial<Record<ConstituentField, string>> =
     showErrors && !validation.ok ? validation.errors : {};
-  const letter = mp ? previewMpLetter(mp, constituentInput) : null;
+  const letter =
+    liveLetter || mp
+      ? previewMpLetter(mp, { ...constituentInput, postcode })
+      : null;
   const mailto =
     mp?.email && letter
       ? buildMailtoUrl(mp.email, letter.subject, letter.body)
@@ -185,8 +205,35 @@ export function WriteToMpPanel() {
     }
   }
 
+  const letterCard = letter ? (
+    <div>
+      <h3 className="text-card-title">Your letter</h3>
+      <div className="mt-4 rounded-control border border-line bg-surface p-4">
+        <p className="text-xs font-bold text-ink">Subject</p>
+        <p className="mt-1 text-sm leading-snug text-ink">{letter.subject}</p>
+        <pre
+          className={
+            liveLetter
+              ? "mt-4 max-h-80 overflow-y-auto whitespace-pre-wrap font-sans text-sm leading-relaxed text-ink lg:max-h-[calc(100dvh-12rem)]"
+              : "mt-4 max-h-96 overflow-y-auto whitespace-pre-wrap font-sans text-sm leading-relaxed text-ink"
+          }
+        >
+          <LetterBody body={letter.body} />
+        </pre>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <div className="rounded-soft border border-line border-l-[3px] border-l-mark bg-paper px-4 py-5 sm:px-6 sm:py-6">
+      <div
+        className={
+          liveLetter
+            ? "lg:grid lg:grid-cols-2 lg:items-start lg:gap-8"
+            : undefined
+        }
+      >
+      <div className={liveLetter ? "order-2 lg:order-1" : undefined}>
       <form onSubmit={onFind}>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
           <FormField
@@ -227,8 +274,9 @@ export function WriteToMpPanel() {
         ) : null}
       </form>
 
-      {mp && letter ? (
-        <form onSubmit={onEmail} className="mt-8 space-y-8">
+      {liveLetter || mp ? (
+        <div className="mt-8 space-y-8">
+          {mp ? (
           <div aria-live="polite">
             <p className="text-eyebrow text-mark">Your MP</p>
             <p className="mt-2 text-card-title">{mp.nameFullTitle}</p>
@@ -263,6 +311,12 @@ export function WriteToMpPanel() {
               </p>
             ) : null}
           </div>
+          ) : (
+            <p className="text-meta">
+              Find your MP to put their name on the letter. You can send it
+              after that.
+            </p>
+          )}
 
           <div>
             <h3 className="text-card-title">Your details</h3>
@@ -343,23 +397,18 @@ export function WriteToMpPanel() {
                 />
               </FormField>
             </div>
-            <p className="mt-3 text-meta">
-              Postcode on the letter: {resolvedPostcode}. MPs use your address
-              to check you are a constituent.
-            </p>
+            {resolvedPostcode ? (
+              <p className="mt-3 text-meta">
+                Postcode on the letter: {resolvedPostcode}. MPs use your address
+                to check you are a constituent.
+              </p>
+            ) : null}
           </div>
 
-          <div>
-            <h3 className="text-card-title">Your letter</h3>
-            <div className="mt-4 rounded-control border border-line bg-surface p-4">
-              <p className="text-xs font-bold text-ink">Subject</p>
-              <p className="mt-1 text-sm leading-snug text-ink">{letter.subject}</p>
-              <pre className="mt-4 max-h-96 overflow-y-auto whitespace-pre-wrap font-sans text-sm leading-relaxed text-ink">
-                {letter.body}
-              </pre>
-            </div>
-          </div>
+          {liveLetter ? null : letterCard}
 
+          {mp && letter ? (
+          <form onSubmit={onEmail}>
           <div>
             {postcodeDirty ? (
               <p role="status" className="mb-3 text-sm font-bold text-ink">
@@ -402,8 +451,17 @@ export function WriteToMpPanel() {
               </Callout>
             ) : null}
           </div>
-        </form>
+          </form>
+          ) : null}
+        </div>
       ) : null}
+      </div>
+      {liveLetter ? (
+        <div className="order-1 mb-8 lg:order-2 lg:sticky lg:top-24 lg:mb-0">
+          {letterCard}
+        </div>
+      ) : null}
+      </div>
     </div>
   );
 }

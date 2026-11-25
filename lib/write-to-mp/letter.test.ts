@@ -99,6 +99,28 @@ describe("previewMpLetter", () => {
     expect(letter.body).toContain("[Your street address]");
     expect(letter.body).toContain("NE30 2HE");
     expect(letter.body).toContain("[Date]");
+    expect(letter.body).toContain("Dear Sir Alan Campbell,");
+  });
+
+  it("shows the letter before an MP or any details are known", () => {
+    const letter = previewMpLetter(null, {
+      name: "Jane",
+      street: "",
+      town: "",
+      postcode: "",
+      email: "",
+      phone: "",
+      date: "2026-11-25",
+    });
+    expect(letter.body).toContain("Jane");
+    expect(letter.body).toContain("[Your street address]");
+    expect(letter.body).toContain("[Postcode]");
+    expect(letter.body).toContain("Dear [Your MP],");
+    expect(letter.body).toContain("[Your MP]\nHouse of Commons");
+    expect(letter.body).toContain("25 November 2026");
+    expect(letter.body).toContain("I urge you to stand with affected coastal communities");
+    expect(letter.body).not.toContain("As a North East MP");
+    expect(letter.body.endsWith("Jane")).toBe(true);
   });
 });
 

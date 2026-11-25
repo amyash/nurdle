@@ -41,7 +41,7 @@ export default function WriteToYourMpPage() {
       lead="Professional clean-up is being scaled back while nurdles remain on the coast. Find your MP from your postcode and send a letter asking them to back a government-funded clean-up."
     >
       <SharePageLink />
-      <WriteToMpPanel />
+      <WriteToMpPanel liveLetter />
     </PageShell>
   );
 }

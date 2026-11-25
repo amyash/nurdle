@@ -170,12 +170,19 @@ export function buildMpLetter(
   return { subject: MP_LETTER_SUBJECT, body };
 }
 
+const UNKNOWN_MP: MpLetterRecipient = {
+  nameAddressAs: "[Your MP]",
+  nameFullTitle: "[Your MP]",
+  constituency: "",
+};
+
+/** Letter with blanks for anything not filled in yet. Pass null before an MP is known. */
 export function previewMpLetter(
-  mp: MpLetterRecipient,
+  mp: MpLetterRecipient | null,
   input: ConstituentInput,
 ): { subject: string; body: string } {
   const dateLabel = formatLetterDate(input.date);
-  return buildMpLetter(mp, {
+  return buildMpLetter(mp ?? UNKNOWN_MP, {
     name: cleanLetterLine(input.name) || "[Your name]",
     street: cleanLetterLine(input.street) || "[Your street address]",
     town: cleanLetterLine(input.town) || "[Town/City]",
