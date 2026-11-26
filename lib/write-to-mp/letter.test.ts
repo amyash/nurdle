@@ -36,7 +36,13 @@ describe("buildMpLetter", () => {
     expect(letter.body).toContain("Rt Hon Sir Alan Campbell MP\nHouse of Commons\nLondon\nSW1A 0AA");
     expect(letter.body).toContain("Dear Sir Alan Campbell,");
     expect(letter.body).toContain("X-Press Pearl");
-    expect(letter.body).toContain("29 November");
+    expect(letter.body).toContain("short term extensions");
+    expect(letter.body).toContain(
+      "publication of evidence from the STAC giving full attention to the community data",
+    );
+    expect(letter.body).toContain(
+      "Our coastline and wildlife cannot afford further delays.",
+    );
     expect(letter.body).toContain("71%");
     expect(letter.body).toContain("Volunteer Liaison Group (VLG)");
     expect(letter.body).toContain(
