@@ -17,6 +17,7 @@ export type WhatsappLinkKey =
   | "marina"
   | "rest-of-uk"
   | "site-contact"
+  | "south-tyneside"
   | "__community__";
 
 const ENCODED_LINKS: Record<WhatsappLinkKey, string> = {
@@ -40,6 +41,8 @@ const ENCODED_LINKS: Record<WhatsappLinkKey, string> = {
   "rest-of-uk":
     "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9ITWthNktxYlBxMEkzWFZNQVI3Rm40",
   "site-contact": "aHR0cHM6Ly93YS5tZS80NDc3NDU3MjAzMTk=",
+  "south-tyneside":
+    "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9LZmQwQkFCeDBkVEg5UTlVZ1VrczRy",
   __community__:
     "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9FalFQY0JveVNtcTZwcjh1YUF0OXpP",
 };
@@ -63,6 +66,9 @@ const BEACH_LINK_KEYS: Partial<Record<string, WhatsappLinkKey>> = {
   marina: "marina",
   "cresswell-to-alnmouth": "__community__",
   "rest-of-uk": "rest-of-uk",
+  "south-shields": "south-tyneside",
+  seaburn: "south-tyneside",
+  roker: "south-tyneside",
 };
 
 export function whatsappLinkKeyForBeach(beachId: string): WhatsappLinkKey {
@@ -84,6 +90,8 @@ export function whatsappGateLabelForKey(key: WhatsappLinkKey): string {
       return "marina WhatsApp";
     case "rest-of-uk":
       return "Rest of UK WhatsApp";
+    case "south-tyneside":
+      return "South Tyneside WhatsApp";
     default:
       return "beach WhatsApp";
   }
